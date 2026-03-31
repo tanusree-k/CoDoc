@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoDoc – Sign In</title>
+  <meta name="description" content="Sign in or create an account to start collaborating on CoDoc." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body>
+  <div class="auth-bg">
+    <div class="auth-card">
+      <!-- Logo -->
+      <div class="auth-logo">
+        <svg width="40" height="40" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="10" fill="#10b981"/><path d="M9 12h18M9 18h12M9 24h15" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <span>CoDoc</span>
+      </div>
+
+      <!-- Tab switcher -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-signin" onclick="showTab('signin')">Sign In</button>
+        <button class="auth-tab" id="tab-signup" onclick="showTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- Sign In -->
+      <form id="form-signin" class="auth-form" onsubmit="handleSignIn(event)">
+        <p class="auth-sub">Welcome back! Enter your credentials.</p>
+        <div class="field-group">
+          <label>Email</label>
+          <input id="si-email" type="email" placeholder="you@example.com" required autocomplete="email" />
+        </div>
+        <div class="field-group">
+          <label>Password</label>
+          <input id="si-password" type="password" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+        <div id="si-error" class="auth-error hidden"></div>
+        <button type="submit" class="btn-primary" id="si-btn">Sign In →</button>
+        <p class="auth-switch">Don't have an account? <a href="#" onclick="showTab('signup')">Sign up free</a></p>
+      </form>
+
+      <!-- Sign Up -->
+      <form id="form-signup" class="auth-form hidden" onsubmit="handleSignUp(event)">
+        <p class="auth-sub">Create your account and start collaborating.</p>
+        <div class="field-group">
+          <label>Username</label>
+          <input id="su-username" type="text" placeholder="Your name" required maxlength="32" autocomplete="username" />
+        </div>
+        <div class="field-group">
+          <label>Email</label>
+          <input id="su-email" type="email" placeholder="you@example.com" required autocomplete="email" />
+        </div>
+        <div class="field-group">
+          <label>Password</label>
+          <input id="su-password" type="password" placeholder="Min. 6 characters" required minlength="6" autocomplete="new-password" />
+        </div>
+        <div id="su-error" class="auth-error hidden"></div>
+        <button type="submit" class="btn-primary" id="su-btn">Create Account →</button>
+        <p class="auth-switch">Already have an account? <a href="#" onclick="showTab('signin')">Sign in</a></p>
+      </form>
+    </div>
+
+    <!-- Decorative blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>

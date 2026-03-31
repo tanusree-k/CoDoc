@@ -1,0 +1,32 @@
+{
+  "name": "codoc-collaborative-editor",
+  "version": "1.0.0",
+  "description": "Real-time collaborative text editor",
+  "main": "server.js",
+  "scripts": {
+    "build": "esbuild src/editor.js --bundle --format=esm --outfile=public/editor.bundle.js --external:@supabase/supabase-js",
+    "start": "node server.js",
+    "dev": "npm run build && node server.js"
+  },
+  "dependencies": {
+    "@google/genai": "^1.46.0",
+    "@supabase/supabase-js": "^2.100.0",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.3.1",
+    "express": "^4.18.2",
+    "express-session": "^1.19.0",
+    "lib0": "^0.2.117",
+    "quill": "^2.0.3",
+    "quill-cursors": "^4.2.0",
+    "uuid": "^9.0.0",
+    "ws": "^8.16.0",
+    "y-protocols": "^1.0.7",
+    "y-quill": "^0.1.5",
+    "y-websocket": "^3.0.0",
+    "yjs": "^13.6.30"
+  },
+  "devDependencies": {
+    "esbuild": "^0.27.4"
+  }
+}

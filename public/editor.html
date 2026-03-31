@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoDoc – Editor</title>
+  <meta name="description" content="Real-time collaborative document editor." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/quill-cursors@4/dist/quill-cursors.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="editor.css" />
+</head>
+<body>
+
+  <!-- ─── App Shell ──────────────────────────────────────────────── -->
+  <div id="app" class="app">
+
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="navbar-left">
+        <a href="/dashboard.html" class="brand" title="Back to Dashboard">
+          <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
+            <defs><linearGradient id="bg" x1="0" y1="0" x2="36" y2="36"><stop stop-color="#10b981"/><stop offset="1" stop-color="#059669"/></linearGradient></defs>
+            <rect width="36" height="36" rx="10" fill="url(#bg)"/>
+            <path d="M9 12h18M9 18h12M9 24h15" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <span class="brand-name">CoDoc</span>
+        </a>
+        <div class="doc-title-wrap">
+          <input id="doc-title" type="text" value="Loading…" class="doc-title-input" spellcheck="false" />
+        </div>
+        <span id="role-badge" class="role-badge-nav hidden"></span>
+        <span id="ws-status" class="ws-status">
+          <span class="ws-status-dot"></span>
+          <span id="ws-status-text">Connecting…</span>
+        </span>
+      </div>
+      <div class="navbar-right">
+        <div id="nav-user-avatars" class="nav-avatars"></div>
+        <button id="history-btn" class="btn-ghost" title="Version History">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
+          History
+        </button>
+        <button id="ai-chat-btn" class="btn-ghost ai-chat-toggle-btn" title="Chat with AI about this document">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          AI Chat
+        </button>
+        <button id="share-btn" class="btn-ghost" title="Share Document">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share
+        </button>
+        <div class="export-wrap">
+          <button id="export-btn" class="btn-ghost" title="Export Document" onclick="toggleExportMenu()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+          </button>
+          <div id="export-dropdown" class="export-dropdown hidden">
+            <button class="export-option" onclick="exportDocument('html')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+              HTML File
+            </button>
+            <button class="export-option" onclick="exportDocument('txt')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              Plain Text
+            </button>
+            <button class="export-option" onclick="exportDocument('pdf')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Print / PDF
+            </button>
+          </div>
+        </div>
+        <button id="save-version-btn" class="btn-primary-sm editor-only hidden" title="Save Version">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Save
+        </button>
+        <div id="my-avatar" class="avatar" title="You"></div>
+      </div>
+    </header>
+
+    <!-- Toolbar (hidden for viewers) — Quill will use its own toolbar -->
+    <div class="toolbar editor-only hidden" id="toolbar">
+      <div class="toolbar-group">
+        <select id="format-block-select" class="tool-select ql-header" title="Text Style" style="margin-right:8px">
+          <option value="" selected>Normal</option>
+          <option value="1">Title</option>
+          <option value="2">Subtitle</option>
+          <option value="3">Heading 3</option>
+        </select>
+        <button class="tool-btn ql-bold" id="btn-bold" title="Bold (Ctrl+B)"><strong>B</strong></button>
+        <button class="tool-btn ql-italic" id="btn-italic" title="Italic (Ctrl+I)"><em>I</em></button>
+        <button class="tool-btn ql-underline" id="btn-underline" title="Underline (Ctrl+U)"><u>U</u></button>
+        <button class="tool-btn ql-strike" id="btn-strike" title="Strikethrough"><s>S</s></button>
+      </div>
+      <div class="toolbar-divider"></div>
+      <div class="toolbar-group">
+        <select id="font-size-select" class="tool-select ql-size" title="Font Size">
+          <option value="small">Small</option>
+          <option value="" selected>Normal</option>
+          <option value="large">Large</option>
+          <option value="huge">Huge</option>
+        </select>
+      </div>
+      <div class="toolbar-divider"></div>
+      <div class="toolbar-group">
+        <select class="tool-select ql-color" title="Text Color"></select>
+        <select class="tool-select ql-background" title="Highlight"></select>
+      </div>
+      <div class="toolbar-divider"></div>
+      <div class="toolbar-group">
+        <button class="tool-btn ql-align" value="" title="Align Left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg></button>
+        <button class="tool-btn ql-align" value="center" title="Align Center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="10" x2="6" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="18" y1="18" x2="6" y2="18"/></svg></button>
+        <button class="tool-btn ql-align" value="right" title="Align Right"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="7" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="7" y2="18"/></svg></button>
+      </div>
+      <div class="toolbar-divider"></div>
+      <div class="toolbar-group">
+        <button class="tool-btn ql-list" value="bullet" title="Bullet List"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1.5" fill="currentColor"/><circle cx="4" cy="12" r="1.5" fill="currentColor"/><circle cx="4" cy="18" r="1.5" fill="currentColor"/></svg></button>
+        <button class="tool-btn ql-list" value="ordered" title="Numbered List"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><text x="2" y="8" font-size="7" fill="currentColor">1</text><text x="2" y="14" font-size="7" fill="currentColor">2</text><text x="2" y="20" font-size="7" fill="currentColor">3</text></svg></button>
+      </div>
+      <div class="toolbar-divider"></div>
+      <div class="toolbar-group">
+        <button class="tool-btn ql-blockquote" title="Quote">❝</button>
+        <button class="tool-btn ql-code-block" title="Code Block">&lt;/&gt;</button>
+        <button class="tool-btn ql-clean" title="Clear Formatting"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+      </div>
+      <div class="toolbar-group">
+        <button class="tool-btn add-comment-btn" id="add-comment-btn" onmousedown="event.preventDefault()" onclick="startAddComment()" title="Add Comment">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Comment
+        </button>
+      </div>
+    </div>
+
+    <!-- Commenter toolbar -->
+    <div class="toolbar commenter-only hidden" id="toolbar-commenter">
+      <div class="toolbar-group">
+        <button class="tool-btn add-comment-btn" onmousedown="event.preventDefault()" onclick="startAddComment()" title="Add Comment">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Add Comment
+        </button>
+      </div>
+      <span class="viewer-notice">You have commenter access — read &amp; comment only</span>
+    </div>
+
+    <!-- Viewer notice -->
+    <div class="toolbar viewer-only hidden" id="toolbar-viewer">
+      <span class="viewer-notice">👁 Viewer mode — this document is read-only</span>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+      <div class="editor-container">
+        <div id="cursor-labels"></div>
+        <div class="editor-paper">
+          <div id="editor"></div>
+        </div>
+        <div id="recent-change-badge" class="recent-change-badge hidden"></div>
+      </div>
+
+      <!-- Comments Sidebar -->
+      <aside class="comments-sidebar" id="comments-sidebar">
+        <div class="sidebar-header">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Comments
+          </h3>
+          <span id="comment-count" class="comment-badge">0</span>
+        </div>
+        <div id="comments-list" class="comments-list">
+          <div class="no-comments">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <p>No comments yet.<br/>Select text and click Comment.</p>
+          </div>
+        </div>
+
+        <!-- Active Users Panel -->
+        <div class="users-panel">
+          <div class="sidebar-header">
+            <h3>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Collaborators
+            </h3>
+            <span id="user-count" class="comment-badge">0</span>
+          </div>
+          <div id="users-list" class="users-list"></div>
+        </div>
+
+        <!-- Owner: Permissions panel -->
+        <div class="permissions-panel owner-only hidden" id="permissions-panel">
+          <div class="sidebar-header">
+            <h3>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Access
+            </h3>
+          </div>
+          <div id="perms-list" class="users-list"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ─── Version History Panel ─────────────────────────────────── -->
+  <div id="history-panel" class="history-panel hidden">
+    <div class="history-header">
+      <h3>Version History</h3>
+      <button onclick="closeHistory()" class="close-btn">&times;</button>
+    </div>
+    <div id="history-list" class="history-list">
+      <div class="no-comments"><p>No saved versions yet.</p></div>
+    </div>
+  </div>
+  <div id="history-overlay" class="history-overlay hidden" onclick="closeHistory()"></div>
+
+  <!-- ─── Comment Input Modal ──────────────────────────────────── -->
+  <div id="comment-modal" class="comment-modal hidden">
+    <div class="comment-modal-card">
+      <h4>Add Comment</h4>
+      <textarea id="comment-text" placeholder="Write your comment…" rows="3"></textarea>
+      <div class="comment-modal-actions">
+        <button onclick="cancelComment()" class="btn-ghost-sm">Cancel</button>
+        <button onclick="submitComment()" class="btn-primary-sm">Post</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- ─── Save Version Modal ───────────────────────────────────── -->
+  <div id="save-version-modal" class="comment-modal hidden">
+    <div class="comment-modal-card">
+      <h4>Save Version</h4>
+      <input id="version-name-input" type="text" placeholder="Version name (optional)" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;outline:none;box-sizing:border-box;" />
+      <div class="comment-modal-actions" style="margin-top:12px">
+        <button onclick="cancelSaveVersion()" class="btn-ghost-sm">Cancel</button>
+        <button onclick="confirmSaveVersion()" class="btn-primary-sm">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Share Modal ──────────────────────────────────────────── -->
+  <div id="share-modal" class="comment-modal hidden">
+    <div class="comment-modal-card" style="width:420px">
+      <h4>Share Document</h4>
+      <p style="font-size:13px;color:#6b7280;margin-bottom:12px;">Choose a permission level and copy the link to share.</p>
+      <div class="share-role-group">
+        <label class="share-role-opt">
+          <input type="radio" name="share-role" value="editor" /> Editor <span class="role-desc">Can read &amp; edit</span>
+        </label>
+        <label class="share-role-opt">
+          <input type="radio" name="share-role" value="commenter" /> Commenter <span class="role-desc">Can read &amp; comment</span>
+        </label>
+        <label class="share-role-opt">
+          <input type="radio" name="share-role" value="viewer" checked /> Viewer <span class="role-desc">Read-only</span>
+        </label>
+      </div>
+      <div class="share-link-row">
+        <input id="share-link-input" type="text" readonly placeholder="Generating link…" />
+        <button class="btn-primary-sm" onclick="copyShareLink()">Copy</button>
+      </div>
+      <button id="generate-link-btn" onclick="generateShareLink()" class="btn-ghost-sm" style="width:100%;justify-content:center;margin-top:6px;">Generate New Link</button>
+      <div class="comment-modal-actions" style="margin-top:12px">
+        <button onclick="closeShareModal()" class="btn-ghost-sm">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── AI Chat Panel ─────────────────────────────────────── -->
+  <div id="ai-chat-panel" class="ai-chat-panel">
+    <div class="ai-chat-header">
+      <div class="ai-chat-title">
+        <div class="ai-glow-dot"></div>
+        <span>CoDoc AI</span>
+      </div>
+      <button onclick="closeAIChat()" class="close-btn" title="Close">&times;</button>
+    </div>
+    <div id="ai-chat-messages" class="ai-chat-messages">
+      <div class="chat-bubble-ai">
+        <div class="chat-bubble-content">Hi! I'm <strong>CoDoc AI</strong>. Ask me anything about this document — summarize it, improve the writing, translate content, or just chat!</div>
+        <div class="chat-time">Now</div>
+      </div>
+    </div>
+    <div class="ai-chat-footer">
+      <div class="quick-prompts">
+        <button class="quick-prompt-btn" onclick="sendQuickPrompt('summarize')">📝 Summarize</button>
+        <button class="quick-prompt-btn editor-only" onclick="sendQuickPrompt('polish')">✨ Polish</button>
+        <button class="quick-prompt-btn editor-only" onclick="sendQuickPrompt('translate')">🌐 Translate</button>
+      </div>
+      <label class="context-toggle">
+        <input type="checkbox" id="include-doc-ctx" checked />
+        <span>Include document as context</span>
+      </label>
+      <div class="chat-input-row">
+        <textarea id="ai-chat-input" class="chat-input" placeholder="Ask anything… (Enter to send, Shift+Enter for new line)" rows="1"></textarea>
+        <button id="ai-chat-send-btn" class="chat-send-btn" title="Send message">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div id="ai-chat-overlay" class="ai-chat-overlay hidden" onclick="closeAIChat()"></div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+  <script src="supabase.js"></script>
+
+  <script type="module" src="editor.bundle.js"></script>
+</body>
+</html>

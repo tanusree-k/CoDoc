@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoDoc – My Documents</title>
+  <meta name="description" content="Your collaborative documents dashboard." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar-left">
+      <div class="brand">
+        <svg width="28" height="28" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="10" fill="#10b981"/><path d="M9 12h18M9 18h12M9 24h15" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <span class="brand-name">CoDoc</span>
+      </div>
+    </div>
+    <div class="navbar-right">
+      <div class="user-info">
+        <div id="user-avatar" class="avatar"></div>
+        <span id="user-name" class="user-name-text"></span>
+      </div>
+      <button class="btn-ghost" id="logout-btn">Sign Out</button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="dash-main">
+    <div class="dash-header">
+      <div>
+        <h1 class="dash-title">My Documents</h1>
+        <p class="dash-sub">Create, open, and collaborate on your documents</p>
+      </div>
+      <button class="btn-primary" id="new-doc-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Document
+      </button>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading your documents…</p>
+    </div>
+
+    <!-- Empty state -->
+    <div id="empty-state" class="empty-state hidden">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <h3>No documents yet</h3>
+      <p>Click "New Document" to create your first one.</p>
+    </div>
+
+    <!-- Docs grid -->
+    <div id="docs-grid" class="docs-grid hidden"></div>
+  </main>
+
+  <!-- New Doc Modal -->
+  <div id="new-doc-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <h3>Create New Document</h3>
+      <input id="new-doc-title" type="text" placeholder="Document title (optional)" maxlength="80" autocomplete="off" />
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="closeNewDocModal()">Cancel</button>
+        <button class="btn-primary-sm" onclick="createDocument()">Create →</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

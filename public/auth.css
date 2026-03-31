@@ -1,0 +1,166 @@
+/* ─────────────────────────────────────────────────────────────────
+   CoDoc Auth Page
+───────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --emerald: #10b981;
+  --emerald-dark: #059669;
+  --emerald-light: #d1fae5;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --border: #e5e7eb;
+  --bg: #f0fdf4;
+  --white: #ffffff;
+  --font: 'Inter', system-ui, sans-serif;
+  --radius: 12px;
+  --shadow-lg: 0 20px 60px rgba(0,0,0,.12);
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-bg {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ecfdf5 0%, #f0f9ff 50%, #fdf4ff 100%);
+}
+
+/* Blobs */
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+  pointer-events: none;
+  animation: blobFloat 8s ease-in-out infinite alternate;
+}
+.blob-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, #10b981, #3b82f6);
+  top: -100px; left: -100px;
+}
+.blob-2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, #8b5cf6, #ec4899);
+  bottom: -80px; right: -80px;
+  animation-delay: -4s;
+}
+@keyframes blobFloat {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(30px, 20px) scale(1.05); }
+}
+
+/* Card */
+.auth-card {
+  position: relative; z-index: 1;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  border-radius: 20px;
+  padding: 44px 48px;
+  width: 440px;
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(16,185,129,.1);
+  animation: slideUp .35s cubic-bezier(.22,1,.36,1);
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Logo */
+.auth-logo {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 24px; font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 28px;
+  justify-content: center;
+}
+
+/* Tabs */
+.auth-tabs {
+  display: flex;
+  background: #f3f4f6;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 28px;
+}
+.auth-tab {
+  flex: 1; padding: 9px;
+  border: none; border-radius: 8px;
+  background: transparent;
+  font-family: var(--font); font-size: 14px; font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer; transition: all .2s;
+}
+.auth-tab.active {
+  background: var(--white);
+  color: var(--text-primary);
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+}
+
+/* Form */
+.auth-form { display: flex; flex-direction: column; gap: 16px; }
+.auth-form.hidden { display: none; }
+
+.auth-sub {
+  font-size: 14px; color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.field-group { display: flex; flex-direction: column; gap: 6px; }
+.field-group label {
+  font-size: 13px; font-weight: 600;
+  color: var(--text-primary);
+}
+.field-group input {
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--font); font-size: 14px;
+  color: var(--text-primary);
+  outline: none; transition: border-color .2s, box-shadow .2s;
+  background: var(--white);
+}
+.field-group input:focus {
+  border-color: var(--emerald);
+  box-shadow: 0 0 0 3px rgba(16,185,129,.12);
+}
+
+.auth-error {
+  background: #fef2f2; border: 1px solid #fecaca;
+  color: #dc2626; font-size: 13px;
+  padding: 10px 12px; border-radius: 8px;
+}
+.hidden { display: none !important; }
+
+.btn-primary {
+  padding: 13px;
+  background: var(--emerald); color: #fff;
+  border: none; border-radius: 10px;
+  font-family: var(--font); font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: background .2s, transform .1s;
+  margin-top: 4px;
+}
+.btn-primary:hover { background: var(--emerald-dark); }
+.btn-primary:active { transform: scale(.98); }
+.btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+
+.auth-switch {
+  font-size: 13px; color: var(--text-secondary);
+  text-align: center;
+}
+.auth-switch a { color: var(--emerald); font-weight: 600; text-decoration: none; }
+.auth-switch a:hover { text-decoration: underline; }
