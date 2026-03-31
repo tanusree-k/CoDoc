@@ -221,5 +221,5 @@ wss.on('connection', (conn, req) => {
   conn.on('error', err => console.error('[WS] Error:', err.message));
 });
 
-const PORT = 3000;
-server.listen(PORT, () => console.log(`✅ CoDoc server running at http://localhost:${PORT} (Yjs CRDT + WebSocket)`));
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => console.log(`✅ CoDoc server running on port ${PORT} (Yjs CRDT + WebSocket)`));
