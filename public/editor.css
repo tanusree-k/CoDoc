@@ -471,35 +471,45 @@
   to   { opacity: 1; transform: scaleY(1); }
 }
 
-/* Flag (name label) — enhanced styling over the library default */
+/* Flag (name label) — always visible, scales up on hover */
 .ql-cursor .ql-cursor-flag {
   font-size: 11px !important;
   font-weight: 700 !important;
   font-family: var(--font) !important;
   padding: 3px 10px 4px !important;
   border-radius: 6px 6px 6px 0 !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2) !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25) !important;
   letter-spacing: 0.2px;
-  /* Smooth transition for show/hide */
-  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease !important;
-  transform: translate3d(-1px, -100%, 0) scale(0.92);
-}
-
-/* When the library adds .hover class (user hovers the caret area) */
-.ql-cursor .ql-cursor-caret-container.hover + .ql-cursor-flag {
+  white-space: nowrap !important;
+  /* Always show the name — fade in smoothly */
   opacity: 1 !important;
   visibility: visible !important;
-  transform: translate3d(-1px, -100%, 0) scale(1) !important;
+  pointer-events: auto !important;
+  cursor: default;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+  transform: translate3d(-1px, -100%, 0) scale(0.95) !important;
+  transform-origin: bottom left;
+}
+
+/* Grow the label on hover for a nice interactive feel */
+.ql-cursor:hover .ql-cursor-flag,
+.ql-cursor .ql-cursor-caret-container:hover ~ .ql-cursor-flag,
+.ql-cursor-flag:hover {
+  transform: translate3d(-1px, -100%, 0) scale(1.08) !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3) !important;
 }
 
 /* Wider hover hit-area so the tooltip is easier to trigger */
+.ql-cursor .ql-cursor-caret-container {
+  cursor: pointer;
+}
 .ql-cursor .ql-cursor-caret-container::after {
   content: '';
   position: absolute;
-  top: -6px;
-  left: -10px;
-  right: -10px;
-  bottom: -6px;
+  top: -8px;
+  left: -12px;
+  right: -12px;
+  bottom: -8px;
 }
 
 /* Subtle pulse dot at the top of the cursor caret for visibility */

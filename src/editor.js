@@ -225,6 +225,19 @@ showLoadingOverlay('Connecting…');
   // Bind Yjs to Quill
   const binding = new QuillBinding(ytext, quill, wsProvider.awareness);
 
+  // Get reference to the cursors module
+  const cursors = quill.getModule('cursors');
+
+  // Broadcast local cursor/selection changes to other users
+  quill.on('selection-change', (range) => {
+    if (range) {
+      wsProvider.awareness.setLocalStateField('cursor', {
+        anchor: Y.createRelativePositionFromTypeIndex(ytext, range.index),
+        head: Y.createRelativePositionFromTypeIndex(ytext, range.index + range.length)
+      });
+    }
+  });
+
   // ── Seed initial content from Supabase (first time only) ──────────
   // If the Yjs doc is empty and the Supabase doc has content, seed it
   wsProvider.on('sync', (synced) => {
@@ -252,9 +265,11 @@ showLoadingOverlay('Connecting…');
     }
   });
 
-  // ── Awareness → User List ─────────────────────────────────────────
-  wsProvider.awareness.on('change', () => {
+  // ── Awareness → User List + Collaborative Cursors ─────────────────
+  wsProvider.awareness.on('change', ({ added, updated, removed }) => {
     users = {};
+    const myClientId = wsProvider.awareness.clientID;
+
     wsProvider.awareness.getStates().forEach((state, clientId) => {
       if (state.user) {
         users[state.user.id || clientId] = {
@@ -264,7 +279,48 @@ showLoadingOverlay('Connecting…');
           role: state.user.role || 'viewer'
         };
       }
+
+      // Skip our own cursor
+      if (clientId === myClientId) return;
+      if (!state.user) return;
+
+      const cursorId = String(clientId);
+      const userName = state.user.name || 'Anonymous';
+      const userColor = state.user.color || '#94a3b8';
+
+      // Create or update the cursor for this remote user
+      if (cursors) {
+        try {
+          cursors.createCursor(cursorId, userName, userColor);
+        } catch (e) {
+          // cursor already exists — update it
+          cursors.removeCursor(cursorId);
+          cursors.createCursor(cursorId, userName, userColor);
+        }
+
+        // Move cursor to their position if we have it
+        if (state.cursor) {
+          try {
+            const anchor = Y.createAbsolutePositionFromRelativePosition(state.cursor.anchor, ydoc);
+            const head = Y.createAbsolutePositionFromRelativePosition(state.cursor.head, ydoc);
+            if (anchor && head) {
+              cursors.moveCursor(cursorId, {
+                index: anchor.index,
+                length: head.index - anchor.index
+              });
+            }
+          } catch (e) { /* position not resolvable yet */ }
+        }
+      }
     });
+
+    // Remove cursors for clients that have left
+    if (cursors) {
+      removed.forEach(clientId => {
+        cursors.removeCursor(String(clientId));
+      });
+    }
+
     renderUserList();
   });
 
