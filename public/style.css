@@ -307,7 +307,7 @@ body {
   box-shadow: inset 0 0 0 1px var(--emerald-light);
 }
 
-.tool-btn.add-comment-btn { width: auto; padding: 0 10px; gap: 6px; font-weight: 500; font-size: 13px; }
+.tool-btn.add-comment-btn, .tool-btn#insert-image-btn { width: auto; padding: 0 10px; gap: 6px; font-weight: 500; font-size: 13px; }
 
 .color-btn { position: relative; width: 30px; height: 30px; }
 .color-btn input[type="color"] {
