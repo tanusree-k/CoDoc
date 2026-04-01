@@ -8,12 +8,15 @@ import * as Y from 'yjs';
 import { WebsocketProvider } from 'y-websocket';
 import { QuillBinding } from 'y-quill';
 import QuillCursors from 'quill-cursors';
+import BlotFormatter from '@enzedonline/quill-blot-formatter2';
+import Cropper from 'cropperjs';
 
 // Quill is loaded globally from CDN script tag
 const Quill = window.Quill;
 
-// Register quill-cursors module for collaborative cursor display
+// Register modules
 Quill.register('modules/cursors', QuillCursors);
+Quill.register('modules/blotFormatter', BlotFormatter);
 
 // ── Register custom Font whitelist ──────────────────────────────────────
 const Font = Quill.import('attributors/class/font');
@@ -206,6 +209,7 @@ showLoadingOverlay('Connecting…');
     modules: {
       toolbar: isReadOnly ? false : '#toolbar',
       history: { userOnly: true },
+      blotFormatter: {},
       cursors: {
         hideDelayMs: 5000,
         hideSpeedMs: 300,
@@ -510,24 +514,36 @@ showLoadingOverlay('Connecting…');
 
   // ── Image insertion state ─────────────────────────────────────────
   window._imgInsertIndex = null;
-  window._imgBase64 = null;
   window._imgTab = 'upload';
+  let cropperInstance = null;
 
   window.openImageModal = function() {
     if (myRole === 'viewer') return;
     window._imgInsertIndex = quill.getSelection()?.index ?? quill.getLength();
-    window._imgBase64 = null;
-    document.getElementById('img-drop-label').textContent = 'Click to choose or drag & drop an image';
+    
+    // Reset UI
+    document.getElementById('img-drop-zone').classList.remove('hidden');
     document.getElementById('img-drop-zone').style.borderColor = '';
+    document.getElementById('img-drop-label').textContent = 'Click to choose or drag & drop an image';
+    document.getElementById('crop-container').classList.add('hidden');
     document.getElementById('image-url-input').value = '';
     document.getElementById('image-file-input').value = '';
+    
+    if (cropperInstance) {
+      cropperInstance.destroy();
+      cropperInstance = null;
+    }
+    
     switchImgTab('upload');
     document.getElementById('image-modal').classList.remove('hidden');
   };
 
   window.closeImageModal = function() {
     document.getElementById('image-modal').classList.add('hidden');
-    window._imgBase64 = null;
+    if (cropperInstance) {
+      cropperInstance.destroy();
+      cropperInstance = null;
+    }
   };
 
   window.switchImgTab = function(tab) {
@@ -541,24 +557,54 @@ showLoadingOverlay('Connecting…');
   window.handleImageFileSelected = function(e) {
     const file = e.target.files[0];
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) {
-      showToast('⚠️ Image must be under 2MB', '#f59e0b');
+    loadFileIntoCropper(file);
+  };
+
+  function loadFileIntoCropper(file) {
+    if (file.size > 5 * 1024 * 1024) { // Increased to 5MB since we compress on output
+      showToast('⚠️ Image must be under 5MB', '#f59e0b');
       return;
     }
     const reader = new FileReader();
     reader.onload = (ev) => {
-      window._imgBase64 = ev.target.result;
-      document.getElementById('img-drop-label').textContent = '✅ ' + file.name;
-      document.getElementById('img-drop-zone').style.borderColor = '#10b981';
+      document.getElementById('img-drop-zone').classList.add('hidden');
+      const cropContainer = document.getElementById('crop-container');
+      const cropImage = document.getElementById('crop-image');
+      
+      cropContainer.classList.remove('hidden');
+      cropImage.src = ev.target.result;
+      
+      if (cropperInstance) cropperInstance.destroy();
+      
+      // Small delay to ensure image is rendered
+      setTimeout(() => {
+        cropperInstance = new Cropper(cropImage, {
+          viewMode: 1,
+          autoCropArea: 0.95,
+          dragMode: 'move',
+          background: false,
+        });
+      }, 50);
     };
     reader.readAsDataURL(file);
-  };
+  }
 
   window.confirmInsertImage = function() {
     const idx = window._imgInsertIndex ?? quill.getLength();
+    
     if (window._imgTab === 'upload') {
-      if (!window._imgBase64) { showToast('Please select an image first.'); return; }
-      quill.insertEmbed(idx, 'image', window._imgBase64, 'user');
+      if (!cropperInstance) { showToast('Please select and crop an image first.'); return; }
+      
+      // Get the cropped image data URL (compressed to save DB space)
+      const croppedCanvas = cropperInstance.getCroppedCanvas({
+        maxWidth: 1600,
+        maxHeight: 1600,
+      });
+      
+      if (!croppedCanvas) { showToast('Error cropping image.'); return; }
+      const finalBase64 = croppedCanvas.toDataURL('image/jpeg', 0.85);
+
+      quill.insertEmbed(idx, 'image', finalBase64, 'user');
       quill.setSelection(idx + 1);
     } else {
       const url = document.getElementById('image-url-input').value.trim();
@@ -585,14 +631,8 @@ showLoadingOverlay('Connecting…');
       e.preventDefault();
       const file = e.dataTransfer.files[0];
       if (!file || !file.type.startsWith('image/')) return;
-      if (file.size > 2 * 1024 * 1024) { showToast('⚠️ Image must be under 2MB', '#f59e0b'); return; }
-      const reader = new FileReader();
-      reader.onload = ev => {
-        window._imgBase64 = ev.target.result;
-        document.getElementById('img-drop-label').textContent = '✅ ' + file.name;
-        dropZone.style.borderColor = '#10b981';
-      };
-      reader.readAsDataURL(file);
+      document.getElementById('image-file-input').files = e.dataTransfer.files; // Sync with input
+      loadFileIntoCropper(file);
     });
   }
 

@@ -74,24 +74,24 @@ var require_quill_cursors = __commonJS({
                 var a3 = r3.index, u3 = t4.slice(0, a3), c3 = t4.slice(a3), l3 = i2 ? i2.index : null, h3 = a3 + s2 - o2;
                 if ((null === l3 || l3 === h3) && !(h3 < 0 || h3 > s2)) {
                   var p2 = e3.slice(0, h3);
-                  if ((v = e3.slice(h3)) === c3) {
+                  if ((v2 = e3.slice(h3)) === c3) {
                     var d2 = Math.min(a3, h3);
                     if ((y = u3.slice(0, d2)) === (m = p2.slice(0, d2))) return f(y, u3.slice(d2), p2.slice(d2), c3);
                   }
                 }
                 if (null === l3 || l3 === a3) {
-                  var g2 = a3, v = (p2 = e3.slice(0, g2), e3.slice(g2));
+                  var g2 = a3, v2 = (p2 = e3.slice(0, g2), e3.slice(g2));
                   if (p2 === u3) {
-                    var _ = Math.min(o2 - g2, s2 - g2);
-                    if ((b = c3.slice(c3.length - _)) === (C = v.slice(v.length - _))) return f(u3, c3.slice(0, c3.length - _), v.slice(0, v.length - _), b);
+                    var _2 = Math.min(o2 - g2, s2 - g2);
+                    if ((b = c3.slice(c3.length - _2)) === (C2 = v2.slice(v2.length - _2))) return f(u3, c3.slice(0, c3.length - _2), v2.slice(0, v2.length - _2), b);
                   }
                 }
               }
               if (r3.length > 0 && i2 && 0 === i2.length) {
                 var y = t4.slice(0, r3.index), b = t4.slice(r3.index + r3.length);
-                if (!(s2 < (d2 = y.length) + (_ = b.length))) {
-                  var m = e3.slice(0, d2), C = e3.slice(s2 - _);
-                  if (y === m && b === C) return f(y, t4.slice(d2, o2 - _), e3.slice(d2, s2 - _), b);
+                if (!(s2 < (d2 = y.length) + (_2 = b.length))) {
+                  var m = e3.slice(0, d2), C2 = e3.slice(s2 - _2);
+                  if (y === m && b === C2) return f(y, t4.slice(d2, o2 - _2), e3.slice(d2, s2 - _2), b);
                 }
               }
               return null;
@@ -121,27 +121,27 @@ var require_quill_cursors = __commonJS({
               return h4 || p3 ? (a4 = p3 ? h4 && h4[4].length > p3[4].length ? h4 : p3 : h4, t5.length > e3.length ? (u4 = a4[0], c4 = a4[1], l4 = a4[2], f3 = a4[3]) : (l4 = a4[0], f3 = a4[1], u4 = a4[2], c4 = a4[3]), [u4, c4, l4, f3, a4[4]]) : null;
             })(t4, s2);
             if (f2) {
-              var h3 = f2[0], p2 = f2[1], d2 = f2[2], g2 = f2[3], v = f2[4], _ = n2(h3, d2), y = n2(p2, g2);
-              return _.concat([[0, v]], y);
+              var h3 = f2[0], p2 = f2[1], d2 = f2[2], g2 = f2[3], v2 = f2[4], _2 = n2(h3, d2), y = n2(p2, g2);
+              return _2.concat([[0, v2]], y);
             }
             return (function(t5, n3) {
               for (var i2 = t5.length, o2 = n3.length, s3 = Math.ceil((i2 + o2) / 2), a4 = s3, u4 = 2 * s3, c4 = new Array(u4), l4 = new Array(u4), f3 = 0; f3 < u4; f3++) c4[f3] = -1, l4[f3] = -1;
               c4[a4 + 1] = 0, l4[a4 + 1] = 0;
-              for (var h4 = i2 - o2, p3 = h4 % 2 != 0, d3 = 0, g3 = 0, v2 = 0, _2 = 0, y2 = 0; y2 < s3; y2++) {
+              for (var h4 = i2 - o2, p3 = h4 % 2 != 0, d3 = 0, g3 = 0, v3 = 0, _3 = 0, y2 = 0; y2 < s3; y2++) {
                 for (var b = -y2 + d3; b <= y2 - g3; b += 2) {
-                  for (var m = a4 + b, C = (S = b === -y2 || b !== y2 && c4[m - 1] < c4[m + 1] ? c4[m + 1] : c4[m - 1] + 1) - b; S < i2 && C < o2 && t5.charAt(S) === n3.charAt(C); ) S++, C++;
-                  if (c4[m] = S, S > i2) g3 += 2;
-                  else if (C > o2) d3 += 2;
-                  else if (p3 && (O = a4 + h4 - b) >= 0 && O < u4 && -1 !== l4[O] && S >= (A = i2 - l4[O])) return r2(t5, n3, S, C);
+                  for (var m = a4 + b, C2 = (S2 = b === -y2 || b !== y2 && c4[m - 1] < c4[m + 1] ? c4[m + 1] : c4[m - 1] + 1) - b; S2 < i2 && C2 < o2 && t5.charAt(S2) === n3.charAt(C2); ) S2++, C2++;
+                  if (c4[m] = S2, S2 > i2) g3 += 2;
+                  else if (C2 > o2) d3 += 2;
+                  else if (p3 && (O2 = a4 + h4 - b) >= 0 && O2 < u4 && -1 !== l4[O2] && S2 >= (A2 = i2 - l4[O2])) return r2(t5, n3, S2, C2);
                 }
-                for (var E = -y2 + v2; E <= y2 - _2; E += 2) {
-                  for (var A, O = a4 + E, w = (A = E === -y2 || E !== y2 && l4[O - 1] < l4[O + 1] ? l4[O + 1] : l4[O - 1] + 1) - E; A < i2 && w < o2 && t5.charAt(i2 - A - 1) === n3.charAt(o2 - w - 1); ) A++, w++;
-                  if (l4[O] = A, A > i2) _2 += 2;
-                  else if (w > o2) v2 += 2;
+                for (var E2 = -y2 + v3; E2 <= y2 - _3; E2 += 2) {
+                  for (var A2, O2 = a4 + E2, w2 = (A2 = E2 === -y2 || E2 !== y2 && l4[O2 - 1] < l4[O2 + 1] ? l4[O2 + 1] : l4[O2 - 1] + 1) - E2; A2 < i2 && w2 < o2 && t5.charAt(i2 - A2 - 1) === n3.charAt(o2 - w2 - 1); ) A2++, w2++;
+                  if (l4[O2] = A2, A2 > i2) _3 += 2;
+                  else if (w2 > o2) v3 += 2;
                   else if (!p3) {
-                    var S;
-                    if ((m = a4 + h4 - E) >= 0 && m < u4 && -1 !== c4[m]) {
-                      if (C = a4 + (S = c4[m]) - m, S >= (A = i2 - A)) return r2(t5, n3, S, C);
+                    var S2;
+                    if ((m = a4 + h4 - E2) >= 0 && m < u4 && -1 !== c4[m]) {
+                      if (C2 = a4 + (S2 = c4[m]) - m, S2 >= (A2 = i2 - A2)) return r2(t5, n3, S2, C2);
                     }
                   }
                 }
@@ -182,8 +182,8 @@ var require_quill_cursors = __commonJS({
                   var g = t3[d][1].slice(-1);
                   if (t3[d][1] = t3[d][1].slice(0, -1), h2 = g + h2, p = g + p, !t3[d][1]) {
                     t3.splice(d, 1), a2--;
-                    var v = d - 1;
-                    t3[v] && 1 === t3[v][0] && (f2++, p = t3[v][1] + p, v--), t3[v] && t3[v][0] === e2 && (u2++, h2 = t3[v][1] + h2, v--), d = v;
+                    var v2 = d - 1;
+                    t3[v2] && 1 === t3[v2][0] && (f2++, p = t3[v2][1] + p, v2--), t3[v2] && t3[v2][0] === e2 && (u2++, h2 = t3[v2][1] + h2, v2--), d = v2;
                   }
                 }
                 c(t3[a2][1]) && (g = t3[a2][1].charAt(0), t3[a2][1] = t3[a2][1].slice(1), h2 += g, p += g);
@@ -194,8 +194,8 @@ var require_quill_cursors = __commonJS({
               }
               if (h2.length > 0 || p.length > 0) {
                 h2.length > 0 && p.length > 0 && (0 !== (r3 = i(p, h2)) && (d >= 0 ? t3[d][1] += p.substring(0, r3) : (t3.splice(0, 0, [0, p.substring(0, r3)]), a2++), p = p.substring(r3), h2 = h2.substring(r3)), 0 !== (r3 = o(p, h2)) && (t3[a2][1] = p.substring(p.length - r3) + t3[a2][1], p = p.substring(0, p.length - r3), h2 = h2.substring(0, h2.length - r3)));
-                var _ = f2 + u2;
-                0 === h2.length && 0 === p.length ? (t3.splice(a2 - _, _), a2 -= _) : 0 === h2.length ? (t3.splice(a2 - _, _, [1, p]), a2 = a2 - _ + 1) : 0 === p.length ? (t3.splice(a2 - _, _, [e2, h2]), a2 = a2 - _ + 1) : (t3.splice(a2 - _, _, [e2, h2], [1, p]), a2 = a2 - _ + 2);
+                var _2 = f2 + u2;
+                0 === h2.length && 0 === p.length ? (t3.splice(a2 - _2, _2), a2 -= _2) : 0 === h2.length ? (t3.splice(a2 - _2, _2, [1, p]), a2 = a2 - _2 + 1) : 0 === p.length ? (t3.splice(a2 - _2, _2, [e2, h2]), a2 = a2 - _2 + 1) : (t3.splice(a2 - _2, _2, [e2, h2], [1, p]), a2 = a2 - _2 + 2);
               }
               0 !== a2 && 0 === t3[a2 - 1][0] ? (t3[a2 - 1][1] += t3[a2][1], t3.splice(a2, 1)) : a2++, f2 = 0, u2 = 0, h2 = "", p = "";
           }
@@ -228,21 +228,21 @@ var require_quill_cursors = __commonJS({
         h.INSERT = 1, h.DELETE = e2, h.EQUAL = 0, t2.exports = h;
       }, 465: (t2, e2, n2) => {
         t2 = n2.nmd(t2);
-        var r2 = "__lodash_hash_undefined__", i = 9007199254740991, o = "[object Arguments]", s = "[object Boolean]", a = "[object Date]", u = "[object Function]", c = "[object GeneratorFunction]", l = "[object Map]", f = "[object Number]", h = "[object Object]", p = "[object Promise]", d = "[object RegExp]", g = "[object Set]", v = "[object String]", _ = "[object Symbol]", y = "[object WeakMap]", b = "[object ArrayBuffer]", m = "[object DataView]", C = "[object Float32Array]", E = "[object Float64Array]", A = "[object Int8Array]", O = "[object Int16Array]", w = "[object Int32Array]", S = "[object Uint8Array]", j = "[object Uint8ClampedArray]", x = "[object Uint16Array]", L = "[object Uint32Array]", T = /\w*$/, M = /^\[object .+?Constructor\]$/, N = /^(?:0|[1-9]\d*)$/, R = {};
-        R[o] = R["[object Array]"] = R[b] = R[m] = R[s] = R[a] = R[C] = R[E] = R[A] = R[O] = R[w] = R[l] = R[f] = R[h] = R[d] = R[g] = R[v] = R[_] = R[S] = R[j] = R[x] = R[L] = true, R["[object Error]"] = R[u] = R[y] = false;
-        var k = "object" == typeof n2.g && n2.g && n2.g.Object === Object && n2.g, D = "object" == typeof self && self && self.Object === Object && self, q = k || D || Function("return this")(), B = e2 && !e2.nodeType && e2, I = B && t2 && !t2.nodeType && t2, P = I && I.exports === B;
-        function F(t3, e3) {
+        var r2 = "__lodash_hash_undefined__", i = 9007199254740991, o = "[object Arguments]", s = "[object Boolean]", a = "[object Date]", u = "[object Function]", c = "[object GeneratorFunction]", l = "[object Map]", f = "[object Number]", h = "[object Object]", p = "[object Promise]", d = "[object RegExp]", g = "[object Set]", v2 = "[object String]", _2 = "[object Symbol]", y = "[object WeakMap]", b = "[object ArrayBuffer]", m = "[object DataView]", C2 = "[object Float32Array]", E2 = "[object Float64Array]", A2 = "[object Int8Array]", O2 = "[object Int16Array]", w2 = "[object Int32Array]", S2 = "[object Uint8Array]", j2 = "[object Uint8ClampedArray]", x = "[object Uint16Array]", L2 = "[object Uint32Array]", T2 = /\w*$/, M = /^\[object .+?Constructor\]$/, N2 = /^(?:0|[1-9]\d*)$/, R2 = {};
+        R2[o] = R2["[object Array]"] = R2[b] = R2[m] = R2[s] = R2[a] = R2[C2] = R2[E2] = R2[A2] = R2[O2] = R2[w2] = R2[l] = R2[f] = R2[h] = R2[d] = R2[g] = R2[v2] = R2[_2] = R2[S2] = R2[j2] = R2[x] = R2[L2] = true, R2["[object Error]"] = R2[u] = R2[y] = false;
+        var k2 = "object" == typeof n2.g && n2.g && n2.g.Object === Object && n2.g, D2 = "object" == typeof self && self && self.Object === Object && self, q2 = k2 || D2 || Function("return this")(), B = e2 && !e2.nodeType && e2, I2 = B && t2 && !t2.nodeType && t2, P2 = I2 && I2.exports === B;
+        function F2(t3, e3) {
           return t3.set(e3[0], e3[1]), t3;
         }
         function z(t3, e3) {
           return t3.add(e3), t3;
         }
-        function U(t3, e3, n3, r3) {
+        function U2(t3, e3, n3, r3) {
           var i2 = -1, o2 = t3 ? t3.length : 0;
           for (r3 && o2 && (n3 = t3[++i2]); ++i2 < o2; ) n3 = e3(n3, t3[i2], i2, t3);
           return n3;
         }
-        function G(t3) {
+        function G2(t3) {
           var e3 = false;
           if (null != t3 && "function" != typeof t3.toString) try {
             e3 = !!(t3 + "");
@@ -250,24 +250,24 @@ var require_quill_cursors = __commonJS({
           }
           return e3;
         }
-        function H(t3) {
+        function H2(t3) {
           var e3 = -1, n3 = Array(t3.size);
           return t3.forEach((function(t4, r3) {
             n3[++e3] = [r3, t4];
           })), n3;
         }
-        function $2(t3, e3) {
+        function $3(t3, e3) {
           return function(n3) {
             return t3(e3(n3));
           };
         }
-        function V(t3) {
+        function V2(t3) {
           var e3 = -1, n3 = Array(t3.size);
           return t3.forEach((function(t4) {
             n3[++e3] = t4;
           })), n3;
         }
-        var W, X = Array.prototype, Q = Function.prototype, Z = Object.prototype, Y = q["__core-js_shared__"], K = (W = /[^.]+$/.exec(Y && Y.keys && Y.keys.IE_PROTO || "")) ? "Symbol(src)_1." + W : "", J = Q.toString, tt = Z.hasOwnProperty, et = Z.toString, nt = RegExp("^" + J.call(tt).replace(/[\\^$.*+?()[\]{}|]/g, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"), rt = P ? q.Buffer : void 0, it = q.Symbol, ot = q.Uint8Array, st = $2(Object.getPrototypeOf, Object), at = Object.create, ut = Z.propertyIsEnumerable, ct = X.splice, lt = Object.getOwnPropertySymbols, ft = rt ? rt.isBuffer : void 0, ht = $2(Object.keys, Object), pt = qt(q, "DataView"), dt = qt(q, "Map"), gt = qt(q, "Promise"), vt = qt(q, "Set"), _t2 = qt(q, "WeakMap"), yt = qt(Object, "create"), bt = zt(pt), mt = zt(dt), Ct = zt(gt), Et = zt(vt), At = zt(_t2), Ot = it ? it.prototype : void 0, wt = Ot ? Ot.valueOf : void 0;
+        var W2, X2 = Array.prototype, Q2 = Function.prototype, Z2 = Object.prototype, Y2 = q2["__core-js_shared__"], K2 = (W2 = /[^.]+$/.exec(Y2 && Y2.keys && Y2.keys.IE_PROTO || "")) ? "Symbol(src)_1." + W2 : "", J2 = Q2.toString, tt2 = Z2.hasOwnProperty, et = Z2.toString, nt2 = RegExp("^" + J2.call(tt2).replace(/[\\^$.*+?()[\]{}|]/g, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"), rt = P2 ? q2.Buffer : void 0, it = q2.Symbol, ot = q2.Uint8Array, st = $3(Object.getPrototypeOf, Object), at = Object.create, ut = Z2.propertyIsEnumerable, ct = X2.splice, lt = Object.getOwnPropertySymbols, ft = rt ? rt.isBuffer : void 0, ht = $3(Object.keys, Object), pt = qt(q2, "DataView"), dt = qt(q2, "Map"), gt = qt(q2, "Promise"), vt = qt(q2, "Set"), _t2 = qt(q2, "WeakMap"), yt = qt(Object, "create"), bt = zt(pt), mt = zt(dt), Ct = zt(gt), Et = zt(vt), At = zt(_t2), Ot = it ? it.prototype : void 0, wt = Ot ? Ot.valueOf : void 0;
         function St(t3) {
           var e3 = -1, n3 = t3 ? t3.length : 0;
           for (this.clear(); ++e3 < n3; ) {
@@ -294,7 +294,7 @@ var require_quill_cursors = __commonJS({
         }
         function Tt(t3, e3, n3) {
           var r3 = t3[e3];
-          tt.call(t3, e3) && Ut(r3, n3) && (void 0 !== n3 || e3 in t3) || (t3[e3] = n3);
+          tt2.call(t3, e3) && Ut(r3, n3) && (void 0 !== n3 || e3 in t3) || (t3[e3] = n3);
         }
         function Mt(t3, e3) {
           for (var n3 = t3.length; n3--; ) if (Ut(t3[n3][0], e3)) return n3;
@@ -304,35 +304,35 @@ var require_quill_cursors = __commonJS({
           var M2;
           if (r3 && (M2 = p2 ? r3(t3, i2, p2, y2) : r3(t3)), void 0 !== M2) return M2;
           if (!Wt(t3)) return t3;
-          var N2 = Gt(t3);
-          if (N2) {
+          var N3 = Gt(t3);
+          if (N3) {
             if (M2 = (function(t4) {
               var e4 = t4.length, n4 = t4.constructor(e4);
-              return e4 && "string" == typeof t4[0] && tt.call(t4, "index") && (n4.index = t4.index, n4.input = t4.input), n4;
+              return e4 && "string" == typeof t4[0] && tt2.call(t4, "index") && (n4.index = t4.index, n4.input = t4.input), n4;
             })(t3), !e3) return (function(t4, e4) {
               var n4 = -1, r4 = t4.length;
               for (e4 || (e4 = Array(r4)); ++n4 < r4; ) e4[n4] = t4[n4];
               return e4;
             })(t3, M2);
           } else {
-            var k2 = It(t3), D2 = k2 == u || k2 == c;
+            var k3 = It(t3), D3 = k3 == u || k3 == c;
             if ($t(t3)) return (function(t4, e4) {
               if (e4) return t4.slice();
               var n4 = new t4.constructor(t4.length);
               return t4.copy(n4), n4;
             })(t3, e3);
-            if (k2 == h || k2 == o || D2 && !p2) {
-              if (G(t3)) return p2 ? t3 : {};
+            if (k3 == h || k3 == o || D3 && !p2) {
+              if (G2(t3)) return p2 ? t3 : {};
               if (M2 = (function(t4) {
                 return "function" != typeof t4.constructor || Ft(t4) ? {} : Wt(e4 = st(t4)) ? at(e4) : {};
                 var e4;
-              })(D2 ? {} : t3), !e3) return (function(t4, e4) {
+              })(D3 ? {} : t3), !e3) return (function(t4, e4) {
                 return kt(t4, Bt(t4), e4);
               })(t3, (function(t4, e4) {
                 return t4 && kt(e4, Xt(e4), t4);
               })(M2, t3));
             } else {
-              if (!R[k2]) return p2 ? t3 : {};
+              if (!R2[k3]) return p2 ? t3 : {};
               M2 = (function(t4, e4, n4, r4) {
                 var i3, o2 = t4.constructor;
                 switch (e4) {
@@ -346,45 +346,45 @@ var require_quill_cursors = __commonJS({
                       var n5 = e5 ? Rt(t5.buffer) : t5.buffer;
                       return new t5.constructor(n5, t5.byteOffset, t5.byteLength);
                     })(t4, r4);
-                  case C:
-                  case E:
-                  case A:
-                  case O:
-                  case w:
-                  case S:
-                  case j:
+                  case C2:
+                  case E2:
+                  case A2:
+                  case O2:
+                  case w2:
+                  case S2:
+                  case j2:
                   case x:
-                  case L:
+                  case L2:
                     return (function(t5, e5) {
                       var n5 = e5 ? Rt(t5.buffer) : t5.buffer;
                       return new t5.constructor(n5, t5.byteOffset, t5.length);
                     })(t4, r4);
                   case l:
                     return (function(t5, e5, n5) {
-                      return U(e5 ? n5(H(t5), true) : H(t5), F, new t5.constructor());
+                      return U2(e5 ? n5(H2(t5), true) : H2(t5), F2, new t5.constructor());
                     })(t4, r4, n4);
                   case f:
-                  case v:
+                  case v2:
                     return new o2(t4);
                   case d:
                     return (function(t5) {
-                      var e5 = new t5.constructor(t5.source, T.exec(t5));
+                      var e5 = new t5.constructor(t5.source, T2.exec(t5));
                       return e5.lastIndex = t5.lastIndex, e5;
                     })(t4);
                   case g:
                     return (function(t5, e5, n5) {
-                      return U(e5 ? n5(V(t5), true) : V(t5), z, new t5.constructor());
+                      return U2(e5 ? n5(V2(t5), true) : V2(t5), z, new t5.constructor());
                     })(t4, r4, n4);
-                  case _:
+                  case _2:
                     return i3 = t4, wt ? Object(wt.call(i3)) : {};
                 }
-              })(t3, k2, Nt, e3);
+              })(t3, k3, Nt, e3);
             }
           }
           y2 || (y2 = new Lt());
-          var q2 = y2.get(t3);
-          if (q2) return q2;
-          if (y2.set(t3, M2), !N2) var B2 = n3 ? (function(t4) {
+          var q3 = y2.get(t3);
+          if (q3) return q3;
+          if (y2.set(t3, M2), !N3) var B2 = n3 ? (function(t4) {
             return (function(t5, e4, n4) {
               var r4 = e4(t5);
               return Gt(t5) ? r4 : (function(t6, e5) {
@@ -420,7 +420,7 @@ var require_quill_cursors = __commonJS({
             return null == t4 ? void 0 : t4[e4];
           })(t3, e3);
           return (function(t4) {
-            return !(!Wt(t4) || (e4 = t4, K && K in e4)) && (Vt(t4) || G(t4) ? nt : M).test(zt(t4));
+            return !(!Wt(t4) || (e4 = t4, K2 && K2 in e4)) && (Vt(t4) || G2(t4) ? nt2 : M).test(zt(t4));
             var e4;
           })(n3) ? n3 : void 0;
         }
@@ -434,10 +434,10 @@ var require_quill_cursors = __commonJS({
             var n3 = e3[t3];
             return n3 === r2 ? void 0 : n3;
           }
-          return tt.call(e3, t3) ? e3[t3] : void 0;
+          return tt2.call(e3, t3) ? e3[t3] : void 0;
         }, St.prototype.has = function(t3) {
           var e3 = this.__data__;
-          return yt ? void 0 !== e3[t3] : tt.call(e3, t3);
+          return yt ? void 0 !== e3[t3] : tt2.call(e3, t3);
         }, St.prototype.set = function(t3, e3) {
           return this.__data__[t3] = yt && void 0 === e3 ? r2 : e3, this;
         }, jt.prototype.clear = function() {
@@ -480,22 +480,22 @@ var require_quill_cursors = __commonJS({
           }
           return n3.set(t3, e3), this;
         };
-        var Bt = lt ? $2(lt, Object) : function() {
+        var Bt = lt ? $3(lt, Object) : function() {
           return [];
         }, It = function(t3) {
           return et.call(t3);
         };
         function Pt(t3, e3) {
-          return !!(e3 = null == e3 ? i : e3) && ("number" == typeof t3 || N.test(t3)) && t3 > -1 && t3 % 1 == 0 && t3 < e3;
+          return !!(e3 = null == e3 ? i : e3) && ("number" == typeof t3 || N2.test(t3)) && t3 > -1 && t3 % 1 == 0 && t3 < e3;
         }
         function Ft(t3) {
           var e3 = t3 && t3.constructor;
-          return t3 === ("function" == typeof e3 && e3.prototype || Z);
+          return t3 === ("function" == typeof e3 && e3.prototype || Z2);
         }
         function zt(t3) {
           if (null != t3) {
             try {
-              return J.call(t3);
+              return J2.call(t3);
             } catch (t4) {
             }
             try {
@@ -548,17 +548,17 @@ var require_quill_cursors = __commonJS({
                 return /* @__PURE__ */ (function(t7) {
                   return !!t7 && "object" == typeof t7;
                 })(t6) && Ht(t6);
-              })(t5) && tt.call(t5, "callee") && (!ut.call(t5, "callee") || et.call(t5) == o);
+              })(t5) && tt2.call(t5, "callee") && (!ut.call(t5, "callee") || et.call(t5) == o);
             })(t4) ? (function(t5, e4) {
               for (var n4 = -1, r4 = Array(t5); ++n4 < t5; ) r4[n4] = e4(n4);
               return r4;
             })(t4.length, String) : [], r3 = n3.length, i2 = !!r3;
-            for (var s2 in t4) !e3 && !tt.call(t4, s2) || i2 && ("length" == s2 || Pt(s2, r3)) || n3.push(s2);
+            for (var s2 in t4) !e3 && !tt2.call(t4, s2) || i2 && ("length" == s2 || Pt(s2, r3)) || n3.push(s2);
             return n3;
           })(t3) : (function(t4) {
             if (!Ft(t4)) return ht(t4);
             var e3 = [];
-            for (var n3 in Object(t4)) tt.call(t4, n3) && "constructor" != n3 && e3.push(n3);
+            for (var n3 in Object(t4)) tt2.call(t4, n3) && "constructor" != n3 && e3.push(n3);
             return e3;
           })(t3);
         }
@@ -567,33 +567,33 @@ var require_quill_cursors = __commonJS({
         };
       }, 307: (t2, e2, n2) => {
         t2 = n2.nmd(t2);
-        var r2 = "__lodash_hash_undefined__", i = 9007199254740991, o = "[object Arguments]", s = "[object Array]", a = "[object Boolean]", u = "[object Date]", c = "[object Error]", l = "[object Function]", f = "[object Map]", h = "[object Number]", p = "[object Object]", d = "[object Promise]", g = "[object RegExp]", v = "[object Set]", _ = "[object String]", y = "[object WeakMap]", b = "[object ArrayBuffer]", m = "[object DataView]", C = /^\[object .+?Constructor\]$/, E = /^(?:0|[1-9]\d*)$/, A = {};
-        A["[object Float32Array]"] = A["[object Float64Array]"] = A["[object Int8Array]"] = A["[object Int16Array]"] = A["[object Int32Array]"] = A["[object Uint8Array]"] = A["[object Uint8ClampedArray]"] = A["[object Uint16Array]"] = A["[object Uint32Array]"] = true, A[o] = A[s] = A[b] = A[a] = A[m] = A[u] = A[c] = A[l] = A[f] = A[h] = A[p] = A[g] = A[v] = A[_] = A[y] = false;
-        var O = "object" == typeof n2.g && n2.g && n2.g.Object === Object && n2.g, w = "object" == typeof self && self && self.Object === Object && self, S = O || w || Function("return this")(), j = e2 && !e2.nodeType && e2, x = j && t2 && !t2.nodeType && t2, L = x && x.exports === j, T = L && O.process, M = (function() {
+        var r2 = "__lodash_hash_undefined__", i = 9007199254740991, o = "[object Arguments]", s = "[object Array]", a = "[object Boolean]", u = "[object Date]", c = "[object Error]", l = "[object Function]", f = "[object Map]", h = "[object Number]", p = "[object Object]", d = "[object Promise]", g = "[object RegExp]", v2 = "[object Set]", _2 = "[object String]", y = "[object WeakMap]", b = "[object ArrayBuffer]", m = "[object DataView]", C2 = /^\[object .+?Constructor\]$/, E2 = /^(?:0|[1-9]\d*)$/, A2 = {};
+        A2["[object Float32Array]"] = A2["[object Float64Array]"] = A2["[object Int8Array]"] = A2["[object Int16Array]"] = A2["[object Int32Array]"] = A2["[object Uint8Array]"] = A2["[object Uint8ClampedArray]"] = A2["[object Uint16Array]"] = A2["[object Uint32Array]"] = true, A2[o] = A2[s] = A2[b] = A2[a] = A2[m] = A2[u] = A2[c] = A2[l] = A2[f] = A2[h] = A2[p] = A2[g] = A2[v2] = A2[_2] = A2[y] = false;
+        var O2 = "object" == typeof n2.g && n2.g && n2.g.Object === Object && n2.g, w2 = "object" == typeof self && self && self.Object === Object && self, S2 = O2 || w2 || Function("return this")(), j2 = e2 && !e2.nodeType && e2, x = j2 && t2 && !t2.nodeType && t2, L2 = x && x.exports === j2, T2 = L2 && O2.process, M = (function() {
           try {
-            return T && T.binding && T.binding("util");
+            return T2 && T2.binding && T2.binding("util");
           } catch (t3) {
           }
-        })(), N = M && M.isTypedArray;
-        function R(t3, e3) {
+        })(), N2 = M && M.isTypedArray;
+        function R2(t3, e3) {
           for (var n3 = -1, r3 = null == t3 ? 0 : t3.length; ++n3 < r3; ) if (e3(t3[n3], n3, t3)) return true;
           return false;
         }
-        function k(t3) {
+        function k2(t3) {
           var e3 = -1, n3 = Array(t3.size);
           return t3.forEach((function(t4, r3) {
             n3[++e3] = [r3, t4];
           })), n3;
         }
-        function D(t3) {
+        function D2(t3) {
           var e3 = -1, n3 = Array(t3.size);
           return t3.forEach((function(t4) {
             n3[++e3] = t4;
           })), n3;
         }
-        var q, B, I, P = Array.prototype, F = Function.prototype, z = Object.prototype, U = S["__core-js_shared__"], G = F.toString, H = z.hasOwnProperty, $2 = (q = /[^.]+$/.exec(U && U.keys && U.keys.IE_PROTO || "")) ? "Symbol(src)_1." + q : "", V = z.toString, W = RegExp("^" + G.call(H).replace(/[\\^$.*+?()[\]{}|]/g, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"), X = L ? S.Buffer : void 0, Q = S.Symbol, Z = S.Uint8Array, Y = z.propertyIsEnumerable, K = P.splice, J = Q ? Q.toStringTag : void 0, tt = Object.getOwnPropertySymbols, et = X ? X.isBuffer : void 0, nt = (B = Object.keys, I = Object, function(t3) {
-          return B(I(t3));
-        }), rt = xt(S, "DataView"), it = xt(S, "Map"), ot = xt(S, "Promise"), st = xt(S, "Set"), at = xt(S, "WeakMap"), ut = xt(Object, "create"), ct = Nt(rt), lt = Nt(it), ft = Nt(ot), ht = Nt(st), pt = Nt(at), dt = Q ? Q.prototype : void 0, gt = dt ? dt.valueOf : void 0;
+        var q2, B, I2, P2 = Array.prototype, F2 = Function.prototype, z = Object.prototype, U2 = S2["__core-js_shared__"], G2 = F2.toString, H2 = z.hasOwnProperty, $3 = (q2 = /[^.]+$/.exec(U2 && U2.keys && U2.keys.IE_PROTO || "")) ? "Symbol(src)_1." + q2 : "", V2 = z.toString, W2 = RegExp("^" + G2.call(H2).replace(/[\\^$.*+?()[\]{}|]/g, "\\$&").replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, "$1.*?") + "$"), X2 = L2 ? S2.Buffer : void 0, Q2 = S2.Symbol, Z2 = S2.Uint8Array, Y2 = z.propertyIsEnumerable, K2 = P2.splice, J2 = Q2 ? Q2.toStringTag : void 0, tt2 = Object.getOwnPropertySymbols, et = X2 ? X2.isBuffer : void 0, nt2 = (B = Object.keys, I2 = Object, function(t3) {
+          return B(I2(t3));
+        }), rt = xt(S2, "DataView"), it = xt(S2, "Map"), ot = xt(S2, "Promise"), st = xt(S2, "Set"), at = xt(S2, "WeakMap"), ut = xt(Object, "create"), ct = Nt(rt), lt = Nt(it), ft = Nt(ot), ht = Nt(st), pt = Nt(at), dt = Q2 ? Q2.prototype : void 0, gt = dt ? dt.valueOf : void 0;
         function vt(t3) {
           var e3 = -1, n3 = null == t3 ? 0 : t3.length;
           for (this.clear(); ++e3 < n3; ) {
@@ -628,17 +628,17 @@ var require_quill_cursors = __commonJS({
           return -1;
         }
         function Et(t3) {
-          return null == t3 ? void 0 === t3 ? "[object Undefined]" : "[object Null]" : J && J in Object(t3) ? (function(t4) {
-            var e3 = H.call(t4, J), n3 = t4[J];
+          return null == t3 ? void 0 === t3 ? "[object Undefined]" : "[object Null]" : J2 && J2 in Object(t3) ? (function(t4) {
+            var e3 = H2.call(t4, J2), n3 = t4[J2];
             try {
-              t4[J] = void 0;
+              t4[J2] = void 0;
               var r3 = true;
             } catch (t5) {
             }
-            var i2 = V.call(t4);
-            return r3 && (e3 ? t4[J] = n3 : delete t4[J]), i2;
+            var i2 = V2.call(t4);
+            return r3 && (e3 ? t4[J2] = n3 : delete t4[J2]), i2;
           })(t3) : (function(t4) {
-            return V.call(t4);
+            return V2.call(t4);
           })(t3);
         }
         function At(t3) {
@@ -646,18 +646,18 @@ var require_quill_cursors = __commonJS({
         }
         function Ot(t3, e3, n3, r3, i2) {
           return t3 === e3 || (null == t3 || null == e3 || !Ft(t3) && !Ft(e3) ? t3 != t3 && e3 != e3 : (function(t4, e4, n4, r4, i3, l2) {
-            var d2 = Dt(t4), y2 = Dt(e4), C2 = d2 ? s : Tt(t4), E2 = y2 ? s : Tt(e4), A2 = (C2 = C2 == o ? p : C2) == p, O2 = (E2 = E2 == o ? p : E2) == p, w2 = C2 == E2;
-            if (w2 && qt(t4)) {
+            var d2 = Dt(t4), y2 = Dt(e4), C3 = d2 ? s : Tt(t4), E3 = y2 ? s : Tt(e4), A3 = (C3 = C3 == o ? p : C3) == p, O3 = (E3 = E3 == o ? p : E3) == p, w3 = C3 == E3;
+            if (w3 && qt(t4)) {
               if (!qt(e4)) return false;
-              d2 = true, A2 = false;
+              d2 = true, A3 = false;
             }
-            if (w2 && !A2) return l2 || (l2 = new mt()), d2 || zt(t4) ? wt(t4, e4, n4, r4, i3, l2) : (function(t5, e5, n5, r5, i4, o2, s2) {
+            if (w3 && !A3) return l2 || (l2 = new mt()), d2 || zt(t4) ? wt(t4, e4, n4, r4, i3, l2) : (function(t5, e5, n5, r5, i4, o2, s2) {
               switch (n5) {
                 case m:
                   if (t5.byteLength != e5.byteLength || t5.byteOffset != e5.byteOffset) return false;
                   t5 = t5.buffer, e5 = e5.buffer;
                 case b:
-                  return !(t5.byteLength != e5.byteLength || !o2(new Z(t5), new Z(e5)));
+                  return !(t5.byteLength != e5.byteLength || !o2(new Z2(t5), new Z2(e5)));
                 case a:
                 case u:
                 case h:
@@ -665,13 +665,13 @@ var require_quill_cursors = __commonJS({
                 case c:
                   return t5.name == e5.name && t5.message == e5.message;
                 case g:
-                case _:
+                case _2:
                   return t5 == e5 + "";
                 case f:
-                  var l3 = k;
-                case v:
+                  var l3 = k2;
+                case v2:
                   var p2 = 1 & r5;
-                  if (l3 || (l3 = D), t5.size != e5.size && !p2) return false;
+                  if (l3 || (l3 = D2), t5.size != e5.size && !p2) return false;
                   var d3 = s2.get(t5);
                   if (d3) return d3 == e5;
                   r5 |= 2, s2.set(t5, e5);
@@ -681,20 +681,20 @@ var require_quill_cursors = __commonJS({
                   if (gt) return gt.call(t5) == gt.call(e5);
               }
               return false;
-            })(t4, e4, C2, n4, r4, i3, l2);
+            })(t4, e4, C3, n4, r4, i3, l2);
             if (!(1 & n4)) {
-              var S2 = A2 && H.call(t4, "__wrapped__"), j2 = O2 && H.call(e4, "__wrapped__");
-              if (S2 || j2) {
-                var x2 = S2 ? t4.value() : t4, L2 = j2 ? e4.value() : e4;
-                return l2 || (l2 = new mt()), i3(x2, L2, n4, r4, l2);
+              var S3 = A3 && H2.call(t4, "__wrapped__"), j3 = O3 && H2.call(e4, "__wrapped__");
+              if (S3 || j3) {
+                var x2 = S3 ? t4.value() : t4, L3 = j3 ? e4.value() : e4;
+                return l2 || (l2 = new mt()), i3(x2, L3, n4, r4, l2);
               }
             }
-            return !!w2 && (l2 || (l2 = new mt()), (function(t5, e5, n5, r5, i4, o2) {
+            return !!w3 && (l2 || (l2 = new mt()), (function(t5, e5, n5, r5, i4, o2) {
               var s2 = 1 & n5, a2 = St(t5), u2 = a2.length;
               if (u2 != St(e5).length && !s2) return false;
               for (var c2 = u2; c2--; ) {
                 var l3 = a2[c2];
-                if (!(s2 ? l3 in e5 : H.call(e5, l3))) return false;
+                if (!(s2 ? l3 in e5 : H2.call(e5, l3))) return false;
               }
               var f2 = o2.get(t5);
               if (f2 && o2.get(e5)) return f2 == e5;
@@ -702,16 +702,16 @@ var require_quill_cursors = __commonJS({
               o2.set(t5, e5), o2.set(e5, t5);
               for (var p2 = s2; ++c2 < u2; ) {
                 var d3 = t5[l3 = a2[c2]], g2 = e5[l3];
-                if (r5) var v2 = s2 ? r5(g2, d3, l3, e5, t5, o2) : r5(d3, g2, l3, t5, e5, o2);
-                if (!(void 0 === v2 ? d3 === g2 || i4(d3, g2, n5, r5, o2) : v2)) {
+                if (r5) var v3 = s2 ? r5(g2, d3, l3, e5, t5, o2) : r5(d3, g2, l3, t5, e5, o2);
+                if (!(void 0 === v3 ? d3 === g2 || i4(d3, g2, n5, r5, o2) : v3)) {
                   h2 = false;
                   break;
                 }
                 p2 || (p2 = "constructor" == l3);
               }
               if (h2 && !p2) {
-                var _2 = t5.constructor, y3 = e5.constructor;
-                _2 == y3 || !("constructor" in t5) || !("constructor" in e5) || "function" == typeof _2 && _2 instanceof _2 && "function" == typeof y3 && y3 instanceof y3 || (h2 = false);
+                var _3 = t5.constructor, y3 = e5.constructor;
+                _3 == y3 || !("constructor" in t5) || !("constructor" in e5) || "function" == typeof _3 && _3 instanceof _3 && "function" == typeof y3 && y3 instanceof y3 || (h2 = false);
               }
               return o2.delete(t5), o2.delete(e5), h2;
             })(t4, e4, n4, r4, i3, l2));
@@ -732,7 +732,7 @@ var require_quill_cursors = __commonJS({
               break;
             }
             if (h2) {
-              if (!R(e3, (function(t4, e4) {
+              if (!R2(e3, (function(t4, e4) {
                 if (s3 = e4, !h2.has(s3) && (p2 === t4 || i2(p2, t4, n3, r3, o2))) return h2.push(e4);
                 var s3;
               }))) {
@@ -765,8 +765,8 @@ var require_quill_cursors = __commonJS({
           })(t3, e3);
           return (function(t4) {
             return !(!Pt(t4) || (function(t5) {
-              return !!$2 && $2 in t5;
-            })(t4)) && (Bt(t4) ? W : C).test(Nt(t4));
+              return !!$3 && $3 in t5;
+            })(t4)) && (Bt(t4) ? W2 : C2).test(Nt(t4));
           })(n3) ? n3 : void 0;
         }
         vt.prototype.clear = function() {
@@ -780,10 +780,10 @@ var require_quill_cursors = __commonJS({
             var n3 = e3[t3];
             return n3 === r2 ? void 0 : n3;
           }
-          return H.call(e3, t3) ? e3[t3] : void 0;
+          return H2.call(e3, t3) ? e3[t3] : void 0;
         }, vt.prototype.has = function(t3) {
           var e3 = this.__data__;
-          return ut ? void 0 !== e3[t3] : H.call(e3, t3);
+          return ut ? void 0 !== e3[t3] : H2.call(e3, t3);
         }, vt.prototype.set = function(t3, e3) {
           var n3 = this.__data__;
           return this.size += this.has(t3) ? 0 : 1, n3[t3] = ut && void 0 === e3 ? r2 : e3, this;
@@ -791,7 +791,7 @@ var require_quill_cursors = __commonJS({
           this.__data__ = [], this.size = 0;
         }, _t2.prototype.delete = function(t3) {
           var e3 = this.__data__, n3 = Ct(e3, t3);
-          return !(n3 < 0 || (n3 == e3.length - 1 ? e3.pop() : K.call(e3, n3, 1), --this.size, 0));
+          return !(n3 < 0 || (n3 == e3.length - 1 ? e3.pop() : K2.call(e3, n3, 1), --this.size, 0));
         }, _t2.prototype.get = function(t3) {
           var e3 = this.__data__, n3 = Ct(e3, t3);
           return n3 < 0 ? void 0 : e3[n3][1];
@@ -834,25 +834,25 @@ var require_quill_cursors = __commonJS({
           }
           return n3.set(t3, e3), this.size = n3.size, this;
         };
-        var Lt = tt ? function(t3) {
+        var Lt = tt2 ? function(t3) {
           return null == t3 ? [] : (t3 = Object(t3), (function(e3, n3) {
             for (var r3 = -1, i2 = null == e3 ? 0 : e3.length, o2 = 0, s2 = []; ++r3 < i2; ) {
               var a2 = e3[r3];
-              u2 = a2, Y.call(t3, u2) && (s2[o2++] = a2);
+              u2 = a2, Y2.call(t3, u2) && (s2[o2++] = a2);
             }
             var u2;
             return s2;
-          })(tt(t3)));
+          })(tt2(t3)));
         } : function() {
           return [];
         }, Tt = Et;
         function Mt(t3, e3) {
-          return !!(e3 = null == e3 ? i : e3) && ("number" == typeof t3 || E.test(t3)) && t3 > -1 && t3 % 1 == 0 && t3 < e3;
+          return !!(e3 = null == e3 ? i : e3) && ("number" == typeof t3 || E2.test(t3)) && t3 > -1 && t3 % 1 == 0 && t3 < e3;
         }
         function Nt(t3) {
           if (null != t3) {
             try {
-              return G.call(t3);
+              return G2.call(t3);
             } catch (t4) {
             }
             try {
@@ -865,7 +865,7 @@ var require_quill_cursors = __commonJS({
         function Rt(t3, e3) {
           return t3 === e3 || t3 != t3 && e3 != e3;
         }
-        (rt && Tt(new rt(new ArrayBuffer(1))) != m || it && Tt(new it()) != f || ot && Tt(ot.resolve()) != d || st && Tt(new st()) != v || at && Tt(new at()) != y) && (Tt = function(t3) {
+        (rt && Tt(new rt(new ArrayBuffer(1))) != m || it && Tt(new it()) != f || ot && Tt(ot.resolve()) != d || st && Tt(new st()) != v2 || at && Tt(new at()) != y) && (Tt = function(t3) {
           var e3 = Et(t3), n3 = e3 == p ? t3.constructor : void 0, r3 = n3 ? Nt(n3) : "";
           if (r3) switch (r3) {
             case ct:
@@ -875,7 +875,7 @@ var require_quill_cursors = __commonJS({
             case ft:
               return d;
             case ht:
-              return v;
+              return v2;
             case pt:
               return y;
           }
@@ -884,7 +884,7 @@ var require_quill_cursors = __commonJS({
         var kt = At(/* @__PURE__ */ (function() {
           return arguments;
         })()) ? At : function(t3) {
-          return Ft(t3) && H.call(t3, "callee") && !Y.call(t3, "callee");
+          return Ft(t3) && H2.call(t3, "callee") && !Y2.call(t3, "callee");
         }, Dt = Array.isArray, qt = et || function() {
           return false;
         };
@@ -903,12 +903,12 @@ var require_quill_cursors = __commonJS({
         function Ft(t3) {
           return null != t3 && "object" == typeof t3;
         }
-        var zt = N ? /* @__PURE__ */ (function(t3) {
+        var zt = N2 ? /* @__PURE__ */ (function(t3) {
           return function(e3) {
             return t3(e3);
           };
-        })(N) : function(t3) {
-          return Ft(t3) && It(t3.length) && !!A[Et(t3)];
+        })(N2) : function(t3) {
+          return Ft(t3) && It(t3.length) && !!A2[Et(t3)];
         };
         function Ut(t3) {
           return null != (e3 = t3) && It(e3.length) && !Bt(e3) ? (function(t4, e4) {
@@ -916,12 +916,12 @@ var require_quill_cursors = __commonJS({
               for (var n4 = -1, r4 = Array(t5); ++n4 < t5; ) r4[n4] = e5(n4);
               return r4;
             })(t4.length, String) : [], u2 = a2.length;
-            for (var c2 in t4) !e4 && !H.call(t4, c2) || s2 && ("length" == c2 || i2 && ("offset" == c2 || "parent" == c2) || o2 && ("buffer" == c2 || "byteLength" == c2 || "byteOffset" == c2) || Mt(c2, u2)) || a2.push(c2);
+            for (var c2 in t4) !e4 && !H2.call(t4, c2) || s2 && ("length" == c2 || i2 && ("offset" == c2 || "parent" == c2) || o2 && ("buffer" == c2 || "byteLength" == c2 || "byteOffset" == c2) || Mt(c2, u2)) || a2.push(c2);
             return a2;
           })(t3) : (function(t4) {
-            if (n3 = (e4 = t4) && e4.constructor, e4 !== ("function" == typeof n3 && n3.prototype || z)) return nt(t4);
+            if (n3 = (e4 = t4) && e4.constructor, e4 !== ("function" == typeof n3 && n3.prototype || z)) return nt2(t4);
             var e4, n3, r3 = [];
-            for (var i2 in Object(t4)) H.call(t4, i2) && "constructor" != i2 && r3.push(i2);
+            for (var i2 in Object(t4)) H2.call(t4, i2) && "constructor" != i2 && r3.push(i2);
             return r3;
           })(t3);
           var e3;
@@ -1043,8 +1043,8 @@ var require_quill_cursors = __commonJS({
                 "number" == typeof h.retain ? d.retain = f : d.insert = h.insert;
                 var g = a.default.compose(h.attributes, p.attributes, "number" == typeof h.retain);
                 if (g && (d.attributes = g), l2.push(d), !r3.hasNext() && s.default(l2.ops[l2.ops.length - 1], d)) {
-                  var v = new t3(n3.rest());
-                  return l2.concat(v).chop();
+                  var v2 = new t3(n3.rest());
+                  return l2.concat(v2).chop();
                 }
               } else "number" == typeof p.delete && "number" == typeof h.retain && l2.push(p);
             }
@@ -1250,7 +1250,7 @@ var require_quill_cursors = __commonJS({
         }) ? r2.call(e2, n2, e2, t2) : r2) || (t2.exports = i);
       }, 33: (t2, e2, n2) => {
         "use strict";
-        n2.r(e2), n2.d(e2, { default: () => A });
+        n2.r(e2), n2.d(e2, { default: () => A2 });
         var r2 = (function() {
           if ("undefined" != typeof Map) return Map;
           function t3(t4, e3) {
@@ -1345,7 +1345,7 @@ var require_quill_cursors = __commonJS({
           return t3;
         }, f = function(t3) {
           return t3 && t3.ownerDocument && t3.ownerDocument.defaultView || o;
-        }, h = _(0, 0, 0, 0);
+        }, h = _2(0, 0, 0, 0);
         function p(t3) {
           return parseFloat(t3) || 0;
         }
@@ -1360,10 +1360,10 @@ var require_quill_cursors = __commonJS({
         } : function(t3) {
           return t3 instanceof f(t3).SVGElement && "function" == typeof t3.getBBox;
         };
-        function v(t3) {
+        function v2(t3) {
           return i ? g(t3) ? (function(t4) {
             var e3 = t4.getBBox();
-            return _(0, 0, e3.width, e3.height);
+            return _2(0, 0, e3.width, e3.height);
           })(t3) : (function(t4) {
             var e3 = t4.clientWidth, n3 = t4.clientHeight;
             if (!e3 && !n3) return h;
@@ -1380,18 +1380,18 @@ var require_quill_cursors = __commonJS({
               var c2 = Math.round(a2 + o2) - e3, l2 = Math.round(u2 + s2) - n3;
               1 !== Math.abs(c2) && (a2 -= c2), 1 !== Math.abs(l2) && (u2 -= l2);
             }
-            return _(i2.left, i2.top, a2, u2);
+            return _2(i2.left, i2.top, a2, u2);
           })(t3) : h;
         }
-        function _(t3, e3, n3, r3) {
+        function _2(t3, e3, n3, r3) {
           return { x: t3, y: e3, width: n3, height: r3 };
         }
         var y = (function() {
           function t3(t4) {
-            this.broadcastWidth = 0, this.broadcastHeight = 0, this.contentRect_ = _(0, 0, 0, 0), this.target = t4;
+            this.broadcastWidth = 0, this.broadcastHeight = 0, this.contentRect_ = _2(0, 0, 0, 0), this.target = t4;
           }
           return t3.prototype.isActive = function() {
-            var t4 = v(this.target);
+            var t4 = v2(this.target);
             return this.contentRect_ = t4, t4.width !== this.broadcastWidth || t4.height !== this.broadcastHeight;
           }, t3.prototype.broadcastRect = function() {
             var t4 = this.contentRect_;
@@ -1438,25 +1438,25 @@ var require_quill_cursors = __commonJS({
           }, t3.prototype.hasActive = function() {
             return this.activeObservations_.length > 0;
           }, t3;
-        })(), C = "undefined" != typeof WeakMap ? /* @__PURE__ */ new WeakMap() : new r2(), E = function t3(e3) {
+        })(), C2 = "undefined" != typeof WeakMap ? /* @__PURE__ */ new WeakMap() : new r2(), E2 = function t3(e3) {
           if (!(this instanceof t3)) throw new TypeError("Cannot call a class as a function.");
           if (!arguments.length) throw new TypeError("1 argument required, but only 0 present.");
           var n3 = c.getInstance(), r3 = new m(e3, n3, this);
-          C.set(this, r3);
+          C2.set(this, r3);
         };
         ["observe", "unobserve", "disconnect"].forEach((function(t3) {
-          E.prototype[t3] = function() {
+          E2.prototype[t3] = function() {
             var e3;
-            return (e3 = C.get(this))[t3].apply(e3, arguments);
+            return (e3 = C2.get(this))[t3].apply(e3, arguments);
           };
         }));
-        const A = void 0 !== o.ResizeObserver ? o.ResizeObserver : E;
+        const A2 = void 0 !== o.ResizeObserver ? o.ResizeObserver : E2;
       }, 413: (t2, e2, n2) => {
         "use strict";
-        n2.r(e2), n2.d(e2, { default: () => _ });
-        var r2 = n2(379), i = n2.n(r2), o = n2(795), s = n2.n(o), a = n2(569), u = n2.n(a), c = n2(565), l = n2.n(c), f = n2(216), h = n2.n(f), p = n2(589), d = n2.n(p), g = n2(582), v = {};
-        v.styleTagTransform = d(), v.setAttributes = l(), v.insert = u().bind(null, "head"), v.domAPI = s(), v.insertStyleElement = h(), i()(g.Z, v);
-        const _ = g.Z && g.Z.locals ? g.Z.locals : void 0;
+        n2.r(e2), n2.d(e2, { default: () => _2 });
+        var r2 = n2(379), i = n2.n(r2), o = n2(795), s = n2.n(o), a = n2(569), u = n2.n(a), c = n2(565), l = n2.n(c), f = n2(216), h = n2.n(f), p = n2(589), d = n2.n(p), g = n2(582), v2 = {};
+        v2.styleTagTransform = d(), v2.setAttributes = l(), v2.insert = u().bind(null, "head"), v2.domAPI = s(), v2.insertStyleElement = h(), i()(g.Z, v2);
+        const _2 = g.Z && g.Z.locals ? g.Z.locals : void 0;
       }, 379: (t2) => {
         "use strict";
         var e2 = [];
@@ -1833,8 +1833,8 @@ var require_quill_cursors = __commonJS({
 var create = () => /* @__PURE__ */ new Map();
 var copy = (m) => {
   const r = create();
-  m.forEach((v, k) => {
-    r.set(k, v);
+  m.forEach((v2, k2) => {
+    r.set(k2, v2);
   });
   return r;
 };
@@ -2024,7 +2024,7 @@ var floor = Math.floor;
 var abs = Math.abs;
 var min = (a, b) => a < b ? a : b;
 var max = (a, b) => a > b ? a : b;
-var isNaN = Number.isNaN;
+var isNaN2 = Number.isNaN;
 var pow = Math.pow;
 var isNegativeZero = (n) => n !== 0 ? n < 0 : 1 / n < 0;
 
@@ -2075,7 +2075,7 @@ var MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER;
 var MIN_SAFE_INTEGER = Number.MIN_SAFE_INTEGER;
 var LOWEST_INT32 = 1 << 31;
 var isInteger = Number.isInteger || ((num) => typeof num === "number" && isFinite(num) && floor(num) === num);
-var isNaN2 = Number.isNaN;
+var isNaN3 = Number.isNaN;
 var parseInt2 = Number.parseInt;
 
 // node_modules/lib0/string.js
@@ -2300,16 +2300,16 @@ var RleEncoder = class extends Encoder {
   /**
    * @param {T} v
    */
-  write(v) {
-    if (this.s === v) {
+  write(v2) {
+    if (this.s === v2) {
       this.count++;
     } else {
       if (this.count > 0) {
         writeVarUint(this, this.count - 1);
       }
       this.count = 1;
-      this.w(this, v);
-      this.s = v;
+      this.w(this, v2);
+      this.s = v2;
     }
   }
 };
@@ -2330,13 +2330,13 @@ var UintOptRleEncoder = class {
   /**
    * @param {number} v
    */
-  write(v) {
-    if (this.s === v) {
+  write(v2) {
+    if (this.s === v2) {
       this.count++;
     } else {
       flushUintOptRleEncoder(this);
       this.count = 1;
-      this.s = v;
+      this.s = v2;
     }
   }
   /**
@@ -2368,15 +2368,15 @@ var IntDiffOptRleEncoder = class {
   /**
    * @param {number} v
    */
-  write(v) {
-    if (this.diff === v - this.s) {
-      this.s = v;
+  write(v2) {
+    if (this.diff === v2 - this.s) {
+      this.s = v2;
       this.count++;
     } else {
       flushIntDiffOptRleEncoder(this);
       this.count = 1;
-      this.diff = v - this.s;
-      this.s = v;
+      this.diff = v2 - this.s;
+      this.s = v2;
     }
   }
   /**
@@ -2692,7 +2692,7 @@ var create4 = (f) => (
 var all = Promise.all.bind(Promise);
 
 // node_modules/lib0/conditions.js
-var undefinedToNull = (v) => v === void 0 ? null : v;
+var undefinedToNull = (v2) => v2 === void 0 ? null : v2;
 
 // node_modules/lib0/storage.js
 var VarStoragePolyfill = class {
@@ -3230,7 +3230,7 @@ var _schemaStringTemplateToRegex = (s) => {
   if ($$literal.check(s)) {
     return (
       /** @type {Array<string|number>} */
-      s.shape.map((v) => v + "")
+      s.shape.map((v2) => v2 + "")
     );
   }
   if ($$number.check(s)) {
@@ -3399,9 +3399,9 @@ var $Array = class extends Schema {
   /**
    * @param {Array<S>} v
    */
-  constructor(v) {
+  constructor(v2) {
     super();
-    this.shape = v.length === 1 ? v[0] : new $Union(v);
+    this.shape = v2.length === 1 ? v2[0] : new $Union(v2);
   }
   /**
    * @param {any} o
@@ -3468,9 +3468,9 @@ var $Intersection = class extends Schema {
   /**
    * @param {T} v
    */
-  constructor(v) {
+  constructor(v2) {
     super();
-    this.shape = v;
+    this.shape = v2;
   }
   /**
    * @param {any} o
@@ -3489,9 +3489,9 @@ var $Union = class extends Schema {
   /**
    * @param {Array<Schema<S>>} v
    */
-  constructor(v) {
+  constructor(v2) {
     super();
-    this.shape = v;
+    this.shape = v2;
   }
   /**
    * @param {any} o
@@ -3579,8 +3579,8 @@ var $ = (o) => {
     );
   } else if ($objectAny.check(o)) {
     const o2 = {};
-    for (const k in o) {
-      o2[k] = $(o[k]);
+    for (const k2 in o) {
+      o2[k2] = $(o[k2]);
     }
     return (
       /** @type {any} */
@@ -3672,15 +3672,15 @@ var _random = (
     $any
   ).if($$number, (_o, gen) => int53(gen, MIN_SAFE_INTEGER, MAX_SAFE_INTEGER)).if($$string, (_o, gen) => word(gen)).if($$boolean, (_o, gen) => bool(gen)).if($$bigint, (_o, gen) => BigInt(int53(gen, MIN_SAFE_INTEGER, MAX_SAFE_INTEGER))).if($$union, (o, gen) => random(gen, oneOf(gen, o.shape))).if($$object, (o, gen) => {
     const res = {};
-    for (const k in o.shape) {
-      let prop = o.shape[k];
+    for (const k2 in o.shape) {
+      let prop = o.shape[k2];
       if ($$optional.check(prop)) {
         if (bool(gen)) {
           continue;
         }
         prop = prop.shape;
       }
-      res[k] = _random(prop, gen);
+      res[k2] = _random(prop, gen);
     }
     return res;
   }).if($$array, (o, gen) => {
@@ -3815,18 +3815,18 @@ var computeBrowserLoggingArgs = (args2) => {
   let i = 0;
   for (; i < args2.length; i++) {
     const arg = args2[i];
-    const style = _browserStyleMap[arg];
-    if (style !== void 0) {
-      currentStyle.set(style.left, style.right);
+    const style10 = _browserStyleMap[arg];
+    if (style10 !== void 0) {
+      currentStyle.set(style10.left, style10.right);
     } else {
       if (arg === void 0) {
         break;
       }
       if (arg.constructor === String || arg.constructor === Number) {
-        const style2 = mapToStyleString(currentStyle);
-        if (i > 0 || style2.length > 0) {
+        const style11 = mapToStyleString(currentStyle);
+        if (i > 0 || style11.length > 0) {
           strBuilder.push("%c" + arg);
-          styles.push(style2);
+          styles.push(style11);
         } else {
           strBuilder.push(arg);
         }
@@ -3936,20 +3936,20 @@ var isDeleted = (ds, id2) => {
 var sortAndMergeDeleteSet = (ds) => {
   ds.clients.forEach((dels) => {
     dels.sort((a, b) => a.clock - b.clock);
-    let i, j;
-    for (i = 1, j = 1; i < dels.length; i++) {
-      const left = dels[j - 1];
+    let i, j2;
+    for (i = 1, j2 = 1; i < dels.length; i++) {
+      const left = dels[j2 - 1];
       const right = dels[i];
       if (left.clock + left.len >= right.clock) {
-        dels[j - 1] = new DeleteItem(left.clock, max(left.len, right.clock + right.len - left.clock));
+        dels[j2 - 1] = new DeleteItem(left.clock, max(left.len, right.clock + right.len - left.clock));
       } else {
-        if (j < i) {
-          dels[j] = right;
+        if (j2 < i) {
+          dels[j2] = right;
         }
-        j++;
+        j2++;
       }
     }
-    dels.length = j;
+    dels.length = j2;
   });
 };
 var mergeDeleteSets = (dss) => {
@@ -6760,12 +6760,12 @@ var typeMapHas = (parent, key) => {
 var typeMapGetAllSnapshot = (parent, snapshot) => {
   const res = {};
   parent._map.forEach((value, key) => {
-    let v = value;
-    while (v !== null && (!snapshot.sv.has(v.id.client) || v.id.clock >= (snapshot.sv.get(v.id.client) || 0))) {
-      v = v.left;
+    let v2 = value;
+    while (v2 !== null && (!snapshot.sv.has(v2.id.client) || v2.id.clock >= (snapshot.sv.get(v2.id.client) || 0))) {
+      v2 = v2.left;
     }
-    if (v !== null && isVisible(v, snapshot)) {
-      res[key] = v.content.getContent()[v.length - 1];
+    if (v2 !== null && isVisible(v2, snapshot)) {
+      res[key] = v2.content.getContent()[v2.length - 1];
     }
   });
   return res;
@@ -7086,8 +7086,8 @@ var YMap = class _YMap extends AbstractType {
     const map3 = {};
     this._map.forEach((item, key) => {
       if (!item.deleted) {
-        const v = item.content.getContent()[item.length - 1];
-        map3[key] = v instanceof AbstractType ? v.toJSON() : v;
+        const v2 = item.content.getContent()[item.length - 1];
+        map3[key] = v2 instanceof AbstractType ? v2.toJSON() : v2;
       }
     });
     return map3;
@@ -7109,7 +7109,7 @@ var YMap = class _YMap extends AbstractType {
     return iteratorMap(
       createMapIterator(this),
       /** @param {any} v */
-      (v) => v[0]
+      (v2) => v2[0]
     );
   }
   /**
@@ -7121,7 +7121,7 @@ var YMap = class _YMap extends AbstractType {
     return iteratorMap(
       createMapIterator(this),
       /** @param {any} v */
-      (v) => v[1].content.getContent()[v[1].length - 1]
+      (v2) => v2[1].content.getContent()[v2[1].length - 1]
     );
   }
   /**
@@ -7133,9 +7133,9 @@ var YMap = class _YMap extends AbstractType {
     return iteratorMap(
       createMapIterator(this),
       /** @param {any} v */
-      (v) => (
+      (v2) => (
         /** @type {any} */
-        [v[0], v[1].content.getContent()[v[1].length - 1]]
+        [v2[0], v2[1].content.getContent()[v2[1].length - 1]]
       )
     );
   }
@@ -8137,8 +8137,8 @@ var YText = class _YText extends AbstractType {
         const pos = findPosition(transaction, this, index, !attributes);
         if (!attributes) {
           attributes = {};
-          pos.currentAttributes.forEach((v, k) => {
-            attributes[k] = v;
+          pos.currentAttributes.forEach((v2, k2) => {
+            attributes[k2] = v2;
           });
         }
         insertText(transaction, this, pos, text2, attributes);
@@ -8709,7 +8709,7 @@ var YXmlElement = class _YXmlElement extends YXmlFragment {
         value
       );
     });
-    el.insert(0, this.toArray().map((v) => v instanceof AbstractType ? v.clone() : v));
+    el.insert(0, this.toArray().map((v2) => v2 instanceof AbstractType ? v2.clone() : v2));
     return el;
   }
   /**
@@ -9032,8 +9032,8 @@ var YXmlText = class _YXmlText extends YText {
       for (let i = 0; i < nestedNodes.length; i++) {
         const node = nestedNodes[i];
         str += `<${node.nodeName}`;
-        for (let j = 0; j < node.attrs.length; j++) {
-          const attr = node.attrs[j];
+        for (let j2 = 0; j2 < node.attrs.length; j2++) {
+          const attr = node.attrs[j2];
           str += ` ${attr.key}="${attr.value}"`;
         }
         str += ">";
@@ -11267,8 +11267,5874 @@ var QuillBinding = class {
 
 // src/editor.js
 var import_quill_cursors = __toESM(require_quill_cursors());
+
+// node_modules/@enzedonline/quill-blot-formatter2/dist/index.esm.js
+var v = class {
+  formatter;
+  toolbarButtons = [];
+  debug;
+  constructor(t) {
+    this.formatter = t, this.debug = this.formatter.options.debug || false, this.debug && console.debug("Action created:", this.constructor.name);
+  }
+  /**
+   * Called when the action is created.
+   * Override this method to implement custom initialization logic.
+   */
+  onCreate = () => {
+  };
+  /**
+   * Called when the action is being destroyed.
+   * Override this method to implement custom cleanup logic.
+   */
+  onDestroy = () => {
+  };
+  /**
+   * Called when the action should be updated.
+   * Override this method to implement custom update logic.
+   */
+  onUpdate = () => {
+  };
+};
+var _ = class __ extends v {
+  /**
+   * Moves the caret (text cursor) backward by a specified number of characters within the current selection.
+   *
+   * If the caret is at the beginning of a text node, it attempts to move to the end of the previous sibling text node.
+   * If there is no previous sibling or the selection is not valid, the caret position remains unchanged.
+   *
+   * @param n - The number of characters to move the caret back. Defaults to 1.
+   */
+  static sendCaretBack = (t = 1, e = false) => {
+    const i = window.getSelection();
+    if (i && i.rangeCount > 0) {
+      const s = i.getRangeAt(0), o = s.startContainer, n = s.startOffset;
+      if (n > 0)
+        s.setStart(o, n - t);
+      else if (o.previousSibling) {
+        const r = o.previousSibling;
+        r.nodeType === Node.TEXT_NODE && s.setStart(r, r.textContent?.length || 0);
+      }
+      s.collapse(true), i.removeAllRanges(), i.addRange(s), e && console.debug("Caret moved back by", t, "characters");
+    }
+  };
+  /**
+   * Places the caret (text cursor) immediately before the specified blot in the Quill editor.
+   *
+   * @param quill - The Quill editor instance.
+   * @param targetBlot - The blot before which the caret should be placed.
+   */
+  static placeCaretBeforeBlot = (t, e, i = false) => {
+    const s = t.getIndex(e);
+    t.setSelection(s, 0, "user"), i && console.debug("Caret placed before blot at index:", s, e);
+  };
+  /**
+   * Places the caret (text cursor) immediately after the specified blot in the Quill editor.
+   *
+   * This method first clears any existing selection and ensures the editor is focused.
+   * It then calculates the index of the target blot and determines whether it is the last blot in the document.
+   * - If the target blot is the last one, the caret is placed at the very end of the document.
+   * - Otherwise, the caret is positioned just after the target blot, using a combination of Quill's selection API
+   *   and a native browser adjustment to avoid placing the caret inside a formatting span wrapper.
+   *
+   * @param quill - The Quill editor instance.
+   * @param targetBlot - The blot after which the caret should be placed.
+   */
+  static placeCaretAfterBlot = (t, e, i = false) => {
+    t.setSelection(null), t.root.focus();
+    const s = t.getIndex(e), o = t.getLength();
+    s + 1 >= o - 1 ? (t.setSelection(o - 1, 0, "user"), i && console.debug("Caret placed at the end of the document after blot:", e)) : (i && console.debug("Caret placed after character following blot at index:", s, e), t.setSelection(s + 2, 0, "user"), this.sendCaretBack(1, i));
+  };
+  /**
+   * Initializes event listeners for the CaretAction.
+   *
+   * Adds a 'keyup' event listener to the document and an 'input' event listener
+   * to the Quill editor's root element. Both listeners trigger the `onKeyUp` handler.
+   *
+   * @remarks
+   * This method should be called when the action is created to ensure proper
+   * caret handling and formatting updates in response to user input.
+   */
+  onCreate = () => {
+    document.addEventListener("keyup", this.onKeyUp), this.formatter.quill.root.addEventListener("input", this.onKeyUp);
+  };
+  /**
+   * Cleans up event listeners attached by this action.
+   *
+   * Removes the 'keyup' event listener from the document and the 'input' event listener
+   * from the Quill editor's root element to prevent memory leaks and unintended behavior
+   * after the action is destroyed.
+   */
+  onDestroy = () => {
+    document.removeEventListener("keyup", this.onKeyUp), this.formatter.quill.root.removeEventListener("input", this.onKeyUp);
+  };
+  /**
+   * Handles the keyup event for caret navigation around a target blot in the editor.
+   *
+   * - If a modal is open or there is no current formatting specification, the handler exits early.
+   * - If the left arrow key is pressed, places the caret before the target blot and hides the formatter UI.
+   * - If the right arrow key is pressed, places the caret after the target blot and hides the formatter UI.
+   *
+   * @param e - The keyboard event triggered by the user's keyup action.
+   */
+  onKeyUp = (t) => {
+    const e = !!document.querySelector("[data-blot-formatter-modal]");
+    if (!this.formatter.currentSpec || e)
+      return;
+    const i = this.formatter.currentSpec.getTargetBlot();
+    i && (t.code === "ArrowLeft" ? (__.placeCaretBeforeBlot(this.formatter.quill, i, this.debug), this.formatter.hide()) : t.code === "ArrowRight" && (__.placeCaretAfterBlot(this.formatter.quill, i, this.debug), this.formatter.hide()));
+  };
+};
+function T(h) {
+  return h && h.__esModule && Object.prototype.hasOwnProperty.call(h, "default") ? h.default : h;
+}
+var C;
+var S;
+function R() {
+  if (S) return C;
+  S = 1;
+  var h = function(c) {
+    return t(c) && !e(c);
+  };
+  function t(a) {
+    return !!a && typeof a == "object";
+  }
+  function e(a) {
+    var c = Object.prototype.toString.call(a);
+    return c === "[object RegExp]" || c === "[object Date]" || o(a);
+  }
+  var i = typeof Symbol == "function" && Symbol.for, s = i ? /* @__PURE__ */ Symbol.for("react.element") : 60103;
+  function o(a) {
+    return a.$$typeof === s;
+  }
+  function n(a) {
+    return Array.isArray(a) ? [] : {};
+  }
+  function r(a, c) {
+    return c.clone !== false && c.isMergeableObject(a) ? x(n(a), a, c) : a;
+  }
+  function l(a, c, d) {
+    return a.concat(c).map(function(y) {
+      return r(y, d);
+    });
+  }
+  function p(a, c) {
+    if (!c.customMerge)
+      return x;
+    var d = c.customMerge(a);
+    return typeof d == "function" ? d : x;
+  }
+  function m(a) {
+    return Object.getOwnPropertySymbols ? Object.getOwnPropertySymbols(a).filter(function(c) {
+      return Object.propertyIsEnumerable.call(a, c);
+    }) : [];
+  }
+  function u(a) {
+    return Object.keys(a).concat(m(a));
+  }
+  function g(a, c) {
+    try {
+      return c in a;
+    } catch {
+      return false;
+    }
+  }
+  function b(a, c) {
+    return g(a, c) && !(Object.hasOwnProperty.call(a, c) && Object.propertyIsEnumerable.call(a, c));
+  }
+  function M(a, c, d) {
+    var y = {};
+    return d.isMergeableObject(a) && u(a).forEach(function(f) {
+      y[f] = r(a[f], d);
+    }), u(c).forEach(function(f) {
+      b(a, f) || (g(a, f) && d.isMergeableObject(c[f]) ? y[f] = p(f, d)(a[f], c[f], d) : y[f] = r(c[f], d));
+    }), y;
+  }
+  function x(a, c, d) {
+    d = d || {}, d.arrayMerge = d.arrayMerge || l, d.isMergeableObject = d.isMergeableObject || h, d.cloneUnlessOtherwiseSpecified = r;
+    var y = Array.isArray(c), f = Array.isArray(a), B = y === f;
+    return B ? y ? d.arrayMerge(a, c, d) : M(a, c, d) : r(c, d);
+  }
+  x.all = function(c, d) {
+    if (!Array.isArray(c))
+      throw new Error("first argument should be an array");
+    return c.reduce(function(y, f) {
+      return x(y, f, d);
+    }, {});
+  };
+  var z = x;
+  return C = z, C;
+}
+var O = R();
+var H = /* @__PURE__ */ T(O);
+var N = class {
+  formatter;
+  element;
+  buttons = {};
+  constructor(t) {
+    this.formatter = t, this.element = document.createElement("div"), this.element.classList.add(this.formatter.options.toolbar.mainClassName), this.element.addEventListener("mousedown", (e) => {
+      e.stopPropagation();
+    }), this.formatter.options.toolbar.mainStyle && Object.assign(this.element.style, this.formatter.options.toolbar.mainStyle);
+  }
+  /**
+   * Creates and appends toolbar action buttons to the toolbar element. 
+   * Called by BlotFormatter.show() to initialize the toolbar.
+   * 
+   * Iterates through all actions registered in the formatter, collects their toolbar buttons,
+   * stores each button in the `buttons` map by its action name, and appends the created button elements
+   * to the toolbar's DOM element. Finally, appends the toolbar element to the formatter's overlay.
+   */
+  create = () => {
+    const t = [];
+    this.formatter.actions.forEach((e) => {
+      e.toolbarButtons.forEach((i) => {
+        this.buttons[i.action] = i, t.push(i.create());
+      });
+    }), this.element.append(...t), this.formatter.overlay.append(this.element), this.formatter.options.debug && console.debug("Toolbar created with buttons:", Object.keys(this.buttons), t);
+  };
+  /**
+   * Cleans up the toolbar by removing its element from the overlay,
+   * destroying all associated buttons, and clearing internal references.
+   * Called by BlotFormatter.hide() to remove the toolbar from the DOM.
+   * 
+   * This should be called when the toolbar is no longer needed to prevent memory leaks.
+   */
+  destroy = () => {
+    this.element && this.formatter.overlay.removeChild(this.element);
+    for (const t of Object.values(this.buttons))
+      t.destroy();
+    this.buttons = {}, this.element.innerHTML = "", this.formatter.options.debug && console.debug("Toolbar destroyed");
+  };
+};
+var k = class _k {
+  /**
+   * Initializes the tooltip adjustment watcher when the action is created.
+   * Searches for the tooltip element within the Quill container and, if found,
+   * sets up observation for tooltip adjustments. Logs a warning if the tooltip
+   * element is not present.
+   *
+   * @remarks
+   * This method should be called during the creation lifecycle of the action.
+   */
+  constructor(t, e = false) {
+    this.quill = t, this.debug = e;
+    const i = t.container.querySelector(".ql-tooltip");
+    console.debug("tooltip:", i), i ? (_k.watchTooltip(t, e), e && console.debug("Tooltip watcher initialized for:", i)) : console.warn("No tooltip found to watch for adjustments.");
+  }
+  /**
+   * Repositions a tooltip element within a given container to ensure it does not overflow
+   * the container's boundaries. Adjusts the tooltip's `top` and `left` CSS properties if
+   * necessary to keep it fully visible. Optionally logs debug information about the repositioning.
+   *
+   * @param tooltip - The tooltip HTMLDivElement to reposition.
+   * @param container - The container HTMLElement within which the tooltip should remain visible.
+   * @param debug - If true, logs debug information to the console. Defaults to false.
+   */
+  static _repositionTooltip = (t, e, i = false) => {
+    const s = t.getBoundingClientRect(), o = e.getBoundingClientRect();
+    let n = s.left - o.left, r = s.top - o.top;
+    const l = s.width, p = s.height, m = e.clientWidth, u = e.clientHeight;
+    let g = false;
+    const b = {};
+    r < 0 && (b.top = `${s.height}px`, g = true), r + p > u && (b.top = `${u - p}px`, g = true), n < 0 && (b.left = "0px", g = true), n + l > m && (b.left = `${m - l}px`, g = true), g ? (i && console.debug("Repositioning tooltip", b), b.top !== void 0 && (t.style.top = b.top), b.left !== void 0 && (t.style.left = b.left), t.classList.contains("ql-flip") && t.classList.remove("ql-flip")) : i && console.debug("Tooltip position is fine, no changes needed");
+  };
+  // Static property to store observers
+  static observers = /* @__PURE__ */ new WeakMap();
+  /**
+   * Observes changes to the tooltip's attributes and triggers repositioning when necessary.
+   *
+   * @param quill - The Quill editor instance containing the tooltip.
+   * @param debug - Optional flag to enable debug logging of attribute mutations.
+   *
+   * @remarks
+   * Uses a MutationObserver to monitor changes to the tooltip's `style` and `class` attributes.
+   * When a mutation is detected, the tooltip is repositioned within the container.
+   * If `debug` is true, mutation details are logged to the console.
+   */
+  static watchTooltip(t, e = false) {
+    const i = t.container.querySelector(".ql-tooltip"), s = t.container;
+    if (!i) {
+      console.warn("No tooltip found to watch for adjustments.");
+      return;
+    }
+    this.removeTooltipWatcher(i, e);
+    let o = false;
+    const n = new MutationObserver((r) => {
+      if (!o) {
+        if (e)
+          for (const l of r)
+            console.debug("Tooltip mutation:", l.attributeName, i.getAttribute(l.attributeName));
+        o = true, this._repositionTooltip(i, s, e), setTimeout(() => {
+          o = false;
+        }, 0);
+      }
+    });
+    n.observe(i, {
+      attributes: true,
+      attributeFilter: ["style", "class"]
+    }), this.observers.set(i, n);
+  }
+  /**
+   * Removes the MutationObserver for the specified tooltip element.
+   *
+   * @param tooltip - The HTMLDivElement or Quill instance to stop watching.
+   *                  If a Quill instance is provided, finds the tooltip within its container.
+   */
+  static removeTooltipWatcher(t, e = false) {
+    let i = null;
+    t instanceof HTMLDivElement ? i = t : i = t.container.querySelector(".ql-tooltip"), i && this.observers.has(i) && (this.observers.get(i)?.disconnect(), this.observers.delete(i), e && console.debug("Tooltip watcher removed for:", i));
+  }
+  /**
+   * Cleans up resources when the action is destroyed.
+   * Specifically, it finds the tooltip element within the Quill editor container
+   * and removes its associated watcher if the tooltip exists.
+   */
+  destroy = () => {
+    this.quill.container.querySelector(".ql-tooltip") && (_k.removeTooltipWatcher(this.quill, this.debug), this.debug && console.debug("Tooltip watcher removed on destroy"));
+  };
+};
+var q = (h) => {
+  const t = h.import("formats/image"), e = ["alt", "height", "width", "title"];
+  return class extends t {
+    static blotName = "image";
+    static formats(s) {
+      return e.reduce(
+        (o, n) => (s.hasAttribute(n) && (o[n] = s.getAttribute(n)), o),
+        {}
+      );
+    }
+    format(s, o) {
+      e.indexOf(s) > -1 ? o || s === "alt" ? this.domNode.setAttribute(s, o) : this.domNode.removeAttribute(s) : super.format(s, o);
+    }
+  };
+};
+var W = (h) => {
+  const t = h.import("parchment"), { ClassAttributor: e, Scope: i } = t;
+  return class extends e {
+    constructor(o = false) {
+      super("iframeAlign", "ql-iframe-align", {
+        scope: i.BLOCK,
+        whitelist: ["left", "center", "right"]
+      }), this.debug = o;
+    }
+    static attrName = "iframeAlign";
+    /**
+     * Adds alignment and width-related formatting to the specified HTML element node.
+     *
+     * - Sets the alignment using the provided value, which can be either a string or an object containing an `align` property.
+     * - Stores the alignment value in the element's `data-blot-align` attribute.
+     * - Handles the element's `width` attribute:
+     *   - If present, ensures the width value includes units (appends 'px' if numeric only).
+     *   - Sets the CSS custom property `--resize-width` to the processed width value.
+     *   - Sets the `data-relative-size` attribute to `'true'` if the width ends with '%', otherwise `'false'`.
+     *   - If no width is specified, removes the `--resize-width` property and sets `data-relative-size` to `'false'`.
+     *
+     * @param node - The DOM element to which alignment and width formatting will be applied.
+     * @param value - The alignment value, either as a string or an object with an `align` property.
+     * @returns `true` if the formatting was successfully applied to an HTMLElement, otherwise `false`.
+     */
+    add(o, n) {
+      if (this.debug && console.debug("IframeAlignAttributor.add", o, n), o instanceof HTMLElement) {
+        typeof n == "object" ? (super.add(o, n.align), o.dataset.blotAlign = n.align) : (super.add(o, n), o.dataset.blotAlign = n);
+        let r = o.getAttribute("width");
+        return r ? (isNaN(Number(r.trim().slice(-1))) || (r = `${r}px`), o.style.setProperty("--resize-width", r), o.dataset.relativeSize = `${r.endsWith("%")}`) : (o.style.removeProperty("--resize-width"), o.dataset.relativeSize = "false"), this.debug && console.debug("IframeAlignAttributor.add - node:", o, "aligned with:", n), true;
+      } else
+        return this.debug && console.debug("IframeAlignAttributor.add - node is not an HTMLElement, skipping alignment"), false;
+    }
+    /**
+     * Removes the alignment formatting from the specified DOM element.
+     * 
+     * If the provided node is an instance of HTMLElement, this method first calls the
+     * parent class's `remove` method to perform any additional removal logic, and then
+     * deletes the `data-blot-align` attribute from the element's dataset.
+     *
+     * @param node - The DOM element from which to remove the alignment formatting.
+     */
+    remove(o) {
+      this.debug && console.debug("IframeAlignAttributor.remove", o), o instanceof HTMLElement && (super.remove(o), delete o.dataset.blotAlign);
+    }
+    /**
+     * Extracts alignment and width information from a given DOM element.
+     *
+     * @param node - The DOM element from which to extract alignment and width values.
+     * @returns An object containing:
+     *   - `align`: The alignment class name derived from the superclass's value method.
+     *   - `width`: The width value, determined from the element's CSS custom property '--resize-width', 
+     *     its 'width' attribute, or an empty string if not present.
+     *   - `relativeSize`: A string indicating whether the width ends with a '%' character, representing a relative size.
+     */
+    value(o) {
+      const n = super.value(o), r = o instanceof HTMLElement && (o.style.getPropertyValue("--resize-width") || o.getAttribute("width")) || "", l = {
+        align: n,
+        width: r,
+        relativeSize: `${r.endsWith("%")}`
+      };
+      return this.debug && console.debug("IframeAlignAttributor.value", o, l), l;
+    }
+  };
+};
+var D = (h) => {
+  const t = h.import("parchment"), { ClassAttributor: e, Scope: i } = t;
+  return class extends e {
+    constructor(o = false) {
+      super("imageAlign", "ql-image-align", {
+        scope: i.INLINE,
+        whitelist: ["left", "center", "right"]
+      }), this.debug = o;
+    }
+    static tagName = "SPAN";
+    static attrName = "imageAlign";
+    /**
+     * Adds or updates alignment and related formatting for an image wrapper node.
+     *
+     * This method applies alignment, caption, and width formatting to a given node containing an image.
+     * It handles both object-based and string-based alignment values, updates relevant attributes,
+     * and ensures the wrapper is styled correctly for Quill's image formatting.
+     *
+     * - If the node is an HTMLSpanElement, it sets alignment, caption (data-title), and width attributes.
+     * - If the node is not a span, it attempts to find an image child and reapply the imageAlign format.
+     * - Handles Quill's inline style merging quirks to avoid redundant wrappers.
+     *
+     * @param node - The DOM element (typically a span or container) to apply formatting to.
+     * @param value - The alignment value, which can be a string or an object containing alignment and optional title.
+     * @returns `true` if formatting was applied or handled, `false` otherwise.
+     */
+    add(o, n) {
+      if (this.debug && console.debug("ImageAlignAttributor.add", o, n), o instanceof HTMLSpanElement && n) {
+        let r = o.querySelector("img");
+        if (typeof n == "object" && n.align)
+          super.add(o, n.align), o.setAttribute("contenteditable", "false"), n.title ? o.setAttribute("data-title", n.title) : o.removeAttribute("data-title"), n.align && (r.dataset.blotAlign = n.align), this.debug && console.debug("ImageAlignAttributor.add - imageElement:", r, "aligned with:", n.align);
+        else if (typeof n == "string")
+          super.add(o, n), r.dataset.blotAlign = n, this.debug && console.debug("ImageAlignAttributor.add - imageElement:", r, "aligned with:", n);
+        else
+          return this.debug && console.debug("ImageAlignAttributor.add - no value provided, skipping alignment"), false;
+        let l = this.getImageWidth(r);
+        return o.setAttribute("data-relative-size", `${l?.endsWith("%")}`), true;
+      } else {
+        const r = o instanceof HTMLImageElement ? o : o.querySelector("img");
+        if (this.debug && console.debug(`ImageAlignAttributor.add - ${o.tagName} is not a span, checking for image:`, r), r instanceof HTMLImageElement) {
+          const l = h.find(r);
+          return this.debug && console.debug("ImageAlignAttributor.add - found image blot:", l), l && (o.firstChild instanceof HTMLSpanElement || !r.parentElement?.matches('span[class^="ql-image-align-"]')) && (l.format("imageAlign", n), this.debug && console.debug("ImageAlignAttributor.add - reapplying imageAlign format to image blot:", n, l)), true;
+        }
+        return false;
+      }
+    }
+    /**
+     * Removes alignment formatting from the given DOM node.
+     *
+     * If the node is an HTMLElement, it first calls the parent class's remove method.
+     * Then, if the node's first child is also an HTMLElement, it deletes the `blotAlign`
+     * data attribute from that child element.
+     *
+     * @param node - The DOM element from which to remove alignment formatting.
+     */
+    remove(o) {
+      this.debug && console.debug("ImageAlignAttributor.remove", o), o instanceof HTMLElement && (super.remove(o), o.firstChild && o.firstChild instanceof HTMLElement && delete o.firstChild.dataset.blotAlign);
+    }
+    /**
+     * Retrieves alignment and metadata information for an image element within a given DOM node.
+     *
+     * This method attempts to find an `<img>` element within the provided node, then extracts its alignment,
+     * title, and width attributes. If the width attribute is missing or invalid, it tries to determine the width
+     * either immediately (if the image is loaded) or by setting an `onload` handler. The method returns an object
+     * containing the alignment, title, width, a `contenteditable` flag, and a boolean string indicating if the width
+     * is specified as a percentage.
+     *
+     * @param node - The DOM element to search for an image and extract alignment and metadata from.
+     * @returns An object containing the image's alignment, title, width, contenteditable status, and relative size flag.
+     */
+    value(o) {
+      const n = o.querySelector("img");
+      if (!n) return null;
+      const r = n.parentElement, l = super.value(r), p = n.getAttribute("title") || "";
+      let m = n.getAttribute("width") || "";
+      parseFloat(m) || (n.complete ? m = this.getImageWidth(n) : n.onload = (g) => {
+        m = this.getImageWidth(g.target);
+      });
+      const u = {
+        align: l,
+        title: p,
+        width: m,
+        contenteditable: "false",
+        relativeSize: `${m.endsWith("%")}`
+      };
+      return this.debug && console.debug("ImageAlignAttributor.value", o, u), u;
+    }
+    /**
+     * Retrieves the width of the given HTMLImageElement, ensuring it is set as an attribute and formatted with 'px' units.
+     * 
+     * - If the 'width' attribute is not present, it uses the image's natural width and sets it as the 'width' attribute in pixels.
+     * - If the 'width' attribute exists but does not end with a non-numeric character (i.e., is a number), it appends 'px' to the value.
+     * - Updates the parent element's CSS variable '--resize-width' with the computed width.
+     * 
+     * @param imageElement - The HTMLImageElement whose width is to be retrieved and set.
+     * @returns The width of the image as a string with 'px' units.
+     */
+    getImageWidth(o) {
+      let n = o.getAttribute("width");
+      return n ? isNaN(Number(n.trim().slice(-1))) || (n = `${n}px`, o.setAttribute("width", n)) : (n = `${o.naturalWidth}px`, o.setAttribute("width", n)), o.parentElement.style.setProperty("--resize-width", n), n;
+    }
+  };
+};
+var j = (h) => {
+  const t = h.import("formats/video");
+  return class extends t {
+    static blotName = "video";
+    static aspectRatio = "16 / 9 auto";
+    static create(i) {
+      const s = super.create(i);
+      return s.setAttribute("width", "100%"), s.style.aspectRatio = this.aspectRatio, s;
+    }
+    html() {
+      return this.domNode.outerHTML;
+    }
+  };
+};
+var $2 = class {
+  alignments = {};
+  options;
+  formatter;
+  debug;
+  Scope;
+  constructor(t) {
+    this.formatter = t, this.debug = t.options.debug ?? false;
+    const e = t.Quill.import("parchment");
+    this.Scope = e.Scope, this.options = t.options, this.options.align.alignments.forEach((i) => {
+      this.alignments[i] = {
+        name: i,
+        apply: (s) => {
+          this.setAlignment(s, i);
+        }
+      };
+    }), this.debug && console.debug("DefaultAligner created with alignments:", this.alignments);
+  }
+  /**
+   * Retrieves all available alignment options.
+   *
+   * @returns {Alignment[]} An array of alignment objects defined in the `alignments` property.
+   */
+  getAlignments = () => Object.keys(this.alignments).map((t) => this.alignments[t]);
+  /**
+   * Clears alignment formatting from the given blot if it is an image or iframe.
+   *
+   * - For image blots (`IMG`), if the parent is a `SPAN`, removes the alignment attribute from the parent.
+   * - For iframe blots (`IFRAME`), removes the alignment attribute directly from the blot.
+   *
+   * @param blot - The blot to clear alignment formatting from, or `null` if none.
+   */
+  clear = (t) => {
+    t != null && (t.domNode.tagName === "IMG" ? t.parent !== null && t.parent.domNode.tagName === "SPAN" && (t.parent.format(this.formatter.ImageAlign.attrName, false), this.debug && console.debug("Cleared image alignment from parent span:", t.parent)) : t.domNode.tagName === "IFRAME" && (t.format(this.formatter.IframeAlign.attrName, false), this.debug && console.debug("Cleared iframe alignment:", t)));
+  };
+  /**
+   * Determines whether the given blot is an inline blot.
+   *
+   * Checks if the provided `blot` has a scope that matches the inline blot scope.
+   *
+   * @param blot - The blot instance to check.
+   * @returns `true` if the blot is an inline blot; otherwise, `false`.
+   */
+  isInlineBlot = (t) => (t.statics?.scope & this.Scope.INLINE) === this.Scope.INLINE_BLOT;
+  /**
+   * Determines if the provided blot is a block-level blot.
+   *
+   * Checks the blot's static scope against the BLOCK scope constant,
+   * and returns true if it matches the BLOCK_BLOT type.
+   *
+   * @param blot - The blot instance to check.
+   * @returns True if the blot is a block blot; otherwise, false.
+   */
+  isBlockBlot = (t) => (t.statics?.scope & this.Scope.BLOCK) === this.Scope.BLOCK_BLOT;
+  /**
+   * Determines whether the given blot has an inline scope.
+   *
+   * @param blot - The blot instance to check.
+   * @returns `true` if the blot's scope includes the inline scope; otherwise, `false`.
+   */
+  hasInlineScope = (t) => (t.statics.scope & this.Scope.INLINE) === this.Scope.INLINE;
+  /**
+   * Determines whether the given blot has block-level scope.
+   *
+   * @param blot - The blot instance to check.
+   * @returns `true` if the blot's scope includes block-level formatting; otherwise, `false`.
+   */
+  hasBlockScope = (t) => (t.statics.scope & this.Scope.BLOCK) === this.Scope.BLOCK;
+  /**
+   * Determines whether the given blot is aligned.
+   *
+   * If an alignment is specified, returns `true` only if the blot's alignment matches the specified alignment.
+   * If no alignment is specified, returns `true` if the blot has any alignment.
+   *
+   * @param blot - The blot to check for alignment.
+   * @param alignment - The alignment to compare against, or `null` to check for any alignment.
+   * @returns `true` if the blot is aligned (and matches the specified alignment, if provided); otherwise, `false`.
+   */
+  isAligned = (t, e) => {
+    const i = this.getAlignment(t);
+    return e ? i === e.name : !!i;
+  };
+  /**
+   * Retrieves the alignment value from the given blot's DOM node.
+   *
+   * @param blot - The blot instance whose alignment is to be determined.
+   * @returns The alignment value as a string if present, otherwise `undefined`.
+   */
+  getAlignment = (t) => t.domNode.dataset.blotAlign;
+  /**
+   * Sets the alignment for a given blot (content element) in the editor.
+   *
+   * This method checks if the blot is already aligned as requested. If not, it clears any existing alignment,
+   * and applies the new alignment based on the blot type (inline or block). For inline blots (such as images),
+   * it may also set a relative width attribute if required by the configuration. For block blots (such as iframes),
+   * it applies the alignment directly.
+   *
+   * Additionally, if the editor contains only an image, it ensures a new paragraph is added underneath to maintain
+   * editor usability.
+   *
+   * @param blot - The blot (content element) to align. Can be `null`, in which case no action is taken.
+   * @param alignment - The alignment to apply (e.g., 'left', 'center', 'right'). Must correspond to a key in `this.alignments`.
+   */
+  setAlignment = (t, e) => {
+    if (t === null) {
+      this.debug && console.debug("DefaultAligner.setAlignment called with null blot, no action taken");
+      return;
+    }
+    const i = this.isAligned(t, this.alignments[e]);
+    if (this.debug && console.debug("hasAlignment", i), this.clear(t), !i)
+      if (this.isInlineBlot(t) || this.hasInlineScope(t)) {
+        if (this.debug && console.debug("setting alignment", this.isInlineBlot(t) || this.hasInlineScope(t)), !t.domNode.getAttribute("width") && this.options.resize.useRelativeSize && !this.options.resize.allowResizeModeChange)
+          try {
+            const s = getComputedStyle(this.formatter.quill.root), o = this.formatter.quill.root.clientWidth - parseFloat(s.paddingLeft) - parseFloat(s.paddingRight);
+            t.domNode.setAttribute(
+              "width",
+              `${Math.min(Math.round(100 * t.domNode.naturalWidth / o), 100)}%`
+            );
+          } catch {
+            this.debug && console.debug("DefaultAligner.setAlignment Error setting image width:", t);
+          }
+        this.debug && console.debug(
+          "DefaultAligner.setAlignment formatting image with",
+          this.formatter.ImageAlign.attrName,
+          {
+            align: this.alignments[e].name,
+            title: t.domNode.getAttribute("title") || ""
+          }
+        ), t.format(
+          this.formatter.ImageAlign.attrName,
+          {
+            align: this.alignments[e].name,
+            title: t.domNode.getAttribute("title") || ""
+          }
+        );
+        try {
+          const s = this.formatter.quill.getContents().ops;
+          s.length === 2 && s[1].insert === `
+` && this.formatter.quill.insertText(this.formatter.quill.getLength(), `
+`, "user");
+        } catch {
+        }
+      } else (this.isBlockBlot(t) || this.hasBlockScope(t)) && (this.debug && console.debug(
+        "DefaultAligner.setAlignment formatting iframe with",
+        this.formatter.IframeAlign.attrName,
+        {
+          align: this.alignments[e].name
+        }
+      ), t.format(
+        this.formatter.IframeAlign.attrName,
+        this.alignments[e].name
+      ));
+  };
+};
+var A = class {
+  action;
+  icon;
+  onClick;
+  options;
+  element = null;
+  initialVisibility = true;
+  // preset visibility before button is created
+  constructor(t, e, i) {
+    this.action = t, this.icon = i.icons[t], this.onClick = e, this.options = i;
+  }
+  /**
+   * Creates and initializes the toolbar button element.
+   * 
+   * This method constructs a `span` element, sets its inner HTML to the provided icon,
+   * assigns the appropriate class name and action data attribute, and attaches the click handler.
+   * If tooltips are configured for the action, it sets the tooltip text.
+   * The button's selected and visible states are initialized, and custom styling is applied.
+   * 
+   * @returns {HTMLElement} The created and configured toolbar button element.
+   */
+  create = () => (this.element = document.createElement("span"), this.element.innerHTML = this.icon, this.element.className = this.options.buttonClassName, this.element.dataset.action = this.action, this.element.onclick = this.onClick, this.options.tooltips && this.options.tooltips[this.action] && (this.element.title = this.options.tooltips[this.action]), this.selected = this.preselect(), this.visible = this.initialVisibility, this._styleButton(), this.element);
+  /**
+   * Cleans up the toolbar button by removing its click event handler,
+   * detaching it from the DOM, and clearing the reference to the element.
+   * This method should be called when the button is no longer needed to
+   * prevent memory leaks.
+   */
+  destroy = () => {
+    this.element && (this.element.onclick = null, this.element.remove(), this.element = null);
+  };
+  /**
+   * Determines whether the toolbar button should appear as selected (active) when loaded.
+   * Override this method to provide custom logic for button selection state.
+   *
+   * @returns {boolean} `true` if the button should be preselected; otherwise, `false`.
+   */
+  preselect = () => false;
+  /**
+   * Indicates whether the toolbar button is currently selected.
+   *
+   * Returns `true` if the underlying element's `data-selected` attribute is set to `'true'`, otherwise returns `false`.
+   */
+  get selected() {
+    return this.element?.dataset.selected === "true";
+  }
+  /**
+   * Sets the selected state of the toolbar button.
+   * 
+   * When set to `true`, applies the selected class and style to the button element.
+   * When set to `false`, removes the selected class and style, and reapplies the default button style if provided.
+   * Also updates the `data-selected` attribute on the element.
+   *
+   * @param value - Indicates whether the button should be in the selected state.
+   */
+  set selected(t) {
+    this.element && (this.element.dataset.selected = t.toString(), t ? (this.element.classList.add(this.options.buttonSelectedClassName), this.options.buttonSelectedStyle && Object.assign(this.element.style, this.options.buttonSelectedStyle)) : (this.element.classList.remove(this.options.buttonSelectedClassName), this.options.buttonSelectedStyle && (this.element.removeAttribute("style"), this.options.buttonStyle && Object.assign(this.element.style, this.options.buttonStyle))));
+  }
+  /**
+   * Indicates whether the toolbar button is currently visible.
+   * Returns `true` if the button's element is not hidden (`display` is not set to `'none'`), otherwise returns `false`.
+   */
+  get visible() {
+    return this.element?.style.display !== "none";
+  }
+  /**
+   * Sets the visibility of the toolbar button element.
+   * Accepts a CSS display value as a string or a boolean.
+   * If a boolean is provided, `true` sets the display to 'inline-block', and `false` sets it to 'none'.
+   * If a string is provided, it is used directly as the CSS display value.
+   *
+   * @param style - The desired visibility state, either as a CSS display string or a boolean.
+   */
+  set visible(t) {
+    this.element && (typeof t == "boolean" && (t = t ? "inline-block" : "none"), this.element.style.display = t);
+  }
+  /**
+   * Applies custom styles to the toolbar button and its SVG child element, if provided in the options.
+   *
+   * - If `options.buttonStyle` is defined, it merges the style properties into the button's element.
+   * - If `options.svgStyle` is defined, it merges the style properties into the first child element (assumed to be an SVG).
+   *
+   * @private
+   */
+  _styleButton = () => {
+    if (this.element && (this.options.buttonStyle && Object.assign(this.element.style, this.options.buttonStyle), this.options.svgStyle)) {
+      const t = this.element.children[0];
+      t && Object.assign(t.style, this.options.svgStyle);
+    }
+  };
+};
+var P = class extends v {
+  aligner;
+  alignButtons = {};
+  constructor(t) {
+    super(t), this.aligner = new $2(t), t.options.debug && console.debug("AlignAction Aligner created:", this.aligner);
+  }
+  /**
+   * Creates alignment toolbar buttons for each available alignment option.
+   * 
+   * Iterates over the alignments provided by the aligner and creates a `ToolbarButton`
+   * for each alignment, storing them in the `alignButtons` map. If there is a currently
+   * selected blot, it checks its alignment and preselects the corresponding button.
+   * Optionally logs debug information about the created buttons and the current alignment.
+   *
+   * @private
+   */
+  _createAlignmentButtons = () => {
+    for (const e of Object.values(this.aligner.alignments))
+      this.alignButtons[e.name] = new A(
+        e.name,
+        this.onClickHandler,
+        this.formatter.options.toolbar
+      );
+    const t = this.formatter.currentSpec?.getTargetBlot();
+    if (t) {
+      const e = this.aligner.getAlignment(t);
+      e && this.alignButtons[e] && (this.alignButtons[e].preselect = () => true), this.debug && (console.debug("AlignAction alignment buttons created:", this.alignButtons), console.debug("Blot alignment on load:", e));
+    }
+  };
+  /**
+   * Clears the selection state of all alignment buttons.
+   *
+   * Iterates through all buttons in the `alignButtons` collection and sets their
+   * `selected` property to `false`. If debugging is enabled, logs a message to the console.
+   *
+   * @private
+   */
+  _clearButtons = () => {
+    for (const t of Object.values(this.alignButtons))
+      t.selected = false;
+    this.debug && console.debug("AlignAction alignment buttons cleared");
+  };
+  /**
+   * Handles click events on alignment toolbar buttons.
+   *
+   * This event handler determines which alignment action was triggered by the user,
+   * retrieves the corresponding alignment configuration, and applies or clears the alignment
+   * on the currently selected blot in the editor. It also updates the toolbar button states
+   * and logs debug information if enabled.
+   *
+   * @param event - The click event triggered by the user on a toolbar button.
+   */
+  onClickHandler = (t) => {
+    const e = t.target.closest(`span.${this.formatter.options.toolbar.buttonClassName}`);
+    if (e) {
+      const i = e.dataset.action || "", s = this.formatter.currentSpec?.getTargetBlot();
+      if (i && s) {
+        const o = this.aligner.alignments[i];
+        this._clearButtons(), this.aligner.isAligned(s, o) ? (this.aligner.clear(s), this.debug && console.debug("AlignAction clear alignment:", i, s)) : (this.aligner.setAlignment(s, i), this.alignButtons[i].selected = true, this.debug && console.debug("AlignAction set alignment:", i, s));
+      }
+    }
+    this.formatter.update();
+  };
+  /**
+   * Initializes the alignment action by creating alignment buttons and storing them in the toolbar.
+   * If debug mode is enabled in the formatter options, logs the created alignment buttons to the console.
+   *
+   * @returns {void}
+   */
+  onCreate = () => {
+    this._createAlignmentButtons(), this.toolbarButtons = Object.values(this.alignButtons), this.formatter.options.debug && console.debug("AlignAction alignment buttons created:", this.toolbarButtons);
+  };
+  /**
+   * Cleans up resources used by the alignment action.
+   * 
+   * This method resets the `alignButtons` object and clears the `toolbarButtons` array.
+   * If debug mode is enabled in the formatter options, a debug message is logged to the console.
+   *
+   * @returns {void}
+   */
+  onDestroy = () => {
+    this.alignButtons = {}, this.toolbarButtons = [], this.formatter.options.debug && console.debug("AlignAction alignment buttons destroyed");
+  };
+};
+var F = class extends v {
+  /**
+   * Initializes event listeners for the delete action.
+   * 
+   * - Adds a 'keyup' event listener to the document that triggers `_onKeyUp`.
+   * - Adds an 'input' event listener to the Quill editor's root element that also triggers `_onKeyUp`.
+   * 
+   * This method should be called when the delete action is created to ensure
+   * proper handling of keyboard and input events.
+   */
+  onCreate = () => {
+    document.addEventListener("keyup", this._onKeyUp), this.formatter.quill.root.addEventListener("input", this._onKeyUp);
+  };
+  /**
+   * Cleans up event listeners associated with the action.
+   * 
+   * Removes the 'keyup' event listener from the document and the 'input' event listener
+   * from the Quill editor's root element to prevent memory leaks and unintended behavior
+   * after the action is destroyed.
+   */
+  onDestroy = () => {
+    document.removeEventListener("keyup", this._onKeyUp), this.formatter.quill.root.removeEventListener("input", this._onKeyUp);
+  };
+  /**
+   * Handles the keyup event for delete and backspace actions.
+   * 
+   * If no modal is open and a current spec is selected, checks if the pressed key is
+   * 'Delete' or 'Backspace'. If so, finds the target blot element in the Quill editor,
+   * determines its index, and deletes one character at that index. Afterwards, hides the formatter UI.
+   * 
+   * @param e - The keyboard event triggered by the user.
+   */
+  _onKeyUp = (t) => {
+    const e = !!document.querySelector("[data-blot-formatter-modal]");
+    if (!(!this.formatter.currentSpec || e) && (t.code === "Delete" || t.code === "Backspace")) {
+      this.debug && console.debug("DeleteAction keyup detected:", t.code);
+      const i = this.formatter.currentSpec.getTargetElement();
+      if (i) {
+        const s = this.formatter.Quill.find(i);
+        if (s) {
+          const o = this.formatter.quill.getIndex(s);
+          this.formatter.quill.deleteText(o, 1, "user");
+        }
+      }
+      this.formatter.hide();
+    }
+  };
+};
+var U = class extends v {
+  _topLeftHandle;
+  _topRightHandle;
+  _bottomRightHandle;
+  _bottomLeftHandle;
+  _dragHandle = null;
+  _dragStartX = 0;
+  _dragCursorStyle;
+  _preDragWidth = 0;
+  _pinchStartDistance = 0;
+  _calculatedAspectRatio = 0;
+  _computedAspectRatio = void 0;
+  _target;
+  _editorStyle;
+  _editorWidth = 0;
+  _useRelativeSize;
+  _resizeModeButton = null;
+  _isUnclickable = false;
+  _hasResized = false;
+  _formattedWidth = "";
+  _sizeInfoTimerId = null;
+  _isImage = false;
+  _isSVG = false;
+  _naturalWidth = void 0;
+  constructor(t) {
+    super(t), this._topLeftHandle = this._createHandle("top-left", "nwse-resize"), this._topRightHandle = this._createHandle("top-right", "nesw-resize"), this._bottomRightHandle = this._createHandle("bottom-right", "nwse-resize"), this._bottomLeftHandle = this._createHandle("bottom-left", "nesw-resize"), this._dragCursorStyle = document.createElement("style"), this._useRelativeSize = this.formatter.options.resize.useRelativeSize, t.options.resize.allowResizeModeChange && (this._resizeModeButton = this._createResizeModeButton(), this.toolbarButtons = [
+      this._resizeModeButton
+    ]);
+  }
+  /**
+   * Initializes the resize action by setting up the target element, determining its type,
+   * and appending resize handles to the overlay. Also attaches mouse and touch event listeners
+   * to the overlay for handling user interactions. Finally, positions the handles according to
+   * the specified style options.
+   *
+   * @remarks
+   * This method should be called when the resize action is created to ensure all necessary
+   * DOM elements and event listeners are properly initialized.
+   */
+  onCreate = () => {
+    this._target = this.formatter.currentSpec?.getTargetElement(), this._isUnclickable = this.formatter.currentSpec?.isUnclickable || false, this._isImage = this._target instanceof HTMLImageElement, this._isImage && (this._isSVG = this._isSvgImage()), this.formatter.overlay.append(
+      this._topLeftHandle,
+      this._topRightHandle,
+      this._bottomRightHandle,
+      this._bottomLeftHandle
+    ), this.formatter.overlay.addEventListener("mousedown", this._onOverlayMouseDown), this.formatter.overlay.addEventListener("mouseup", this._onOverlayMouseUp);
+    const t = { passive: false };
+    this.formatter.overlay.addEventListener("touchstart", this._onOverlayTouchStart, t), this.formatter.overlay.addEventListener("touchmove", this._onOverlayTouchMove, t), this.formatter.overlay.addEventListener("touchend", this._onOverlayTouchEnd, t);
+    const e = this.formatter.options.resize.handleStyle || {};
+    this._repositionHandles(e), this.debug && console.debug("ResizeAction created with target:", this._target, "isUnclickable:", this._isUnclickable);
+  };
+  /**
+   * Cleans up resources and event listeners associated with the resize action.
+   * 
+   * This method resets internal state, removes resize handles from the overlay,
+   * detaches mouse and touch event listeners, and triggers an update on the formatter.
+   * 
+   * Should be called when the resize action is no longer needed to prevent memory leaks
+   * and unintended behavior.
+   */
+  onDestroy = () => {
+    this._target = null, this._isUnclickable = false, this._isImage = false, this._naturalWidth = void 0, this._isSVG = false, this._setCursor(""), [
+      this._topLeftHandle,
+      this._topRightHandle,
+      this._bottomRightHandle,
+      this._bottomLeftHandle
+    ].forEach((e) => {
+      e.remove();
+    }), this.formatter.overlay.removeEventListener("mousedown", this._onOverlayMouseDown), this.formatter.overlay.removeEventListener("mouseup", this._onOverlayMouseUp);
+    const t = { passive: false };
+    this.formatter.overlay.removeEventListener("touchstart", this._onOverlayTouchStart, t), this.formatter.overlay.removeEventListener("touchmove", this._onOverlayTouchMove, t), this.formatter.overlay.removeEventListener("touchend", this._onOverlayTouchEnd, t), this.formatter.update();
+  };
+  /**
+   * Creates a resize handle element for the specified position with the given cursor style.
+   *
+   * The handle is styled using the class name and optional style provided in the formatter's options.
+   * It also sets a `data-position` attribute and attaches a pointer down event listener.
+   *
+   * @param position - The position identifier for the handle (e.g., 'top-left', 'bottom-right').
+   * @param cursor - The CSS cursor style to apply when hovering over the handle.
+   * @returns The created HTMLElement representing the resize handle.
+   */
+  _createHandle = (t, e) => {
+    const i = document.createElement("div");
+    return i.classList.add(this.formatter.options.resize.handleClassName), i.setAttribute("data-position", t), i.style.cursor = e, this.formatter.options.resize.handleStyle && Object.assign(i.style, this.formatter.options.resize.handleStyle), i.addEventListener("pointerdown", this._onHandlePointerDown), i;
+  };
+  /**
+   * Repositions the resize handles around an element based on the provided handle style.
+   *
+   * @param handleStyle - Optional style object containing width and height properties for the handles.
+   *                      If provided, the handles are offset by half their width and height to center them.
+   *                      If not provided, default offsets of '0px' are used.
+   *
+   * The method updates the `left`, `right`, `top`, and `bottom` CSS properties of the four handles
+   * (`_topLeftHandle`, `_topRightHandle`, `_bottomRightHandle`, `_bottomLeftHandle`) to ensure they are
+   * correctly positioned relative to the element being resized.
+   */
+  _repositionHandles = (t) => {
+    const e = t?.width ? `${-parseFloat(t.width) / 2}px` : "0px", i = t?.height ? `${-parseFloat(t.height) / 2}px` : "0px", { style: s } = this._topLeftHandle;
+    s.left = e, s.top = i;
+    const { style: o } = this._topRightHandle;
+    o.right = e, o.top = i;
+    const { style: n } = this._bottomRightHandle;
+    n.right = e, n.bottom = i;
+    const { style: r } = this._bottomLeftHandle;
+    r.left = e, r.bottom = i;
+  };
+  /**
+   * Sets the cursor style for the document body and all its children.
+   * When a non-empty value is provided, it applies the specified cursor style
+   * globally by injecting a style element into the document head.
+   * When an empty value is provided, it removes the previously injected style element,
+   * reverting the cursor to its default behavior.
+   *
+   * @param value - The CSS cursor value to apply (e.g., 'pointer', 'col-resize').
+   */
+  _setCursor = (t) => {
+    if (!document.body) {
+      console.warn("ResizeAction: Cannot set cursor - document.body is null");
+      return;
+    }
+    try {
+      t ? (this._dragCursorStyle.innerHTML = `body, body * { cursor: ${t} !important; }`, document.head.contains(this._dragCursorStyle) || document.head.appendChild(this._dragCursorStyle)) : document.head.contains(this._dragCursorStyle) && document.head.removeChild(this._dragCursorStyle);
+    } catch (e) {
+      console.error("ResizeAction: Error setting cursor style:", e);
+    }
+  };
+  /**
+   * Activates or deactivates the resize mode for the target element.
+   * 
+   * When activated, prepares the target for resizing by determining the resize mode (absolute or relative),
+   * calculating editor and target dimensions, handling aspect ratio logic, and displaying size information.
+   * When deactivated, applies the finalized width to the _target, updates toolbar button states, sets style attributes,
+   * clears cached natural width, updates the formatter, and hides the size info box.
+   * 
+   * @param activate - If `true`, activates resize mode; if `false`, finalizes and deactivates resize mode.
+   */
+  _resizeMode = (t) => {
+    if (t) {
+      if (this._hasResized = false, this._formattedWidth = "", this._target) {
+        this._useRelativeSize = this.formatter._useRelative(this._target), this._editorStyle = getComputedStyle(this.formatter.quill.root), this._editorWidth = this.formatter.quill.root.clientWidth - parseFloat(this._editorStyle.paddingLeft) - parseFloat(this._editorStyle.paddingRight);
+        const e = this._target.getBoundingClientRect();
+        if ((e.height === void 0 || e.height === 0) && (e.height = this._target.clientHeight + 1), this._preDragWidth = e.width, this._computedAspectRatio = getComputedStyle(this._target).aspectRatio || "auto", this._calculatedAspectRatio = e.width / e.height, this._useRelativeSize)
+          this._isUnclickable && this._computedAspectRatio === "auto" && (this._target.style.aspectRatio = this.formatter.options.video.defaultAspectRatio, console.warn(
+            `No iframe aspect-ratio set. Set an aspect ratio either via custom blot or css.
+Using temporary aspect ratio "${this.formatter.options.video.defaultAspectRatio}"`
+          ));
+        else if (this._isUnclickable && this._computedAspectRatio !== "auto") {
+          const i = this._computedAspectRatio.match(/(\d+)\s*\/\s*(\d+)/);
+          if (i)
+            try {
+              this._calculatedAspectRatio = parseFloat(i[1]) / parseFloat(i[2]);
+            } catch {
+            }
+        }
+        this._isImage && !this._useRelativeSize && !this._isSVG && this.formatter.options.resize.imageOversizeProtection && (this._naturalWidth = this._target.naturalWidth), this._showSizeInfo(true, e.width, e.height), this.debug && console.debug("ResizeAction resize mode activated:", {
+          target: this._target,
+          useRelativeSize: this._useRelativeSize,
+          editorWidth: this._editorWidth,
+          preDragWidth: this._preDragWidth,
+          aspectRatio: this._calculatedAspectRatio,
+          computedAspectRatio: this._computedAspectRatio
+        });
+      }
+    } else {
+      if (this._target && this._hasResized) {
+        let e = this._roundDimension(this._formattedWidth);
+        this._target.setAttribute("width", e), this.formatter.toolbar.buttons.resizeMode && (this.formatter.toolbar.buttons.resizeMode.selected = this.isRelative), this._isUnclickable ? (this._target.style.setProperty("--resize-width", `${e}`), this._target.dataset.relativeSize = `${this.isRelative}`) : this.isAligned && this._target.parentElement && (this._target.parentElement.style.setProperty("--resize-width", `${e}`), this._target.parentElement.dataset.relativeSize = `${this.isRelative}`), this.debug && console.debug("ResizeAction resize mode deactivated:", {
+          target: this._target,
+          width: e,
+          isRelative: this.isRelative,
+          isAligned: this.isAligned
+        });
+      }
+      this._naturalWidth = void 0, this.formatter.update(), this._showSizeInfo(false);
+    }
+  };
+  /**
+   * Handles the pointer down event on a resize handle.
+   * 
+   * Initiates the resize mode, sets up the drag handle, and stores the starting X position.
+   * Adds event listeners for pointer move and pointer up to enable drag behavior.
+   * 
+   * @param event - The pointer event triggered when the user presses down on a resize handle.
+   */
+  _onHandlePointerDown = (t) => {
+    this._resizeMode(true), t.target instanceof HTMLElement && this._target && (this._dragHandle = t.target, this._setCursor(this._dragHandle.style.cursor), this._dragStartX = t.clientX, document.addEventListener("pointermove", this._onHandleDrag), document.addEventListener("pointerup", this._onHandlePointerUp));
+  };
+  /**
+   * Handles the drag event for a resize handle, updating the target element's width.
+   *
+   * Calculates the new width based on the pointer's movement and the initial drag position.
+   * Ensures the new width stays within the editor's bounds and does not shrink below the minimum allowed width.
+   * Applies the new width to both the target element and its overlay.
+   *
+   * @param event - The pointer event triggered during dragging.
+   */
+  _onHandleDrag = (t) => {
+    if (!this._target || !this._dragHandle) return;
+    this._hasResized = true;
+    const e = t.clientX - this._dragStartX, i = this._dragHandle === this._topLeftHandle || this._dragHandle === this._bottomLeftHandle, s = Math.round(
+      i ? this._preDragWidth - e : this._preDragWidth + e
+    ), o = Math.max(
+      Math.min(s, this._editorWidth),
+      this.formatter.options.resize.minimumWidthPx
+    );
+    this._resizeTarget(o);
+  };
+  /**
+   * Handles the pointer up event on the resize handle.
+   * 
+   * This method disables resize mode, resets the cursor style,
+   * and removes the event listeners for pointer movement and pointer up events.
+   * It is typically called when the user releases the pointer after resizing.
+   */
+  _onHandlePointerUp = () => {
+    this._setCursor(""), this._resizeMode(false), document.removeEventListener("pointermove", this._onHandleDrag), document.removeEventListener("pointerup", this._onHandlePointerUp);
+  };
+  /**
+   * Handles the touch start event on the overlay element.
+   * If the overlay itself is the _target, enables resize mode.
+   * When two fingers touch the target element, prevents default scrolling,
+   * calculates the initial distance between the fingers for pinch-to-resize,
+   * and stores the initial width of the target element.
+   *
+   * @param event - The touch event triggered on the overlay.
+   */
+  _onOverlayTouchStart = (t) => {
+    t.target === this.formatter.overlay && (this._resizeMode(true), this._target && t.touches.length === 2 && (t.preventDefault(), this._pinchStartDistance = this._calculateDistance(t.touches[0], t.touches[1]), this._preDragWidth = this._target.clientWidth));
+  };
+  /**
+   * Handles touch move events on the overlay for resizing the target element via pinch gestures.
+   *
+   * When two fingers are detected on the overlay, calculates the distance between them to determine
+   * the scale factor for resizing. The new width is constrained between a minimum of 10px and the
+   * maximum editor width. Prevents default touch behavior such as scrolling during the gesture.
+   *
+   * @param event - The touch event triggered by user interaction.
+   */
+  _onOverlayTouchMove = (t) => {
+    if (t.target === this.formatter.overlay && this._target && t.touches.length === 2 && this._pinchStartDistance !== null && this._preDragWidth !== null && (t.preventDefault(), this._target)) {
+      this._hasResized = true;
+      const i = this._calculateDistance(t.touches[0], t.touches[1]) / this._pinchStartDistance;
+      let s = Math.round(this._preDragWidth * i);
+      s = Math.max(Math.min(s, this._editorWidth), 10), this._resizeTarget(s);
+    }
+  };
+  /**
+   * Handles the touch end event on the overlay element.
+   * If the touch event's target is the formatter's overlay, it disables resize mode.
+   *
+   * @param event - The touch event triggered on the overlay.
+   */
+  _onOverlayTouchEnd = (t) => {
+    t.target === this.formatter.overlay && this._resizeMode(false);
+  };
+  /**
+   * Handles the mouse down event on the overlay element.
+   * If the event target is the formatter's overlay, enables resize mode.
+   *
+   * @param event - The mouse event triggered by the user interaction.
+   */
+  _onOverlayMouseDown = (t) => {
+    t.target === this.formatter.overlay && this._resizeMode(true);
+  };
+  /**
+   * Handles the mouse up event on the overlay element.
+   * If the event target is the formatter's overlay, it disables resize mode.
+   *
+   * @param event - The mouse event triggered when the user releases the mouse button.
+   */
+  _onOverlayMouseUp = (t) => {
+    t.target === this.formatter.overlay && this._resizeMode(false);
+  };
+  /**
+   * Resizes the target element to the specified width, maintaining aspect ratio and updating related UI elements.
+   *
+   * - Limits the new width if image oversize protection is enabled.
+   * - Calculates the new height based on the aspect ratio.
+   * - Updates the size information display.
+   * - Sets the new width and height attributes on the target element.
+   * - Applies the width style property to the wrapper if the image is aligned.
+   * - Handles special cases for unclickable elements and absolute sizing.
+   * - Triggers an update to the overlay position.
+   *
+   * @param newWidth - The desired new width for the target element.
+   */
+  _resizeTarget = (t) => {
+    if (!this._target) {
+      console.warn("ResizeAction: Cannot resize - target element is null");
+      return;
+    }
+    try {
+      t = Math.min(this._naturalWidth ?? 1 / 0, t);
+      const e = t / this._calculatedAspectRatio;
+      this._updateSizeInfo(t, e), this.formatter._useRelative(this._target) ? this._formattedWidth = `${100 * t / this._editorWidth}%` : this._formattedWidth = `${t}px`, this._target.setAttribute("width", this._formattedWidth), this._target.setAttribute("height", "auto"), this._isUnclickable ? (!this._useRelativeSize && this._computedAspectRatio === "auto" && this._target.setAttribute("height", `${e | 0}px`), this._target.style.setProperty("--resize-width", this._formattedWidth)) : (this.isAligned && this._target.parentElement && this._target.parentElement.style.setProperty("--resize-width", this._formattedWidth), !this._useRelativeSize && !this.formatter.options.image.autoHeight && this._target.setAttribute("height", `${e | 0}px`)), this.formatter.update();
+    } catch (e) {
+      console.error("ResizeAction: Error resizing target element:", e);
+    }
+  };
+  /**
+   * Shows or hides the size information box for the formatter.
+   *
+   * When `show` is `true`, cancels any existing size info timer, updates the size info
+   * if `width` and `height` are provided, and makes the size info box visible.
+   * When `show` is `false`, fades out and closes the size info box.
+   *
+   * @param show - Whether to show (`true`) or hide (`false`) the size info box.
+   * @param width - The width to display in the size info box (optional).
+   * @param height - The height to display in the size info box (optional).
+   */
+  _showSizeInfo = (t, e = null, i = null) => {
+    t ? (this._cancelSizeInfoTimer(), e !== null && i !== null && this._updateSizeInfo(e, i), this.formatter.sizeInfo.style.transition = "", this.formatter.sizeInfo.style.opacity = "1") : this._closeSizeInfo();
+  };
+  /**
+   * Updates the size information display for the selected blot.
+   *
+   * - Rounds the provided width and height to the nearest integer.
+   * - Formats the size string as "width x height px".
+   * - If the size is relative, displays the percentage relative to the editor width,
+   *   with the actual pixel size in brackets.
+   * - If the size is absolute and the blot has not been resized:
+   *   - If the target element has a `width` attribute that differs from the displayed width,
+   *     shows the attribute value and its calculated height, with the displayed size in brackets.
+   *   - If the target is an image and its natural dimensions differ from the displayed size,
+   *     shows the natural dimensions with the displayed size in brackets.
+   * - Updates the `sizeInfo` element in the formatter with the computed size string.
+   *
+   * @param width - The displayed width of the blot.
+   * @param height - The displayed height of the blot.
+   */
+  _updateSizeInfo = (t, e) => {
+    const i = Math.round(t), s = Math.round(e);
+    let o = `${i} x ${s}px`;
+    if (this.isRelative)
+      o = `${Math.round(100 * t / this._editorWidth)}% (${o})`;
+    else if (!this._hasResized && this._target) {
+      const n = this._target.getAttribute("width");
+      if (n) {
+        const r = parseFloat(n);
+        if (r !== t) {
+          const l = t / e, p = Math.round(r / l);
+          o = `${n} x ${p}px (${o})`;
+        }
+      } else if (this._target instanceof HTMLImageElement) {
+        const { naturalWidth: r, naturalHeight: l } = this._target;
+        r !== t && (o = `${r} x ${l}px (${o})`);
+      }
+    }
+    this.formatter.sizeInfo.innerText = o;
+  };
+  get isRelative() {
+    return this._target?.getAttribute("width")?.endsWith("%") || false;
+  }
+  get isAligned() {
+    return this._target ? this._target.hasAttribute("data-blot-align") : false;
+  }
+  /**
+   * Creates a toolbar button for toggling the resize mode.
+   *
+   * The button is initialized with a unique identifier, a click handler, and toolbar options.
+   * The `preselect` property is set to indicate whether the resize mode is currently relative.
+   *
+   * @returns {ToolbarButton} The configured resize mode toolbar button.
+   */
+  _createResizeModeButton = () => {
+    const t = new A(
+      "resizeMode",
+      this._onResizeModeClickHandler,
+      this.formatter.options.toolbar
+    );
+    return t.preselect = () => this.isRelative, t;
+  };
+  /**
+   * Handles the click event for the resize mode control.
+   * Stops the event from propagating further and swaps the resize mode.
+   *
+   * @param event - The event object triggered by the click.
+   */
+  _onResizeModeClickHandler = (t) => {
+    t.stopImmediatePropagation(), this._swapResizeMode(true);
+  };
+  /**
+   * Swaps the resize mode of the target element between relative (percentage-based) and absolute (pixel-based) sizing.
+   * Updates the _target's width and height attributes, as well as relevant CSS custom properties and data attributes,
+   * depending on the current resize mode and alignment. Also updates the toolbar button state and optionally displays
+   * size information.
+   *
+   * @param showInfo - If true, displays size information after resizing.
+   */
+  _swapResizeMode = (t = false) => {
+    if (this._target) {
+      const e = this._target.getBoundingClientRect();
+      this._editorStyle = getComputedStyle(this.formatter.quill.root), this._editorWidth = this.formatter.quill.root.clientWidth - parseFloat(this._editorStyle.paddingLeft) - parseFloat(this._editorStyle.paddingRight);
+      let i, s;
+      this.isRelative ? (i = `${Math.round(e.width)}px`, s = this.formatter.options.image.autoHeight ? "auto" : `${Math.round(e.height)}px`) : (i = `${Math.round(100 * e.width / this._editorWidth)}%`, s = "auto"), this._target.setAttribute("width", `${i}`), this._target.setAttribute("height", `${s}`), this.formatter.currentSpec?.isUnclickable ? (this._target.style.setProperty("--resize-width", `${i}`), this._target.dataset.relativeSize = `${this.isRelative}`) : this.isAligned && this._target.parentElement && (this._target.parentElement.style.setProperty("--resize-width", `${i}`), this._target.parentElement.dataset.relativeSize = `${this.isRelative}`), this.formatter.toolbar.buttons.resizeMode.selected = this.isRelative, this.formatter.update(), t && (this._showSizeInfo(true, e.width, e.height), this._showSizeInfo(false)), this.debug && console.debug("ResizeAction resize mode swapped:", {
+        target: this._target,
+        newWidth: i,
+        isRelative: this.isRelative,
+        isAligned: this.isAligned
+      });
+    }
+  };
+  /**
+   * Initiates a timer to fade out the size information element after a delay.
+   * Sets the opacity of the `sizeInfo` element to 0 with a transition effect after 1 second.
+   * Stores the timer ID in `_sizeInfoTimerId` for potential future reference or cancellation.
+   */
+  _closeSizeInfo = () => {
+    this._sizeInfoTimerId = setTimeout(() => {
+      this.formatter.sizeInfo.style.transition = "opacity 1s", this.formatter.sizeInfo.style.opacity = "0";
+    }, 1e3);
+  };
+  /**
+   * Cancels the active size info timer, if one exists.
+   * Clears the timeout associated with `_sizeInfoTimerId` and resets the timer ID to `null`.
+   */
+  _cancelSizeInfoTimer = () => {
+    this._sizeInfoTimerId !== null && (clearTimeout(this._sizeInfoTimerId), this._sizeInfoTimerId = null);
+  };
+  /**
+   * Calculates the Euclidean distance between two touch points.
+   *
+   * @param touch1 - The first touch point.
+   * @param touch2 - The second touch point.
+   * @returns The distance in pixels between the two touch points.
+   */
+  _calculateDistance = (t, e) => {
+    const i = e.clientX - t.clientX, s = e.clientY - t.clientY;
+    return Math.sqrt(i * i + s * s);
+  };
+  /**
+   * Rounds the numeric part of a dimension string to the nearest integer, preserving any prefix or suffix.
+   *
+   * Examples:
+   * - '-$34.565c' becomes '-$35c'
+   * - '21.244px' becomes '21px'
+   *
+   * @param dim - The dimension string containing a number and optional prefix/suffix.
+   * @returns The dimension string with the numeric part rounded to the nearest integer.
+   */
+  _roundDimension = (t) => t.replace(/([^0-9.-]*)(-?[\d.]+)(.*)/, (e, i, s, o) => `${i}${Math.round(Number(s))}${o}`);
+  /**
+   * Determines whether the target image is an SVG image.
+   *
+   * Checks if the target is an HTMLImageElement and then verifies:
+   * - If the image source is a data URL, it checks for the 'image/svg+xml' MIME type.
+   * - Otherwise, it checks if the image source URL ends with '.svg'.
+   *
+   * @returns {boolean} True if the target image is an SVG, otherwise false.
+   */
+  _isSvgImage = () => this._target instanceof HTMLImageElement ? this._target.src.startsWith("data:image/") ? this._target.src.includes("image/svg+xml") : this._target.src.endsWith(".svg") : false;
+};
+var I = class {
+  // abstract class for Blot specifications
+  formatter;
+  isUnclickable = false;
+  constructor(t) {
+    this.formatter = t;
+  }
+  /**
+   * Initializes the blot specification.
+   *
+   * This method is intended to perform any setup required for the blot spec.
+   * It can be overridden by subclasses to provide specific initialization logic.
+   * 
+   */
+  init = () => {
+  };
+  /**
+   * Returns an array of `Action` instances based on the formatter's configuration options.
+   * 
+   * The returned actions may include:
+   * - `AlignAction` if aligning is allowed (`options.align.allowAligning`)
+   * - `ResizeAction` if resizing is allowed (`options.resize.allowResizing`)
+   * - `DeleteAction` if keyboard deletion is allowed (`options.delete.allowKeyboardDelete`)
+   * - Always includes `CaretAction`
+   *
+   * It can be overridden by subclasses to provide additional actions specific to the blot type.
+   * 
+   * @returns {Array<Action>} An array of enabled `Action` objects for the current formatter.
+   */
+  getActions() {
+    const t = [];
+    return this.formatter.options.align.allowAligning && t.push(new P(this.formatter)), this.formatter.options.resize.allowResizing && t.push(new U(this.formatter)), this.formatter.options.delete.allowKeyboardDelete && t.push(new F(this.formatter)), t.push(new _(this.formatter)), t;
+  }
+  /**
+   * Returns the target HTML element associated with this blot.
+   * 
+   * This method is intended to be overridden by subclasses to provide the specific target element
+   * for the blot type.
+   *
+   * @returns {HTMLElement | null} The target element, or `null` if none exists.
+   */
+  getTargetElement = () => null;
+  /**
+   * Retrieves the target blot associated with the current selection.
+   *
+   * This method first obtains the target DOM element using `getTargetElement()`.
+   * If a target element exists, it uses the Quill instance to find and return the corresponding blot.
+   * If no target element is found, it returns `null`.
+   * 
+   * @remarks
+   * This method uses the quill instance constructor to overcome issue encountered with `Quill.find()`
+   * with certain environments where the `Quill` global differs from the one used in the quill instance.
+   * In those cases, the `find()` method will always return `null`. These environments include: vite,
+   * react and angular.
+   *
+   * @returns {Blot | null} The blot corresponding to the target element, or `null` if not found.
+   */
+  getTargetBlot = () => {
+    const t = this.getTargetElement();
+    return t ? this.formatter.Quill.find(t) : null;
+  };
+  /**
+   * Returns the overlay element associated with the blot.
+   * 
+   * @returns {HTMLElement | null} The overlay element, or `null` if none exists.
+   */
+  getOverlayElement = () => this.getTargetElement();
+  /**
+   * Clears the current selection in the Quill editor by setting it to `null`.
+   * This effectively removes any active text selection.
+   *
+   * @remarks
+   * Useful for resetting the editor's selection state, such as after formatting actions.
+   */
+  setSelection = () => {
+    this.formatter.quill.setSelection(null);
+  };
+  /**
+   * Callback invoked when the blot is hidden.
+   * Override this method to implement custom hide behavior.
+   */
+  onHide = () => {
+  };
+};
+var V = "blot-formatter__proxy-image";
+var X = class extends I {
+  selector;
+  unclickable;
+  proxyContainer;
+  unclickableProxies;
+  isUnclickable = true;
+  constructor(t) {
+    super(t), this.selector = t.options.video.selector, this.unclickable = null, this.proxyContainer = this._createProxyContainer(), this.unclickableProxies = {};
+  }
+  /**
+   * Initializes event listeners and observers for unclickable blot proxies.
+   * - Sets up a listener for Quill's 'text-change' event to handle updates.
+   * - Adds a scroll event listener to the Quill root to reposition proxy images when scrolling occurs.
+   * - Observes editor resize events to maintain correct proxy positioning.
+   */
+  init = () => {
+    this.formatter.quill.on("text-change", this._onTextChange), this.formatter.quill.root.addEventListener("scroll", () => {
+      this._repositionProxyImages();
+    }), this._observeEditorResize();
+  };
+  /**
+   * Observes the Quill editor's root element for resize events and triggers repositioning
+   * of proxy images when the editor's dimensions change (e.g., due to screen resize or editor grow/shrink).
+   * Uses a debounced approach to avoid excessive repositioning by waiting 200ms after the last resize event.
+   *
+   * @remarks
+   * This method sets up a `ResizeObserver` on the editor's root element and calls
+   * `_repositionProxyImages` whenever a resize is detected, with debouncing to improve performance.
+   */
+  _observeEditorResize = () => {
+    let t = null;
+    new ResizeObserver((i) => {
+      for (const s of i)
+        t && clearTimeout(t), t = window.setTimeout(() => {
+          this._repositionProxyImages();
+        }, 200);
+    }).observe(this.formatter.quill.root);
+  };
+  /**
+   * Returns the target HTML element associated with this instance.
+   * 
+   * @returns {HTMLElement | null} The unclickable HTML element, or `null` if not set.
+   */
+  getTargetElement = () => this.unclickable;
+  /**
+   * Returns the overlay HTML element associated with the blot, or `null` if none exists.
+   *
+   * @returns {HTMLElement | null} The unclickable overlay element, or `null` if not set.
+   */
+  getOverlayElement = () => this.unclickable;
+  /**
+   * Handles changes to the text content within the Quill editor.
+   *
+   * This method performs the following actions:
+   * 1. Checks if any "unclickable" elements tracked by proxies have been deleted from the editor.
+   *    If so, it removes their corresponding proxy images and cleans up the tracking object.
+   * 2. Searches for new "unclickable" elements that do not yet have a proxy image and creates proxies for them.
+   * 3. Repositions all proxy images to ensure they are correctly aligned with their associated elements.
+   *
+   * This method is intended to be called whenever the editor's content changes to keep proxy images in sync.
+   */
+  _onTextChange = () => {
+    Object.entries(this.unclickableProxies).forEach(([t, { unclickable: e, proxyImage: i }]) => {
+      try {
+        this.formatter.quill.root.contains(e) || (i.remove(), delete this.unclickableProxies[t]);
+      } catch {
+      }
+    }), this.formatter.quill.root.querySelectorAll(`${this.selector}:not([data-blot-formatter-id])`).forEach((t) => {
+      this._createUnclickableProxyImage(t);
+    }), this._repositionProxyImages();
+  };
+  /**
+   * Creates a transparent proxy image overlay for an unclickable HTML element.
+   * The proxy image is linked to the unclickable element via a randomly generated ID,
+   * which is stored in the element's dataset and used as a key in the `unclickableProxies` record.
+   * The proxy image is styled to be absolutely positioned and unselectable, and is appended to the proxy container.
+   * Event listeners are attached to the proxy image to handle click, context menu, wheel, and touch events,
+   * allowing interaction to be managed or passed through as needed.
+   *
+   * @param unclickable - The target HTMLElement to overlay with a transparent proxy image.
+   */
+  _createUnclickableProxyImage = (t) => {
+    const e = Array.from(
+      crypto.getRandomValues(new Uint8Array(5)),
+      (r) => String.fromCharCode(97 + r % 26)
+    ).join("");
+    t.dataset.blotFormatterId = e;
+    const i = document.createElement("canvas"), s = i.getContext("2d");
+    s && (s.globalAlpha = 0, s.fillRect(0, 0, 1, 1));
+    const o = document.createElement("img");
+    o.src = i.toDataURL("image/png"), o.classList.add(V), o.dataset.blotFormatterId = e;
+    const n = {
+      ...this.formatter.options.video.proxyStyle,
+      position: "absolute",
+      margin: "0",
+      userSelect: "none"
+    };
+    Object.assign(o.style, n), o.style.setProperty("-webkit-user-select", "none"), o.style.setProperty("-moz-user-select", "none"), o.style.setProperty("-ms-user-select", "none"), this.formatter.options.debug && o.style.setProperty("border", "3px solid red"), this.proxyContainer.appendChild(o), o.addEventListener("click", this._onProxyImageClick), o.addEventListener("contextmenu", (r) => {
+      r.stopPropagation(), r.preventDefault();
+    }), o.addEventListener("wheel", this.formatter._passWheelEventThrough), o.addEventListener("touchstart", this.formatter._onTouchScrollStart, { passive: false }), o.addEventListener("touchmove", this.formatter._onTouchScrollMove, { passive: false }), this.unclickableProxies[e] = {
+      unclickable: t,
+      proxyImage: o
+    }, this.formatter.options.debug && console.debug("UnclickableBlotSpec created proxy for unclickable:", t, "with ID:", e, "and proxy image:", o);
+  };
+  /**
+   * Repositions proxy images to overlay their corresponding "unclickable" elements
+   * within the Quill editor container. Calculates each unclickable element's position
+   * relative to the container, accounting for scroll offsets, and updates the proxy image's
+   * style properties (`left`, `top`, `width`, `height`) accordingly.
+   *
+   * Handles errors gracefully by logging any issues encountered during positioning.
+   *
+   * @private
+   */
+  _repositionProxyImages = () => {
+    if (Object.keys(this.unclickableProxies).length > 0) {
+      const t = this.formatter.quill.container.getBoundingClientRect(), e = this.formatter.quill.container.scrollLeft, i = this.formatter.quill.container.scrollTop;
+      Object.entries(this.unclickableProxies).forEach(([s, { unclickable: o, proxyImage: n }]) => {
+        try {
+          const r = o.getBoundingClientRect();
+          Object.assign(
+            n.style,
+            {
+              // display: 'block',
+              left: `${r.left - t.left - 1 + e}px`,
+              top: `${r.top - t.top + i}px`,
+              width: `${r.width}px`,
+              height: `${r.height}px`
+            }
+          );
+        } catch (r) {
+          const l = `Error positioning proxy image with id ${s}: `;
+          console.error(l, `${r instanceof Error ? r.message : r}`);
+        }
+      });
+    }
+  };
+  /**
+   * Handles click events on proxy images representing unclickable blots.
+   * Retrieves the associated unclickable blot using the proxy's dataset ID,
+   * updates the `unclickable` property, and displays the formatter overlay.
+   *
+   * @param event - The mouse event triggered by clicking the proxy image.
+   */
+  _onProxyImageClick = (t) => {
+    const i = t.target.dataset.blotFormatterId;
+    this.unclickable = this.unclickableProxies[`${i}`].unclickable, this.formatter.show(this);
+  };
+  /**
+   * Creates a proxy container element (`div`) with the class 'proxy-container' and appends it
+   * to the Quill editor's container. This container is used to hold all proxy images.
+   *
+   * @returns {HTMLElement} The newly created proxy container element.
+   * @private
+   */
+  _createProxyContainer = () => {
+    const t = document.createElement("div");
+    return t.classList.add("proxy-container"), this.formatter.quill.container.appendChild(t), t;
+  };
+};
+var Y = class extends X {
+  constructor(t) {
+    super(t);
+  }
+};
+var K = class extends v {
+  modal;
+  targetElement = null;
+  currentBlot = null;
+  constructor(t) {
+    super(t), this.toolbarButtons = [
+      new A(
+        "attribute",
+        this._onClickHandler,
+        this.formatter.options.toolbar
+      )
+    ], this.modal = this._createModal();
+  }
+  /**
+   * Initializes the target element and current blot for the action.
+   * Retrieves the target element and blot from the current formatter specification.
+   *
+   * @remarks
+   * This method should be called when the action is created to ensure
+   * that the necessary references are set up for further processing.
+   */
+  onCreate = () => {
+    this.targetElement = this.formatter.currentSpec?.getTargetElement(), this.currentBlot = this.formatter.currentSpec?.getTargetBlot();
+  };
+  /**
+   * Cleans up resources when the action is destroyed.
+   * Sets the target element to null and removes the modal element from the DOM.
+   */
+  onDestroy = () => {
+    this.targetElement = null, this.modal.form.removeEventListener("submit", this._onSubmitHandler), this.modal.form.removeEventListener("cancel", this._hideAltTitleModal), this.modal.element.removeEventListener("pointerdown", this._onPointerDownHandler), this.modal.cancelButton.removeEventListener("click", this._hideAltTitleModal), this.modal.element.remove();
+  };
+  /**
+   * Event handler for click events that triggers the display of the Alt Title modal.
+   * 
+   * @private
+   * @remarks
+   * This handler is assigned to UI elements to allow users to edit or view the Alt Title attribute.
+   */
+  _onClickHandler = () => {
+    this._showAltTitleModal();
+  };
+  /**
+   * Displays the modal for editing the 'alt' and 'title' attributes of the target element.
+   * 
+   * If a target element is present, this method sets the modal's input fields to the current
+   * 'alt' and 'title' attribute values of the target element (or empty strings if not set),
+   * and appends the modal element to the document body.
+   *
+   * @private
+   */
+  _showAltTitleModal = () => {
+    this.targetElement && (this.modal.altInput.value = this.targetElement.getAttribute("alt") || "", this.modal.titleInput.value = this.targetElement.getAttribute("title") || "", document.body.append(this.modal.element), this.formatter.options.debug && console.debug("Showing Alt Title modal for:", this.targetElement));
+  };
+  /**
+   * Hides and removes the alt/title modal from the DOM.
+   *
+   * This method removes the modal's element, effectively closing the modal UI.
+   * It is typically called when the modal should no longer be visible to the user.
+   *
+   * @private
+   */
+  _hideAltTitleModal = () => {
+    this.modal.element.remove();
+  };
+  /**
+   * Updates the `alt` and `title` attributes of the target image element based on user input.
+   * If a title is provided, it sets the `title` attribute; otherwise, it removes it.
+   * Additionally, if an image alignment format is applied, it updates the alignment format
+   * to include the new title value.
+   *
+   * @private
+   */
+  _setAltTitle = () => {
+    if (this.targetElement) {
+      const t = typeof this.modal.altInput.value == "string" ? this.modal.altInput.value : "", e = this.modal.titleInput.value;
+      this.targetElement.setAttribute("alt", t), e ? this.targetElement.setAttribute("title", e) : this.targetElement.removeAttribute("title"), this.formatter.options.debug && console.debug("Setting alt:", t, "title:", e, "on target element:", this.targetElement);
+      const i = this.currentBlot?.parent?.formats()[this.formatter.ImageAlign.attrName]?.align;
+      this.currentBlot && i && (this.formatter.options.debug && console.debug("Updating title of image with alignment:", i), this.currentBlot.parent?.format(this.formatter.ImageAlign.attrName, false), this.currentBlot.format(
+        this.formatter.ImageAlign.attrName,
+        {
+          align: i,
+          title: e
+        }
+      ));
+    }
+  };
+  /**
+   * Creates and configures a modal dialog for editing image `alt` and `title` attributes.
+   *
+   * The modal includes:
+   * - A unique identifier for each instance.
+   * - A form with labeled textareas for `alt` and `title` values.
+   * - Submit and cancel buttons, with customizable icons and styles.
+   * - Event listeners for submitting, cancelling, and closing the modal by clicking outside.
+   *
+   * Styles and labels are sourced from `this.formatter.options.image.altTitleModalOptions` and `this.formatter.options.overlay.labels`.
+   *
+   * @returns {AltTitleModal} An object containing references to the modal element, form, alt and title inputs, and the cancel button.
+   */
+  _createModal = () => {
+    const t = Array.from(
+      crypto.getRandomValues(new Uint8Array(5)),
+      (g) => String.fromCharCode(97 + g % 26)
+    ).join(""), e = document.createElement("div");
+    e.id = `${t}-modal`, e.setAttribute("data-blot-formatter-modal", "");
+    const i = document.createElement("div"), s = document.createElement("form");
+    s.id = `${t}-form`;
+    const o = document.createElement("label");
+    o.setAttribute("for", "alt"), o.textContent = this.formatter.options.overlay.labels?.alt || this.formatter.options.image.altTitleModalOptions.labels.alt;
+    const n = document.createElement("textarea");
+    n.name = "alt", n.rows = 3;
+    const r = document.createElement("label");
+    r.setAttribute("for", "title"), r.textContent = this.formatter.options.overlay.labels?.title || this.formatter.options.image.altTitleModalOptions.labels.title;
+    const l = document.createElement("textarea");
+    l.name = "title", l.rows = 3;
+    const p = document.createElement("div"), m = document.createElement("button");
+    m.type = "submit", m.innerHTML = this.formatter.options.image.altTitleModalOptions.icons.submitButton, p.appendChild(m), s.appendChild(o), s.appendChild(n), s.appendChild(r), s.appendChild(l), s.appendChild(p);
+    const u = document.createElement("button");
+    return u.id = `${t}-cancel`, u.type = "button", u.innerHTML = this.formatter.options.image.altTitleModalOptions.icons.cancelButton, this.formatter.options.image.altTitleModalOptions.styles && (Object.assign(e.style, this.formatter.options.image.altTitleModalOptions.styles.modalBackground), Object.assign(i.style, this.formatter.options.image.altTitleModalOptions.styles.modalContainer), Object.assign(o.style, this.formatter.options.image.altTitleModalOptions.styles.label), Object.assign(n.style, this.formatter.options.image.altTitleModalOptions.styles.textarea), Object.assign(r.style, this.formatter.options.image.altTitleModalOptions.styles.label), Object.assign(l.style, this.formatter.options.image.altTitleModalOptions.styles.textarea), Object.assign(m.style, this.formatter.options.image.altTitleModalOptions.styles.submitButton), Object.assign(u.style, this.formatter.options.image.altTitleModalOptions.styles.cancelButton)), i.appendChild(s), i.appendChild(u), e.appendChild(i), s.addEventListener("submit", this._onSubmitHandler), s.addEventListener("cancel", this._hideAltTitleModal), e.addEventListener("pointerdown", this._onPointerDownHandler), u.addEventListener("click", this._hideAltTitleModal), {
+      element: e,
+      form: s,
+      altInput: n,
+      titleInput: l,
+      cancelButton: u
+    };
+  };
+  _onSubmitHandler = (t) => {
+    t.preventDefault(), this._setAltTitle(), this._hideAltTitleModal();
+  };
+  _onPointerDownHandler = (t) => {
+    t.target === this.modal.element && this._hideAltTitleModal();
+  };
+};
+var w = class _w extends v {
+  options;
+  modal;
+  targetElement = null;
+  imageDetails = null;
+  /**
+   * Determines whether the given HTML element is eligible for image compression.
+   *
+   * Eligibility criteria:
+   * - The element must be an `<img>` tag.
+   * - The image source must be a data URL (`data:image/`).
+   * - The image must not be an SVG (`svg+xml`) or GIF (`gif`).
+   *
+   * @param targetElement - The HTML element to check for compression eligibility.
+   * @returns `true` if the element is an eligible image for compression, otherwise `false`.
+   */
+  static isEligibleForCompression = (t, e = false) => {
+    let i = false;
+    if (t instanceof HTMLImageElement && t.src.startsWith("data:image/")) {
+      const s = t.src.substring(5, t.src.indexOf(";"));
+      i = s !== "svg+xml" && s !== "gif";
+    }
+    return e && console.debug("Image eligibility check:", {
+      element: t,
+      isEligible: i
+    }), i;
+  };
+  constructor(t) {
+    super(t), this.options = this.formatter.options.image.compressorOptions, this.toolbarButtons = [
+      new A(
+        "compress",
+        this._onClickHandler,
+        this.formatter.options.toolbar
+      )
+    ], this.modal = this._createModal();
+  }
+  /**
+   * Initializes the CompressAction by setting the target element and updating the initial visibility
+   * of the first toolbar button based on whether the target element is eligible for compression.
+   *
+   * This method should be called when the action is created. It ensures that the toolbar button
+   * reflects the current eligibility state of the target element.
+   */
+  onCreate = () => {
+    this.targetElement = this.formatter.currentSpec?.getTargetElement();
+    const t = _w.isEligibleForCompression(this.targetElement, this.debug);
+    this.toolbarButtons[0].initialVisibility = t, this.debug && console.debug("CompressAction initialized with target element:", this.targetElement, "is eligible:", t);
+  };
+  /**
+   * Cleans up resources when the action is destroyed.
+   * Sets the target element to null and hides the modal dialog.
+   */
+  onDestroy = () => {
+    this.targetElement = null, this._hideModal(), this.modal.continueButton.removeEventListener("click", this._onContinueClick), this.modal.moreInfoButton.removeEventListener("click", this._onMoreInfoClick), this.modal.cancelButton.removeEventListener("click", this._hideModal), this.modal.element.removeEventListener("pointerdown", this._onBackgroundClick);
+  };
+  /**
+   * Handles the click event for the compress action.
+   * When triggered, it displays the modal dialog for compression options.
+   *
+   * @param event - The click event object.
+   */
+  _onClickHandler = () => {
+    this._showModal();
+  };
+  /**
+   * Displays a modal dialog for image compression if the target element is an image.
+   * If the image can be compressed, shows additional information and appends the modal to the document body.
+   * Otherwise, displays feedback indicating that no compression is possible.
+   *
+   * @private
+   */
+  _showModal = () => {
+    this.targetElement instanceof HTMLImageElement && (this.imageDetails = this._getImageDetails(this.targetElement), this.imageDetails.canCompress ? (this.modal.moreInfoButton.style.visibility = "visible", this.modal.moreInfoText.style.display = "none", document.body.append(this.modal.element)) : this._displayFeedback(this.options.text.nothingToDo));
+  };
+  /**
+   * Removes the modal element from the DOM, effectively hiding the modal.
+   *
+   * @private
+   */
+  _hideModal = () => {
+    this.modal.element.remove();
+  };
+  /**
+   * Parses the `width` and `height` attributes of an HTMLImageElement and returns their numeric values.
+   * Handles values specified in pixels (`px`), percentages (`%`), em/rem units, or plain numbers.
+   * If the attribute is a percentage, uses the maximum width from options if available.
+   * For em/rem units, assumes 16px per unit.
+   * If the height is not specified or cannot be parsed, attempts to calculate it using the aspect ratio
+   * from the image's natural dimensions if width is available.
+   * 
+   * @param img - The HTMLImageElement whose dimensions are to be parsed.
+   * @returns A tuple containing the parsed width and height as numbers, or `null` if parsing fails.
+   */
+  _parseDimensions = (t) => {
+    let e = t.getAttribute("width"), i = t.getAttribute("height"), s = null, o = null;
+    if (e)
+      if (e.toLowerCase().endsWith("px"))
+        s = parseFloat(e);
+      else if (e.endsWith("%"))
+        s = this.options.maxWidth ?? null;
+      else if (e.toLowerCase().endsWith("em") || e.toLowerCase().endsWith("rem"))
+        s = parseFloat(e) * 16;
+      else if (!isNaN(parseFloat(e)))
+        s = parseFloat(e);
+      else
+        return [null, null];
+    if (i)
+      if (!isNaN(parseFloat(i)))
+        o = parseFloat(i);
+      else if (i.toLowerCase().endsWith("px"))
+        o = parseFloat(i);
+      else if (i.toLowerCase().endsWith("em") || i.toLowerCase().endsWith("rem"))
+        o = parseFloat(i) * 16;
+      else if (s && t.naturalWidth > 0 && t.naturalHeight > 0)
+        o = s / (t.naturalWidth / t.naturalHeight);
+      else
+        return [null, null];
+    return [s, o];
+  };
+  /**
+   * Calculates the approximate byte size of an image from its data URL.
+   *
+   * @param img - The HTMLImageElement whose size is to be determined.
+   * @returns The size of the image in bytes if the `src` attribute is a valid base64-encoded data URL,
+   *          or `null` if the `src` is not a valid image data URL or does not contain base64 data.
+   */
+  _getImageSize = (t) => {
+    const e = t.getAttribute("src");
+    if (!e || !e.startsWith("data:image/"))
+      return null;
+    const i = e.split(",")[1];
+    return i ? Math.ceil(i.length * 3 / 4) : null;
+  };
+  /**
+   * Displays a feedback message in the formatter's sizeInfo element.
+   * The message is shown with full opacity, then fades out after 2.5 seconds.
+   *
+   * @param msg - The feedback message to display.
+   */
+  _displayFeedback = (t) => {
+    this.formatter.sizeInfo.innerHTML = t, this.formatter.sizeInfo.style.transition = "", this.formatter.sizeInfo.style.opacity = "1", setTimeout(() => {
+      this.formatter.sizeInfo.style.transition = "opacity 1s", this.formatter.sizeInfo.style.opacity = "0";
+    }, 2500);
+  };
+  /**
+   * Retrieves detailed information about an image element, including its natural and target dimensions,
+   * file size, and whether it is eligible for compression based on the provided options.
+   *
+   * @param img - The HTMLImageElement to extract details from.
+   * @returns An {@link ImageDetails} object containing the image's natural and target dimensions,
+   *          file size, and compression eligibility.
+   */
+  _getImageDetails = (t) => {
+    let [e, i] = this._parseDimensions(t);
+    !e && (this.options.maxWidth ?? 1 / 0) < t.naturalWidth && (e = this.options.maxWidth, i = e / (t.naturalWidth / t.naturalHeight));
+    const s = {
+      naturalWidth: t.naturalWidth,
+      naturalHeight: t.naturalHeight,
+      targetWidth: e,
+      targetHeight: i,
+      size: this._getImageSize(t),
+      canCompress: !!(e && i && e < t.naturalWidth && _w.isEligibleForCompression(t, this.debug))
+    };
+    return this.debug && console.debug("Image details:", {
+      element: t,
+      ...s
+    }), s;
+  };
+  /**
+   * Compresses a given HTMLImageElement by resizing it to target dimensions and reducing its quality.
+   * If compression results in a smaller image, the image's `src` is updated with the compressed data URL.
+   * Displays feedback about the compression result, including size reduction and new dimensions.
+   *
+   * @param img - The HTMLImageElement to compress.
+   * @returns `true` if the compression process was initiated, `false` if image loading failed.
+   *
+   * @remarks
+   * - Compression only occurs if `imageDetails.canCompress` is `true`.
+   * - The image is resized to `imageDetails.targetWidth` and `imageDetails.targetHeight`.
+   * - JPEG quality is determined by `options.jpegQuality`.
+   * - Feedback is displayed using `_displayFeedback`.
+   * - If compression is not possible, a "nothing to do" message is shown.
+   */
+  _compressImage = (t) => {
+    if (this.imageDetails?.canCompress) {
+      const e = new Image();
+      e.src = t.src, e.onload = () => {
+        this.debug && console.debug("Compressing Image Copy loaded:", e);
+        const i = document.createElement("canvas");
+        i.width = this.imageDetails.targetWidth, i.height = this.imageDetails.targetHeight, i.getContext("2d").drawImage(e, 0, 0, i.width, i.height);
+        const o = i.toDataURL("image/jpeg", this.options.jpegQuality), n = new TextEncoder().encode(t.src).length, r = new TextEncoder().encode(o).length;
+        r < n && (t.src = o);
+        const l = `${Math.ceil((this.imageDetails.size - this._getImageSize(t)) / 1024)}kB`, p = `${this.options.text.reducedLabel}: ${l}<br>
+                            ${this.imageDetails.naturalWidth} x ${this.imageDetails.naturalHeight}px \u2192 ${i.width} x ${Math.round(i.height)}px
+                        `;
+        return this.debug && console.debug("Image compressed:", {
+          "original size": n,
+          "resized size": r,
+          "size diff": l,
+          "new dimensions": { width: i.width, height: Math.round(i.height) }
+        }), this._displayFeedback(p), true;
+      }, e.onerror = (i) => (console.error("Image loading failed:", i), this._displayFeedback(`Image loading failed: ${i}`), false);
+    } else
+      this._displayFeedback(this.options.text.nothingToDo);
+    return true;
+  };
+  /**
+   * Creates and configures a modal dialog for the compress action.
+   *
+   * The modal includes a prompt, an optional "more info" section, and three buttons:
+   * Cancel, More Info, and Continue. Styles and content are applied based on the
+   * provided options. Event listeners are attached to handle user interactions:
+   * - Continue: triggers image compression and hides the modal.
+   * - More Info: displays additional information and hides the button.
+   * - Cancel: hides the modal.
+   * - Clicking the background: hides the modal if the background itself is clicked.
+   *
+   * @returns {CompressModal} An object containing the modal background element,
+   *          the "More Info" button, and the "More Info" text element.
+   */
+  _createModal = () => {
+    const t = document.createElement("div");
+    t.setAttribute("data-blot-formatter-compress-modal", "");
+    const e = document.createElement("div"), i = document.createElement("div"), s = document.createElement("div"), o = document.createElement("div"), n = document.createElement("button"), r = document.createElement("button"), l = document.createElement("button");
+    return s.style.display = "none", o.append(n, r, l), e.append(i, s, o), t.appendChild(e), i.innerHTML = this.options.text.prompt, s.innerHTML = this.options.text.moreInfo || "", this.options.styles && (Object.assign(t.style, this.options.styles.modalBackground), Object.assign(e.style, this.options.styles.modalContainer), Object.assign(o.style, this.options.styles.buttonContainer), Object.assign(n.style, { ...this.options.styles.buttons, ...this.options.buttons.cancel.style }), this.options.text.moreInfo ? Object.assign(r.style, { ...this.options.styles.buttons, ...this.options.buttons.moreInfo.style }) : r.style.visibility = "hidden", Object.assign(l.style, { ...this.options.styles.buttons, ...this.options.buttons.continue.style })), n.innerHTML = this.options.icons.cancel, r.innerHTML = this.options.icons.moreInfo, l.innerHTML = this.options.icons.continue, l.addEventListener("click", this._onContinueClick), r.addEventListener("click", this._onMoreInfoClick), n.addEventListener("click", this._hideModal), t.addEventListener("pointerdown", this._onBackgroundClick), {
+      element: t,
+      moreInfoButton: r,
+      cancelButton: n,
+      continueButton: l,
+      moreInfoText: s
+    };
+  };
+  _onContinueClick = () => {
+    this.targetElement instanceof HTMLImageElement && this._compressImage(this.targetElement), this._hideModal();
+  };
+  _onMoreInfoClick = () => {
+    this.modal.moreInfoText.innerHTML = this.options.text.moreInfo || "", this.modal.moreInfoText.style.display = "block", this.modal.moreInfoButton.style.visibility = "hidden";
+  };
+  _onBackgroundClick = (t) => {
+    t.stopImmediatePropagation(), t.target === this.modal.element && (this.debug && console.debug("Modal background clicked, hiding modal"), this._hideModal());
+  };
+};
+var Q = class extends v {
+  targetElement = null;
+  currentBlot = null;
+  toolbarButton;
+  linkOptions;
+  modal;
+  constructor(t) {
+    super(t), this.linkOptions = this.formatter.options.image.linkOptions, this.toolbarButton = new A(
+      "link",
+      this._onClickHandler,
+      this.formatter.options.toolbar
+    ), this.toolbarButton.preselect = () => !!this.getLink(), this.toolbarButtons = [this.toolbarButton], window.LinkAction = this;
+  }
+  /**
+   * Initializes the action by setting the `targetElement` property.
+   * Retrieves the target element from the current formatter specification, if available.
+   * This method is typically called when the action is created.
+   */
+  onCreate = () => {
+    this.targetElement = this.formatter.currentSpec?.getTargetElement(), this.currentBlot = this.formatter.currentSpec?.getTargetBlot();
+  };
+  /**
+   * Cleans up resources when the action is destroyed.
+   * - Sets the target element to null.
+   * - Removes any attached event listeners.
+   * - Hides the link modal if it is visible.
+   */
+  onDestroy = () => {
+    this.targetElement = null, this._removeEventListeners(), this.hideLinkModal();
+  };
+  /**
+   * Attaches all necessary event listeners to the modal elements for handling
+   * link-related actions such as submitting the form, blocking certain key events,
+   * handling input changes, canceling, removing links, and managing background/context menu interactions.
+   *
+   * This method should be called after the modal elements are initialized to ensure
+   * proper event handling within the link modal dialog.
+   * 
+   * @private
+   */
+  _addEventListeners = () => {
+    this.modal && (this.modal.form.addEventListener("submit", this._formSubmitHandler), this.modal.cancelButton.addEventListener("click", this.hideLinkModal), this.modal.removeButton.addEventListener("click", this.removeLink), this.modal.background.addEventListener("click", this._onBackgroundClick), this.modal.input.addEventListener("contextmenu", this._trapContextEvent));
+  };
+  /**
+   * Removes all event listeners attached to the modal elements.
+   * 
+   * This method detaches event handlers from the modal's dialog, form, input,
+   * cancel button, remove button, background, and input context menu to prevent
+   * memory leaks and unintended behavior when the modal is no longer in use.
+   * 
+   * @private
+   */
+  _removeEventListeners = () => {
+    this.modal && (this.modal.form.removeEventListener("submit", this._formSubmitHandler), this.modal.cancelButton.removeEventListener("click", this.hideLinkModal), this.modal.removeButton.removeEventListener("click", this.removeLink), this.modal.background.removeEventListener("click", this._onBackgroundClick), this.modal.input.removeEventListener("contextmenu", this._trapContextEvent));
+  };
+  /**
+   * Prevents the event from propagating further in the event chain.
+   * This method is typically used to trap context menu or similar events,
+   * ensuring that no other event listeners are triggered for the same event.
+   *
+   * @param e - The event to be stopped.
+   */
+  _trapContextEvent = (t) => {
+    t.stopImmediatePropagation();
+  };
+  /**
+   * Event handler that is triggered when the associated element is clicked.
+   * Invokes the `showLinkModal` method to display the link editing modal.
+   *
+   * @private
+   * @remarks
+   * This handler is typically bound to a UI element to allow users to edit or add links.
+   */
+  _onClickHandler = () => {
+    this.showLinkModal();
+  };
+  /**
+   * Handles click events on the modal background.
+   * 
+   * If the click event's target is the modal background, this method prevents the default behavior,
+   * stops the event from propagating further, and hides the link modal.
+   *
+   * @param e - The mouse event triggered by the user's click.
+   */
+  _onBackgroundClick = (t) => {
+    t.target === this.modal?.background && (t.stopImmediatePropagation(), t.preventDefault(), this.hideLinkModal(), this.debug && console.debug("LinkAction modal background clicked, hiding modal"));
+  };
+  /**
+   * Displays the link modal dialog for editing or inserting a link.
+   * 
+   * If a target element is present, this method constructs the modal,
+   * appends it to the formatter's overlay, and sets up necessary event listeners.
+   * The modal is initially hidden to prevent flicker, then shown after being
+   * positioned correctly relative to the target element.
+   *
+   * @returns {void}
+   */
+  showLinkModal = () => {
+    if (this.targetElement) {
+      if (this.modal = this._buildModal(), !this.modal) return;
+      this.formatter.overlay.append(this.modal.dialog, this.modal.background), this._addEventListeners(), this.modal.dialog.style.visibility = "hidden", this.modal.dialog.show(), this._positionModal(this.modal.dialog), this.modal.dialog.style.visibility = "visible", this.modal.input.focus(), this.modal.input.select();
+    }
+  };
+  /**
+   * Builds and returns the modal elements used for editing or inserting a link.
+   *
+   * This method creates a dialog element containing a form with a label, input field for the URL,
+   * and three buttons: OK (submit), Remove, and Cancel. It also creates a background mask element.
+   * All elements are styled and configured according to the `linkOptions` provided to the class.
+   *
+   * @returns An object containing references to the created modal elements:
+   * - `dialog`: The dialog element that serves as the modal container.
+   * - `background`: The background mask element for the modal.
+   * - `form`: The form element inside the dialog.
+   * - `label`: The label element for the input.
+   * - `input`: The input element for entering the link URL.
+   * - `okButton`: The submit button for confirming the link.
+   * - `cancelButton`: The button for cancelling the operation.
+   * - `removeButton`: The button for removing the link.
+   */
+  _buildModal = () => {
+    const t = document.createElement("dialog");
+    t.className = this.linkOptions.modal.dialog.className, t.dataset.blotFormatterModal = "", Object.assign(t.style, this.linkOptions.modal.dialog.style);
+    const e = document.createElement("form");
+    e.method = "dialog", e.className = this.linkOptions.modal.form.className, Object.assign(e.style, this.linkOptions.modal.form.style);
+    const i = document.createElement("label");
+    i.htmlFor = "link-url", i.textContent = this.linkOptions.modal.label.text, i.className = this.linkOptions.modal.label.className, Object.assign(i.style, this.linkOptions.modal.label.style);
+    const s = document.createElement("input");
+    s.type = "url", s.id = "link-url", s.name = "url", s.value = this.getLink() || "", s.select(), s.autofocus = true, s.className = this.linkOptions.modal.input.className, Object.assign(s.style, this.linkOptions.modal.input.style), s.placeholder = this.linkOptions.modal.input.placeholder || "";
+    const o = document.createElement("button");
+    o.type = "submit", o.innerHTML = this.linkOptions.modal.buttons.submit.icon, o.className = this.linkOptions.modal.buttons.submit.className, Object.assign(o.style, this.linkOptions.modal.buttons.submit.style);
+    const n = document.createElement("button");
+    n.type = "button", n.innerHTML = this.linkOptions.modal.buttons.cancel.icon, n.className = this.linkOptions.modal.buttons.cancel.className, Object.assign(n.style, this.linkOptions.modal.buttons.cancel.style);
+    const r = document.createElement("button");
+    r.type = "button", r.innerHTML = this.linkOptions.modal.buttons.remove.icon, r.className = this.linkOptions.modal.buttons.remove.className, Object.assign(r.style, this.linkOptions.modal.buttons.remove.style), e.appendChild(i), e.appendChild(s), e.appendChild(o), e.appendChild(r), e.appendChild(n), t.appendChild(e);
+    const l = document.createElement("div");
+    return l.className = this.linkOptions.modal.background.className || "", Object.assign(l.style, this.linkOptions.modal.background.style), {
+      dialog: t,
+      background: l,
+      form: e,
+      label: i,
+      input: s,
+      okButton: o,
+      cancelButton: n,
+      removeButton: r
+    };
+  };
+  /**
+   * Positions the given dialog element centered over the formatter's overlay,
+   * ensuring it stays within the bounds of the Quill editor root element.
+   *
+   * The method calculates the overlay and Quill root bounding rectangles,
+   * determines the dialog's dimensions, and computes the appropriate
+   * `left` and `top` CSS properties to center the dialog over the overlay.
+   * The horizontal & vertical position is clamped so the dialog does not overflow
+   * the Quill root element.
+   *
+   * @param dialog - The HTMLDialogElement to position.
+   */
+  _positionModal = (t) => {
+    const e = this.formatter.overlay.getBoundingClientRect(), i = this.formatter.quill.root.getBoundingClientRect(), s = t.offsetParent?.getBoundingClientRect() ?? { top: 0, left: 0 }, o = t.offsetWidth, n = t.offsetHeight;
+    let r = e.left + e.width / 2 - o / 2 - s.left, l = e.top + e.height / 2 - n / 2 - s.top;
+    const p = i.left - s.left, m = i.right - o - s.left;
+    r = Math.min(Math.max(r, p), m);
+    const u = i.top - s.top, g = i.bottom - n - s.top;
+    l = Math.min(Math.max(l, u), g), t.style.position = "absolute", t.style.left = `${r}px`, t.style.top = `${l}px`;
+  };
+  /**
+   * Hides and cleans up the link modal dialog.
+   *
+   * This method closes and removes the modal dialog and its background overlay if they exist,
+   * removes any associated event listeners, and resets the modal reference to undefined.
+   */
+  hideLinkModal = () => {
+    this.modal?.dialog?.open && this.modal.dialog.close(), this.modal?.dialog?.remove(), this.modal?.background && this.modal.background.remove(), this._removeEventListeners(), this.modal = void 0;
+  };
+  /**
+   * Handles the form submission event for the link action.
+   * 
+   * Prevents the default form submission behavior, extracts the URL from the form data,
+   * and applies or removes a link on the current blot based on the URL's presence.
+   *
+   * @param event - The form submission event.
+   */
+  _formSubmitHandler = (t) => {
+    t.preventDefault();
+    const e = t.target, s = new FormData(e).get("url").trim();
+    this.debug && console.debug("LinkAction form submitted with URL:", s), this.currentBlot && (s ? this.applyLink(s) : this.removeLink());
+  };
+  /**
+   * Retrieves the link format associated with the current blot, if any.
+   *
+   * @returns {any | null} The link URL if the current blot has a link format, otherwise `null`.
+   *
+   * @remarks
+   * This method checks if the current blot exists and has a DOM node. It then retrieves the index of the blot
+   * in the Quill editor and fetches its formats. If a link format is present, it returns the link value; otherwise, it returns `null`.
+   */
+  getLink = () => {
+    const t = this.currentBlot;
+    if (!t || !t.domNode) return null;
+    const e = this.formatter.quill.getIndex(t), i = this.formatter.quill.getFormat(e, 1, this.formatter.Quill.sources.SILENT);
+    return this.debug && console.debug("LinkAction getLink called, formats:", i), i.link || null;
+  };
+  /**
+   * Removes the link format from the current image blot's parent wrapper, if present.
+   * 
+   * Traverses up the blot hierarchy from the current image blot to find a parent blot
+   * with a 'link' format. If found, it removes the link format from that wrapper.
+   * After removing the link, it hides the link modal and deselects the toolbar button.
+   *
+   * @returns {void}
+   */
+  removeLink = () => {
+    const t = this.currentBlot;
+    if (!t || !t.domNode) return;
+    let e = t.parent;
+    for (; e && typeof e.formats == "function"; ) {
+      if (e.formats().link) {
+        e.format("link", null);
+        break;
+      }
+      e = e.parent;
+    }
+    this.debug && console.debug("LinkAction removeLink called, removed link from blot:", e), this.hideLinkModal(), this.toolbarButton.selected = false;
+  };
+  /**
+   * Applies a link to the current blot if the provided URL is different from the existing link.
+   * Removes any existing link, formats the current blot with the new link, and updates the toolbar button state.
+   * Hides the link modal after applying the link.
+   *
+   * @param url - The URL to apply as a link to the current blot.
+   */
+  applyLink = (t) => {
+    t !== this.getLink() && (this.removeLink(), this.currentBlot?.format("link", t), this.toolbarButton.selected = !!t), this.hideLinkModal();
+  };
+};
+var Z = class extends I {
+  img;
+  constructor(t) {
+    super(t), this.img = null;
+  }
+  /**
+   * Initializes the image spec by attaching a click event listener to the Quill editor's root element.
+   * The event listener triggers the `onClick` handler when the root element is clicked.
+   */
+  init = () => {
+    this.formatter.quill.root.addEventListener("click", this.onClick);
+  };
+  /**
+   * Returns an array of available actions for the image spec, based on the current formatter options and image eligibility.
+   *
+   * The returned actions may include:
+   * - `LinkAction`: If link editing is allowed (`image.linkOptions.allowLinkEdit`).
+   * - `AttributeAction`: If alt/title editing is allowed (`image.allowAltTitleEdit`).
+   * - `CompressAction`: If compression is allowed (`image.allowCompressor`) and the image is eligible for compression.
+   *
+   * @returns {Array<Action>} The list of actions applicable to the current image spec.
+   */
+  getActions = () => {
+    const t = super.getActions();
+    return this.formatter.options.image.linkOptions.allowLinkEdit && t.push(new Q(this.formatter)), this.formatter.options.image.allowAltTitleEdit && t.push(new K(this.formatter)), this.formatter.options.image.allowCompressor && w.isEligibleForCompression(this.img) && t.push(new w(this.formatter)), t;
+  };
+  /**
+   * Returns the target HTML element associated with this instance.
+   *
+   * @returns {HTMLElement | null} The image element if available, otherwise `null`.
+   */
+  getTargetElement = () => this.img;
+  /**
+   * Handles the hide event by resetting the image reference to null.
+   * This is typically called when the overlay should no longer be displayed or interacted with.
+   */
+  onHide = () => {
+    this.img = null;
+  };
+  /**
+   * Handles click events on image elements.
+   * 
+   * If the clicked element is an HTMLImageElement, prevents the default behaviour
+   * (such as opening links), stores a reference to the image, and displays the formatter UI.
+   * 
+   * @param event - The mouse event triggered by the click.
+   */
+  onClick = (t) => {
+    const e = t.target;
+    this.formatter.enabled && e instanceof HTMLImageElement && (t.stopImmediatePropagation(), t.preventDefault(), this.img = e, this.formatter.show(this));
+  };
+};
+var E = '<svg viewBox="0 0 16 16" fill="currentColor" style="height:100%;width:auto"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/></svg>';
+var L = '<svg viewBox="0 0 24 24" fill="currentcolor" style="height:100%;width:auto"><path fill-rule="evenodd" clip-rule="evenodd" d="M 12,24 C 6.34314,24 3.514716,24 1.757364,22.2426 0,20.48532 0,17.6568 0,12 0,6.34314 0,3.514716 1.757364,1.757364 3.514716,0 6.34314,0 12,0 17.6568,0 20.48532,0 22.2426,1.757364 24,3.514716 24,6.34314 24,12 24,17.6568 24,20.48532 22.2426,22.2426 20.48532,24 17.6568,24 12,24 Z M 16.83636,8.363604 c 0.35148,0.351468 0.35148,0.921324 0,1.272756 l -6,6 c -0.35148,0.35148 -0.92124,0.35148 -1.272756,0 l -2.4,-2.4 c -0.351468,-0.35148 -0.351468,-0.92124 0,-1.27272 0.351468,-0.35148 0.921324,-0.35148 1.272792,0 L 10.2,13.72716 15.56364,8.363604 c 0.35148,-0.351468 0.92124,-0.351468 1.27272,0 z" style="stroke-width:1.2" /></svg>';
+var G = '<svg viewBox="0 0 512 512" fill="currentcolor" style="height:100%;width:auto"><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm169.8-90.7c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" /></svg>';
+var J = {
+  specs: [
+    Z,
+    Y
+  ],
+  overlay: {
+    className: "blot-formatter__overlay",
+    style: {
+      position: "absolute",
+      boxSizing: "border-box",
+      border: "1px dashed #444",
+      backgroundColor: "rgba(255, 255, 255, 0.35)",
+      maxWidth: "100%",
+      zIndex: 9999
+    },
+    sizeInfoStyle: {
+      position: "absolute",
+      color: "rgba(255, 255, 255, 0.7)",
+      backgroundColor: "rgba(0, 0, 0, 0.7)",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      padding: "1em",
+      textWrap: "nowrap",
+      fontSize: "1rem",
+      opacity: 0,
+      lineHeight: 1.2
+    }
+  },
+  align: {
+    allowAligning: true,
+    alignments: ["left", "center", "right"]
+  },
+  resize: {
+    allowResizing: true,
+    allowResizeModeChange: false,
+    imageOversizeProtection: false,
+    handleClassName: "blot-formatter__resize-handle",
+    handleStyle: {
+      position: "absolute",
+      height: "12px",
+      width: "12px",
+      backgroundColor: "white",
+      border: "1px solid #777",
+      boxSizing: "border-box",
+      opacity: "0.80",
+      zIndex: 999
+    },
+    useRelativeSize: false,
+    minimumWidthPx: 25
+  },
+  delete: {
+    allowKeyboardDelete: true
+  },
+  toolbar: {
+    icons: {
+      left: '<svg viewbox="0 0 18 18"><line class="ql-stroke" x1="3" x2="15" y1="9" y2="9"></line><line class="ql-stroke" x1="3" x2="13" y1="14" y2="14"></line><line class="ql-stroke" x1="3" x2="9" y1="4" y2="4"></line></svg>',
+      center: '<svg viewbox="0 0 18 18"><line class="ql-stroke" x1="15" x2="3" y1="9" y2="9"></line><line class="ql-stroke" x1="14" x2="4" y1="14" y2="14"></line><line class="ql-stroke" x1="12" x2="6" y1="4" y2="4"></line></svg>',
+      right: '<svg viewbox="0 0 18 18"><line class="ql-stroke" x1="15" x2="3" y1="9" y2="9"></line><line class="ql-stroke" x1="15" x2="5" y1="14" y2="14"></line><line class="ql-stroke" x1="15" x2="9" y1="4" y2="4"></line></svg>',
+      attribute: '<svg viewBox="0 0 24 24" fill="none" class="ql-stroke"><path d="M10 19H12M12 19H14M12 19V5M12 5H6V6M12 5H18V6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+      resizeMode: '<svg viewBox="0 0 24 24" class="ql-stroke"><path d="m 7.7056591,11.853515 q -1.515179,0 -2.4160962,-0.993056 -0.9009172,-1.0032944 -0.9009172,-2.6720388 0,-1.8223098 0.9521057,-2.8665548 0.9521057,-1.0544826 2.5696616,-1.0544826 1.5663674,0 2.426334,0.9725811 0.870204,0.972581 0.870204,2.7334647 0,1.7608836 -0.972581,2.8256044 -0.9623435,1.054482 -2.5287109,1.054482 z M 7.8489868,5.3935293 q -0.9725811,0 -1.5356544,0.7268764 -0.5630732,0.7166387 -0.5630732,1.9758752 0,1.2387612 0.5528356,1.9349241 0.5528355,0.685926 1.5049412,0.685926 0.9623434,0 1.5049413,-0.716639 0.5425978,-0.7166384 0.5425978,-1.9861126 0,-1.2387612 -0.5425978,-1.9246868 Q 8.7806171,5.3935293 7.8489868,5.3935293 Z M 17.533847,4.4926121 8.1151669,19.275845 H 6.6511764 L 16.059619,4.4926121 Z M 16.448651,19.398697 q -1.515179,0 -2.416096,-1.003294 -0.900917,-1.003294 -0.900917,-2.661801 0,-1.82231 0.962343,-2.876793 0.962344,-1.06472 2.559424,-1.06472 1.55613,0 2.426334,0.982819 0.870204,0.982819 0.870204,2.75394 0,1.750646 -0.972581,2.815366 -0.962343,1.054483 -2.528711,1.054483 z m 0.143328,-6.449748 q -0.982819,0 -1.545892,0.716638 -0.552836,0.716639 -0.552836,1.986113 0,1.218286 0.552836,1.914449 0.552835,0.685926 1.504941,0.685926 0.962343,0 1.504941,-0.716639 0.542598,-0.726876 0.542598,-1.986113 0,-1.248998 -0.542598,-1.924686 -0.53236,-0.675688 -1.46399,-0.675688 z" style="fill:currentColor;stroke:currentColor;stroke-width:0.3"/></svg>',
+      compress: '<svg viewBox="0 0 28 28"><path d="m 19.250001,9.3125004 c 0.240623,0 0.437498,0.1968749 0.437498,0.4374991 V 18.49453 l -0.136717,-0.177734 -3.718751,-4.812498 c -0.123046,-0.161329 -0.317188,-0.254297 -0.51953,-0.254297 -0.202345,0 -0.39375,0.09297 -0.519532,0.254297 l -2.269532,2.936715 -0.833984,-1.167577 c -0.123047,-0.172265 -0.319922,-0.273437 -0.533204,-0.273437 -0.213281,0 -0.410156,0.101172 -0.533202,0.276172 l -2.1875003,3.0625 -0.1230462,0.169532 v -0.0082 -8.7500002 c 0,-0.2406242 0.1968749,-0.4374991 0.4374991,-0.4374991 z M 8.7499996,8 C 7.7847663,8 7,8.7847662 7,9.7499995 V 18.5 c 0,0.965233 0.7847663,1.75 1.7499996,1.75 H 19.250001 C 20.215235,20.25 21,19.465233 21,18.5 V 9.7499995 C 21,8.7847662 20.215235,8 19.250001,8 Z M 10.9375,13.250001 a 1.3125025,1.312501 0 1 0 0,-2.625002 1.3125025,1.312501 0 1 0 0,2.625002 z" /><path d="m 25.298508,20 h -3.58209 C 21.286567,20 21,20.286571 21,20.716427 v 3.582131 c 0,0.429856 0.286567,0.716426 0.716418,0.716426 v 0 c 0.429851,0 0.716418,-0.28657 0.716418,-0.716426 v -2.865705 h 2.865672 c 0.429851,0 0.716418,-0.28657 0.716418,-0.716426 C 26.014926,20.286571 25.728359,20 25.298508,20 Z" /><path d="M 6.298508,20 H 2.716418 C 2.2865673,20 2,20.286571 2,20.716427 c 0,0.429856 0.2865673,0.716426 0.716418,0.716426 H 5.58209 v 2.865705 c 0,0.429856 0.286567,0.716426 0.716418,0.716426 v 0 c 0.429851,0 0.716418,-0.28657 0.716418,-0.716426 V 20.716427 C 7.014926,20.286571 6.728359,20 6.298508,20 Z" /><path d="M 6.298507,3 C 5.868656,3 5.582089,3.28657 5.582089,3.716426 V 6.582131 H 2.716417 C 2.286567,6.582131 2,6.868702 2,7.298557 2,7.728413 2.286567,8.014984 2.716417,8.014984 h 3.58209 c 0.429845,0 0.716412,-0.286571 0.716412,-0.716427 V 3.716426 C 7.014919,3.28657 6.728352,3 6.298507,3 Z" /><path d="m 21.716418,8.014984 h 3.582089 c 0.429851,0 0.716418,-0.286571 0.716418,-0.716427 0,-0.429855 -0.286567,-0.716426 -0.716418,-0.716426 H 22.432836 V 3.716426 C 22.432836,3.28657 22.146269,3 21.716418,3 21.286567,3 21,3.28657 21,3.716426 v 3.582131 c 0,0.429856 0.286567,0.716427 0.716418,0.716427 z" /></svg>',
+      link: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" style="fill: none;stroke: #444;stroke-linecap: round;stroke-linejoin: round;stroke-width: 1.5;"><line x1="7" x2="11" y1="7" y2="11"/><path class="ql-even" d="M8.9,4.577a3.476,3.476,0,0,1,.36,4.679A3.476,3.476,0,0,1,4.577,8.9C3.185,7.5,2.035,6.4,4.217,4.217S7.5,3.185,8.9,4.577Z"/><path class="ql-even" d="M13.423,9.1a3.476,3.476,0,0,0-4.679-.36,3.476,3.476,0,0,0,.36,4.679c1.392,1.392,2.5,2.542,4.679.36S14.815,10.5,13.423,9.1Z"/></svg>'
+    },
+    tooltips: {
+      left: "Align Left",
+      center: "Align Center",
+      right: "Align Right",
+      attribute: "Set Alt/Title",
+      resizeMode: "Use Relative (%)/Absolute (px) Sizing",
+      compress: "Compress Image",
+      link: "Add/Edit Link"
+    },
+    mainClassName: "blot-formatter__toolbar",
+    mainStyle: {
+      position: "absolute",
+      display: "flex",
+      top: "0",
+      right: "0",
+      left: "0",
+      transform: "translateY(-50%)",
+      justifyContent: "center",
+      flexWrap: "wrap",
+      color: "#333",
+      zIndex: "1"
+    },
+    buttonClassName: "blot-formatter__toolbar-button",
+    buttonStyle: {
+      display: "inline-block",
+      width: "27px",
+      height: "26px",
+      background: "white",
+      border: "1px solid #999",
+      cursor: "pointer",
+      margin: "0 -1px 0 0"
+    },
+    buttonSelectedClassName: "blot-formatter__toolbar-button--selected",
+    buttonSelectedStyle: {
+      filter: "invert(20%)"
+    },
+    svgStyle: {
+      display: "inline-block",
+      width: "100%",
+      height: "100%",
+      background: "white",
+      verticalAlign: "top"
+    }
+  },
+  image: {
+    allowAltTitleEdit: true,
+    registerImageTitleBlot: false,
+    registerArrowRightFix: true,
+    altTitleModalOptions: {
+      styles: {
+        modalBackground: {
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(0,0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 9999
+        },
+        modalContainer: {
+          backgroundColor: "#f2f2f2",
+          padding: "5px 10px 10px 10px",
+          borderRadius: "5px",
+          position: "relative",
+          width: "90%",
+          maxWidth: "500px",
+          boxShadow: "6px 6px 5px #00000075"
+        },
+        label: {
+          display: "block",
+          color: "black",
+          margin: "7px 0 5px 0",
+          fontSize: "14px"
+        },
+        textarea: {
+          backgroundColor: "white",
+          fontSize: "13px",
+          display: "block",
+          resize: "none",
+          width: "100%",
+          padding: "5px",
+          border: "1px solid lightgray",
+          borderRadius: "4px",
+          boxSizing: "border-box"
+        },
+        submitButton: {
+          display: "block",
+          marginLeft: "auto",
+          marginTop: "5px",
+          cursor: "pointer",
+          border: 0,
+          padding: 0,
+          width: "2rem",
+          height: "2rem",
+          color: "#198754"
+        },
+        cancelButton: {
+          display: "flex",
+          width: "1.5rem",
+          height: "1.5rem",
+          position: "absolute",
+          padding: 0,
+          top: "-0.7rem",
+          right: "-0.7rem",
+          background: "white",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          alignItems: "center",
+          color: "rgb(197, 74, 71)"
+        }
+      },
+      icons: {
+        submitButton: L,
+        cancelButton: E
+      },
+      labels: {
+        alt: "Alt Text",
+        title: "Image Title"
+      }
+    },
+    allowCompressor: false,
+    compressorOptions: {
+      jpegQuality: 0.8,
+      styles: {
+        modalBackground: {
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(0,0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 9999
+        },
+        modalContainer: {
+          backgroundColor: "rgb(253, 253, 253)",
+          border: "1px solid #ccc",
+          boxShadow: "6px 6px 5px #00000075",
+          padding: "15px",
+          borderRadius: "8px",
+          position: "relative",
+          maxWidth: "min(90%, 400px)",
+          textAlign: "justify",
+          userSelect: "none"
+        },
+        buttonContainer: {
+          gridTemplateColumns: "auto 1fr auto",
+          display: "grid",
+          gap: "1em",
+          justifyItems: "center",
+          borderTop: "1px solid lightgray",
+          paddingTop: "12px"
+        },
+        buttons: {
+          width: "1.5rem",
+          height: "1.5rem",
+          padding: 0,
+          backgroundColor: "transparent",
+          border: 0,
+          cursor: "pointer"
+        }
+      },
+      buttons: {
+        continue: {
+          className: "blot-formatter__compress-continue",
+          style: {
+            color: "#198754"
+          }
+        },
+        cancel: {
+          className: "blot-formatter__compress-cancel",
+          style: {
+            color: "rgb(197, 74, 71)"
+          }
+        },
+        moreInfo: {
+          className: "blot-formatter__compress-more-info",
+          style: {
+            color: "royalblue"
+          }
+        }
+      },
+      text: {
+        prompt: '<p style="font-style: large;margin: 0 0 0.5em;">Compress image to its resized width?</p>',
+        moreInfo: '<p style="font-size: smaller; line-height: 1.2;">You can reduce the file size and save disk space by compressing pictures. The compression reduces both the file size and picture dimensions based on the width setting.</p><p style="font-size: smaller;"><strong>NOTE:</strong> This process cannot be undone.</p>',
+        reducedLabel: "Reduced",
+        nothingToDo: "Image already optimised."
+      },
+      icons: {
+        cancel: `<span style="color: rgb(197, 74, 71);">${E}</span>`,
+        moreInfo: G,
+        continue: L
+      }
+    },
+    linkOptions: {
+      allowLinkEdit: true,
+      modal: {
+        dialog: {
+          className: "blot-formatter__link-modal",
+          style: {
+            // NOTE: positioning handled programatically
+            margin: 0,
+            backgroundColor: "#fdfdfd",
+            border: "1px solid #ccc",
+            boxShadow: "6px 6px 5px #00000075",
+            color: "#444",
+            padding: "6px 13px 6px 10px",
+            whiteSpace: "nowrap",
+            borderRadius: "5px",
+            minWidth: "300px",
+            maxWidth: "90%",
+            overflow: "visible",
+            zIndex: 101
+            // Ensure it is above the background
+          }
+        },
+        background: {
+          className: "blot-formatter__link-modal-background",
+          style: {
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0, 0, 0, 0.5)",
+            zIndex: 100
+          }
+        },
+        form: {
+          className: "blot-formatter__link-form",
+          style: {
+            display: "flex",
+            flexWrap: "nowrap",
+            columnGap: "5px",
+            alignItems: "center",
+            margin: 0
+          }
+        },
+        label: {
+          className: "blot-formatter__link-label",
+          style: {
+            paddingRight: "5px",
+            fontSize: "13px"
+          },
+          text: "URL:"
+        },
+        input: {
+          className: "blot-formatter__link-input",
+          style: {
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            boxSizing: "border-box",
+            fontSize: "13px",
+            height: "26px",
+            margin: "0 0.2rem 0 0",
+            padding: "3px 5px",
+            width: "100%",
+            outline: "1px auto #df9001c2"
+          },
+          placeholder: "https://example.com"
+        },
+        buttons: {
+          submit: {
+            className: "blot-formatter__link-submit",
+            style: {
+              border: "none",
+              borderRadius: "3px",
+              padding: "0",
+              cursor: "pointer",
+              background: "transparent",
+              width: "26px",
+              height: "26px",
+              color: "#198754",
+              display: "flex",
+              alignContent: "center",
+              justifyContent: "center"
+            },
+            icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" style="height:100%;width:auto"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/><path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/></svg>',
+            tooltip: "Create Link"
+          },
+          cancel: {
+            className: "blot-formatter__link-cancel",
+            style: {
+              display: "flex",
+              width: "18px",
+              height: "18px",
+              position: "absolute",
+              top: "-8px",
+              right: "-10px",
+              padding: "0",
+              background: "white",
+              border: "1px solid rgb(157, 58, 56)",
+              borderRadius: "5px",
+              cursor: "pointer",
+              alignItems: "center",
+              color: "rgb(197, 74, 71)"
+            },
+            icon: E,
+            tooltip: "Cancel"
+          },
+          remove: {
+            className: "blot-formatter__link-remove",
+            style: {
+              border: "none",
+              padding: "0",
+              cursor: "pointer",
+              background: "transparent",
+              width: "26px",
+              height: "26px",
+              fill: "#c54a47",
+              display: "flex",
+              placeContent: "center",
+              justifyContent: "center"
+            },
+            icon: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" viewBox="0 0 16 16" style="height:100%;width:auto"><path d="M 6.265625,3.3457031 6.125,3.625 H 4.25 c -0.3457031,0 -0.625,0.2792969 -0.625,0.625 0,0.3457031 0.2792969,0.625 0.625,0.625 h 7.5 c 0.345703,0 0.625,-0.2792969 0.625,-0.625 0,-0.3457031 -0.279297,-0.625 -0.625,-0.625 H 9.875 L 9.734375,3.3457031 C 9.6289062,3.1328125 9.4121094,3 9.1757812,3 H 6.8242188 C 6.5878906,3 6.3710938,3.1328125 6.265625,3.3457031 Z M 11.75,5.5 h -7.5 l 0.4140625,6.621094 C 4.6953125,12.615234 5.1054688,13 5.5996094,13 h 4.8007816 c 0.49414,0 0.904297,-0.384766 0.935547,-0.878906 z" style="display:inline;stroke-width:0.0195312"/><path d="m 14,1 a 1,1 0 0 1 1,1 v 12 a 1,1 0 0 1 -1,1 H 2 A 1,1 0 0 1 1,14 V 2 A 1,1 0 0 1 2,1 Z M 2,0 A 2,2 0 0 0 0,2 v 12 a 2,2 0 0 0 2,2 h 12 a 2,2 0 0 0 2,-2 V 2 A 2,2 0 0 0 14,0 Z" style="display:inline"/></svg>',
+            tooltip: "Remove Link"
+          }
+        }
+      }
+    },
+    autoHeight: true
+  },
+  video: {
+    selector: "iframe.ql-video",
+    registerCustomVideoBlot: false,
+    registerBackspaceFix: true,
+    defaultAspectRatio: "16/9 auto",
+    proxyStyle: {}
+  }
+};
+var tt = (h, t) => t;
+var nt = class {
+  Quill;
+  quill;
+  options;
+  currentSpec;
+  specs;
+  overlay;
+  toolbar;
+  sizeInfo;
+  actions;
+  _enabled = true;
+  _startX = 0;
+  // touch scroll tracking
+  _startY = 0;
+  _abortController;
+  _resizeObserver;
+  _tooltipContainPosition;
+  ImageAlign;
+  IframeAlign;
+  constructor(t, e = {}) {
+    this.Quill = t.constructor, this.quill = t, this.currentSpec = null, this.actions = [], e.debug && (window.blotFormatter = this);
+    const i = D(this.Quill), s = W(this.Quill);
+    this.ImageAlign = new i(e.debug), this.IframeAlign = new s(e.debug), e.debug && console.debug("Registering custom align formats", this.ImageAlign, this.IframeAlign), this.Quill.register({
+      "formats/imageAlign": this.ImageAlign,
+      "attributors/class/imageAlign": this.ImageAlign,
+      "formats/iframeAlign": this.IframeAlign,
+      "attributors/class/iframeAlign": this.IframeAlign
+    }, true), this.options = H(J, e, { arrayMerge: tt }), e.debug && console.debug("BlotFormatter options", this.options), this._enabled = !(this.quill.options.readOnly || this.quill.container.classList.contains("ql-disabled"));
+    const o = document.createElement("style");
+    o.innerHTML = ".ql-disabled .blot-formatter__proxy-image {display: none;}", document.head.appendChild(o), [this.overlay, this.sizeInfo] = this._createOverlay(), this._addEventListeners(), this.toolbar = new N(this), e.debug && console.debug("BlotFormatter toolbar", this.toolbar), this.specs = this.options.specs.map(
+      (n) => new n(this)
+    ), this.specs.forEach((n) => n.init()), e.debug && console.debug("BlotFormatter specs", this.specs), this.quill.container.style.position = this.quill.container.style.position || "relative", this._registerCustomBlots(), this._keyboardBindings(), this.options.debug && console.debug("tooltip option", this.options.tooltip?.containTooltipPosition), this.options.tooltip?.containTooltipPosition && (this._tooltipContainPosition = new k(this.quill, this.options.debug));
+  }
+  /**
+   * Destroys the BlotFormatter instance, cleaning up event listeners, actions, toolbar,
+   * and DOM references. Also removes any global references and clears internal state.
+   * Logs a debug message if the `debug` option is enabled.
+   * Catches and logs any errors that occur during the destruction process.
+   */
+  destroy = () => {
+    try {
+      this.hide(), this._removeEventListeners(), this._destroyActions(), this.toolbar?.destroy(), this.overlay?.parentNode && this.overlay.parentNode.removeChild(this.overlay), this.currentSpec = null, this.specs = [], this.actions = [], this.options.tooltip?.containTooltipPosition && this._tooltipContainPosition && this._tooltipContainPosition?.destroy(), window.bf === this && delete window.bf, this.quill = null, this.options.debug && console.debug("BlotFormatter destroyed");
+    } catch (t) {
+      console.error("BlotFormatter.destroy error:", t);
+    }
+  };
+  /**
+   * Indicates whether the blot formatter is currently active.
+   *
+   * When `true`, formatting controls and interactions are available.
+   * When `false`, the formatter is disabled and will not react to user input. Proxy images are hidden by css.
+   *
+   * @returns True if the formatter is enabled; otherwise false.
+   */
+  get enabled() {
+    return this._enabled;
+  }
+  /**
+   * Enables or disables the blot formatter UI.
+   *
+   * When set to false, any currently visible formatter interface (such as
+   * overlays, resize handles, or toolbars) is immediately hidden via `hide()`.
+   * While disabled, user interactions that would normally trigger the formatter
+   * are ignored until re-enabled.
+   *
+   * @param value True to enable the formatter; false to disable it and hide all active UI.
+   */
+  set enabled(t) {
+    t || this.hide(), this._enabled = t;
+  }
+  /**
+   * MutationObserver monitoring the Quill editor container's class attribute to track disabled state.
+   *
+   * When the container gains or loses the 'ql-disabled' CSS class, this observer updates the
+   * formatter's `enabled` property accordingly, ensuring the formatter UI is automatically
+   * disabled/enabled in sync with the editor.
+   *
+   * Behavior:
+   * - Listens only for attribute mutations on the 'class' attribute.
+   * - Sets `this.enabled` to false if 'ql-disabled' is present; true otherwise.
+   *
+   * Rationale:
+   * Centralizes Quill's disabled state propagation without requiring explicit event hooks or
+   * modifications to Quill's core. This avoids polling and keeps formatter state consistent.
+   *
+   * Lifecycle:
+   * - Should be started after the editor container is available.
+   * - Must be disconnected during teardown (e.g., in a destroy/dispose method) to prevent memory leaks.
+   *
+   * Caveats:
+   * - Assumes the presence and semantic meaning of the 'ql-disabled' class as used by Quill.
+   * - If external code mutates classes frequently, this may fire often; the handler is intentionally lightweight.
+   */
+  _qlDisabledObserver = new MutationObserver((t) => {
+    t.forEach((e) => {
+      e.type === "attributes" && e.attributeName === "class" && (this.enabled = !this.quill.container.classList.contains("ql-disabled"));
+    });
+  });
+  /**
+   * Displays the blot formatter overlay for the specified blot.
+   *
+   * This method performs the following actions:
+   * - Hides any open Quill tooltips (such as hyperlink dialogs).
+   * - Optionally exposes the formatter instance for debugging.
+   * - Clears any existing overlay if active on another blot.
+   * - Sets the current blot specification and selection.
+   * - Disables user selection to prevent unwanted interactions.
+   * - Appends the overlay to the Quill editor container.
+   * - Repositions the overlay to match the blot's position.
+   * - Creates action buttons or controls for the current blot.
+   * - Initializes the toolbar for the formatter.
+   * - Adds a document-level pointerdown event listener to handle outside clicks.
+   * - Logs debug information if enabled in options.
+   *
+   * @param spec - The specification of the blot (*BlotSpec*) to be formatted.
+   * @returns void
+   */
+  show = (t) => {
+    try {
+      if (!this.enabled) return;
+      this.quill.container.querySelectorAll(".ql-tooltip:not(.ql-hidden)").forEach(
+        (e) => {
+          e.classList.add("ql-hidden");
+        }
+      ), this.options.debug && (window.blotFormatter = this), this.hide(), this.currentSpec = t, this.currentSpec.setSelection(), this._setUserSelect("none"), this.quill.container.appendChild(this.overlay), this._repositionOverlay(), this._createActions(t), this.toolbar.create(), this._scrollToolbarIntoView(this.toolbar.element), document.addEventListener("pointerdown", this._onDocumentPointerDown), this.options.debug && console.debug("BlotFormatter show", t);
+    } catch (e) {
+      throw console.error("Error showing BlotFormatter:", e), this.hide(), e;
+    }
+  };
+  /**
+   * Hides the blot formatter overlay and performs necessary cleanup.
+   *
+   * If a pointer event is provided, determines the click position relative to the target blot
+   * and places the caret before or after the blot accordingly. Calls the `onHide` method of the
+   * current spec, removes the overlay from the DOM, removes event listeners, resets user selection,
+   * destroys toolbar and actions, and emits a `TEXT_CHANGE` event to ensure the editor state is updated.
+   *
+   * @param event - Optional pointer event that triggered the hide action. Used to determine caret placement.
+   */
+  hide = (t = null) => {
+    if (this.currentSpec) {
+      if (t) {
+        const e = this.currentSpec.getTargetBlot();
+        if (e) {
+          const i = this._getClickPosition(t);
+          i === "left" ? (this.options.debug && console.debug("Click position: LEFT"), _.placeCaretBeforeBlot(this.quill, e)) : i === "right" && (this.options.debug && console.debug("Click position: RIGHT"), _.placeCaretAfterBlot(this.quill, e));
+        }
+      }
+      this.currentSpec.onHide(), this.currentSpec = null, this.quill.container.removeChild(this.overlay), document.removeEventListener("pointerdown", this._onDocumentPointerDown), this.overlay.style.setProperty("display", "none"), this._setUserSelect(""), this._destroyActions(), this.toolbar.destroy(), this.quill.emitter.emit(
+        this.quill.constructor.events.TEXT_CHANGE,
+        0,
+        this.quill.getLength(),
+        "api"
+      );
+    }
+    this.options.debug && console.debug("BlotFormatter hide");
+  };
+  /**
+   * Updates the state of the BlotFormatter overlay and its associated actions.
+   *
+   * This method repositions the overlay to match the current selection or formatting context,
+   * triggers the `onUpdate` method for each registered action, and logs a debug message if
+   * debugging is enabled in the options.
+   *
+   * @returns {void}
+   */
+  update = () => {
+    this._repositionOverlay(), this.actions.forEach((t) => t.onUpdate()), this.options.debug && console.debug("BlotFormatter update");
+  };
+  /**
+   * Initializes the actions for the given blot specification.
+   * 
+   * This method retrieves the list of actions from the provided `spec` using `getActions()`,
+   * calls the `onCreate()` lifecycle method on each action, and assigns the resulting array
+   * to the `actions` property. If debugging is enabled in the options, it logs each created action.
+   *
+   * @param spec - The blot specification containing the actions to initialize.
+   */
+  _createActions = (t) => {
+    this.actions = t.getActions().map((e) => (e.onCreate(), this.options.debug && console.debug("BlotFormatter action created", e), e));
+  };
+  /**
+   * Destroys all registered actions by calling their `onDestroy` method and clearing the actions array.
+   * If debugging is enabled in the options, logs a debug message to the console.
+   *
+   * @private
+   */
+  _destroyActions = () => {
+    this.actions.forEach((t) => t.onDestroy()), this.actions = [], this.options.debug && console.debug("BlotFormatter actions destroyed");
+  };
+  /**
+   * Creates and configures the overlay and size info HTML elements used for formatting blots.
+   *
+   * The overlay element is styled and configured to be non-selectable, and the size info element
+   * is appended to the overlay. Both elements can be customized via the `options.overlay` property.
+   * 
+   * @returns A tuple containing the overlay HTMLElement and the size info HTMLElement.
+   */
+  _createOverlay = () => {
+    const t = document.createElement("div");
+    t.classList.add(this.options.overlay.className), this.options.overlay.style && Object.assign(t.style, this.options.overlay.style), t.style.userSelect = "none", t.style.setProperty("-webkit-user-select", "none"), t.style.setProperty("-moz-user-select", "none"), t.style.setProperty("-ms-user-select", "none");
+    const e = document.createElement("div");
+    return this.options.overlay.sizeInfoStyle && Object.assign(e.style, this.options.overlay.sizeInfoStyle), t.appendChild(e), this.options.debug && console.debug("BlotFormatter overlay created", t, e), [t, e];
+  };
+  /**
+   * Ensures that the toolbar element is visible within the viewport of the Quill editor.
+   * If the toolbar is positioned above the visible area of the editor, it scrolls the target element into view
+   * with an offset equal to the toolbar's height, then recalculates the toolbar's position.
+   * If the toolbar is still above the viewport, it scrolls the window to bring the toolbar into view smoothly.
+   *
+   * @param toolbarElement - The HTML element representing the toolbar to be scrolled into view.
+   * @returns A promise that resolves when any necessary scrolling has completed.
+   */
+  _scrollToolbarIntoView = async (t) => {
+    let e = t.getBoundingClientRect();
+    const i = this.quill.container.getBoundingClientRect(), s = this.currentSpec?.getTargetElement();
+    e.top - i.top < 0 && s && (await this._scrollIntoViewWithOffset(s, e.height), e = t.getBoundingClientRect()), e.top < 0 && (this.options.debug && console.debug(`Scrolling window ${e.top - e.height}px to bring toolbar into view`), window.scrollBy({ top: e.top - e.height, behavior: "smooth" }));
+  };
+  /**
+   * Scrolls the first scrollable ancestor of the given element into view with a specified offset.
+   * If the element is outside the visible bounds of its scrollable ancestor, the ancestor is scrolled
+   * so that the element is visible with the given offset from the top. Returns a promise that resolves
+   * when scrolling has completed (or immediately if no scrolling was necessary).
+   *
+   * @param el - The target HTMLElement to scroll into view.
+   * @param offset - The number of pixels to offset from the top of the scrollable ancestor (default: 10).
+   * @returns A promise that resolves when scrolling is finished.
+   */
+  _scrollIntoViewWithOffset = (t, e = 10) => new Promise((i) => {
+    let s = null;
+    for (let o = t.parentElement; o; o = o.parentElement) {
+      const { overflowY: n } = getComputedStyle(o);
+      if (!["auto", "scroll"].includes(n) || o.scrollHeight <= o.clientHeight) continue;
+      const r = o.getBoundingClientRect(), l = t.getBoundingClientRect();
+      if (l.top < r.top + e) {
+        s = o, o.scrollTo({
+          top: o.scrollTop + l.top - r.top - e
+        }), this.options.debug && console.debug(`Scrolling ancestor ${o.tagName} to bring element into view with offset ${e}px`);
+        break;
+      }
+    }
+    s ? setTimeout(() => {
+      let n = s.scrollTop;
+      const r = setInterval(() => {
+        s.scrollTop === n ? (clearInterval(r), i()) : n = s.scrollTop;
+      }, 50);
+    }, 100) : i();
+  });
+  /**
+   * Adds all necessary event listeners to the overlay and Quill root elements.
+   *
+   * - For the overlay:
+   *   - Forwards mouse wheel and touch move events to allow scrolling.
+   *   - Disables the context menu to prevent default browser actions.
+   * - For the Quill root:
+   *   - Repositions the overlay on scroll and resize events.
+   *   - Dismisses the overlay when clicking on the Quill root.
+   * - For the quill container
+   *   - Observes class attribute changes to detect disabled state.
+   *
+   * This method ensures proper interaction and synchronization between the overlay
+   * and the Quill editor, handling user input and UI updates.
+   *
+   * @private
+   */
+  _addEventListeners = () => {
+    this._abortController = new AbortController();
+    const { signal: t } = this._abortController;
+    this.overlay.addEventListener("wheel", this._passWheelEventThrough, { passive: false, signal: t }), this.overlay.addEventListener("touchstart", this._onTouchScrollStart, { passive: false, signal: t }), this.overlay.addEventListener("touchmove", this._onTouchScrollMove, { passive: false, signal: t }), this.overlay.addEventListener("contextmenu", this._preventContextMenu, { signal: t }), this.quill.root.addEventListener("click", this._onClick, { signal: t }), this.quill.root.addEventListener("scroll", this._repositionOverlay, { signal: t }), this._resizeObserver = new ResizeObserver(this._repositionOverlay), this._resizeObserver.observe(this.quill.root), this._qlDisabledObserver.observe(this.quill.container, {
+      attributes: true,
+      attributeFilter: ["class"]
+    });
+  };
+  /**
+   * Removes event listeners and observers associated with the instance.
+   * 
+   * Aborts any ongoing operations managed by the internal AbortController,
+   * and disconnects the internal ResizeObserver to stop observing changes.
+   *
+   * @private
+   */
+  _removeEventListeners = () => {
+    this._abortController?.abort(), this._resizeObserver?.disconnect(), this._qlDisabledObserver.disconnect();
+  };
+  /**
+   * Prevents the default context menu from appearing and stops the event from propagating further.
+   *
+   * @param event - The event object associated with the context menu action.
+   */
+  _preventContextMenu = (t) => {
+    t.stopPropagation(), t.preventDefault();
+  };
+  /**
+   * Repositions the overlay element to align with the currently selected blot's overlay target.
+   *
+   * Calculates the position and size of the overlay based on the bounding rectangles of the
+   * Quill container and the overlay target element. Updates the overlay's style to match
+   * the target's position and dimensions, ensuring it is correctly displayed over the selected blot.
+   * Optionally logs debug information if the `debug` option is enabled.
+   *
+   * @private
+   */
+  _repositionOverlay = () => {
+    if (this.currentSpec) {
+      const t = this.currentSpec.getOverlayElement();
+      if (t) {
+        const e = this.quill.container.getBoundingClientRect(), i = t.getBoundingClientRect(), s = {
+          left: `${i.left - e.left - 1 + this.quill.container.scrollLeft}px`,
+          top: `${i.top - e.top + this.quill.container.scrollTop}px`,
+          width: `${i.width}px`,
+          height: `${i.height}px`
+        };
+        Object.assign(this.overlay.style, {
+          display: "block",
+          ...s
+        }), this.options.debug && console.debug("Blotformatter _repositionOverlay", "specRect:", i, "overlayRect:", s);
+      }
+    }
+  };
+  /**
+   * Sets the CSS `user-select` property (and its vendor-prefixed variants) to the specified value
+   * on both the Quill editor root element and the document's root element.
+   *
+   * This method is typically used to enable or disable text selection within the editor and the page,
+   * which can be useful during formatting operations to prevent unwanted user interactions.
+   *
+   * @param value - The value to set for the `user-select` property (e.g., `'none'`, `'auto'`).
+   */
+  _setUserSelect = (t) => {
+    [
+      "userSelect",
+      "mozUserSelect",
+      "webkitUserSelect",
+      "msUserSelect"
+    ].forEach((i) => {
+      this.quill.root.style.setProperty(i, t), document.documentElement && document.documentElement.style.setProperty(i, t);
+    }), this.options.debug && console.debug("BlotFormatter _setUserSelect", t);
+  };
+  /**
+   * Handles the `pointerdown` event on the document to determine whether the blot formatter overlay should be dismissed.
+   *
+   * If the pointer event target is outside the Quill editor, not within a blot formatter modal,
+   * and not a proxy image used by the blot formatter, the overlay is hidden.
+   *
+   * @param event - The pointer event triggered by user interaction.
+   */
+  _onDocumentPointerDown = (t) => {
+    const e = t.target;
+    this.quill.root.parentNode.contains(e) || e.closest("[data-blot-formatter-modal]") || e.classList.contains("blot-formatter__proxy-image") || this.hide(t);
+  };
+  /**
+   * Handles pointer click events on the editor.
+   * 
+   * If debugging is enabled in the options, logs the click event to the console.
+   * Then, hides the formatter UI in response to the click event.
+   *
+   * @param event - The pointer event triggered by the user's click.
+   */
+  _onClick = (t) => {
+    this.options.debug && console.debug("BlotFormatter _onClick", t), this.enabled && this.hide(t);
+  };
+  /**
+   * Handles the wheel event by scrolling the Quill editor's root element.
+   * This method is intended to be used when the overlay or proxy receives a wheel event,
+   * ensuring that the scroll action is passed through to the underlying Quill editor.
+   *
+   * @param event - The wheel event containing scroll delta values.
+   *
+   * @remarks
+   * If the `debug` option is enabled, this method logs the scroll delta values to the console.
+   */
+  _passWheelEventThrough = (t) => {
+    this.quill.root.scrollLeft += t.deltaX, this.quill.root.scrollTop += t.deltaY, this.options.debug && console.debug(`BlotFormatter scrolling Quill root x: ${t.deltaX}, y: ${t.deltaY}`);
+  };
+  /**
+   * Handles the touch start event for scrolling interactions.
+   * Records the initial X and Y positions of the first touch point.
+   * Optionally logs debug information if enabled in options.
+   *
+   * @param event - The touch event triggered when the user starts touching the screen.
+   */
+  _onTouchScrollStart = (t) => {
+    if (t.touches.length === 1) {
+      const e = t.touches[0];
+      this._startX = e.clientX, this._startY = e.clientY, this.options.debug && console.debug("BlotFormatter _onTouchScrollStart", `X: ${this._startX}, Y: ${this._startY}`);
+    }
+  };
+  /**
+   * Handles touch move events to enable custom scrolling behavior within the Quill editor root element.
+   * 
+   * This method allows for both vertical and horizontal scrolling using touch gestures,
+   * and prevents default browser scrolling when appropriate to provide a smoother, controlled experience.
+   * It updates the scroll position of the editor root based on the movement of the touch point,
+   * and ensures scrolling does not exceed the bounds of the content.
+   * 
+   * @param event - The touch event triggered by the user's finger movement.
+   * 
+   * @remarks
+   * - Only processes single-touch events.
+   * - Prevents default scrolling if the editor can be scrolled further in the direction of the gesture.
+   * - Updates the starting touch coordinates after each move to track incremental movement.
+   * - Logs debug information if the `debug` option is enabled.
+   */
+  _onTouchScrollMove = (t) => {
+    if (t.touches.length === 1) {
+      const e = t.touches[0], i = this._startX - e.clientX, s = this._startY - e.clientY;
+      if (Math.abs(i) < 2 && Math.abs(s) < 2) return;
+      const o = this.quill.root, n = o.scrollTop === 0, r = o.scrollTop + o.clientHeight === o.scrollHeight, l = o.scrollLeft === 0, p = o.scrollLeft + o.clientWidth === o.scrollWidth, m = Math.abs(s) > Math.abs(i), u = Math.abs(i) > Math.abs(s);
+      let g = false;
+      m && !(n && s < 0) && !(r && s > 0) && (g = true, o.scrollTop += s), u && !(l && i < 0) && !(p && i > 0) && (g = true, o.scrollLeft += i), g && t.preventDefault(), this._startX = e.clientX, this._startY = e.clientY, this.options.debug && console.debug("BlotFormatter touch scroll end", `X: ${this._startX}, Y: ${this._startY}`);
+    }
+  };
+  /**
+   * Registers custom Quill blots based on the provided options.
+   *
+   * - If `options.image.registerImageTitleBlot` is enabled, registers a custom Image blot
+   *   that supports a title attribute.
+   * - If `options.video.registerCustomVideoBlot` is enabled, registers a custom Video blot
+   *   with responsive behavior and sets its default aspect ratio from the options.
+   *
+   * Debug information is logged to the console if `options.debug` is true.
+   *
+   * @private
+   */
+  _registerCustomBlots = () => {
+    if (this.options.image.registerImageTitleBlot) {
+      const t = q(this.Quill);
+      this.options.debug && console.debug("Registering custom Image blot", t), this.Quill.register({ "formats/image": t }, true), this.options.debug && console.debug("formats/image after register:", this.Quill.import("formats/image"));
+    }
+    if (this.options.video.registerCustomVideoBlot) {
+      const t = j(this.Quill);
+      this.options.debug && (console.debug("Registering custom Video blot", t), console.debug("Setting default aspect ratio for Video blot", this.options.video.defaultAspectRatio)), t.aspectRatio = this.options.video.defaultAspectRatio, this.Quill.register({ "formats/video": t }, true), this.options.debug && console.debug("formats/video after register:", this.Quill.import("formats/video"));
+    }
+  };
+  /**
+   * Registers custom keyboard bindings to address specific Quill editor issues and enhance user experience.
+   *
+   * - Adds a Backspace key binding to fix Quill bug #4364, ensuring proper deletion behavior for embedded videos (e.g., iframes).
+   *   This is enabled if `options.video.registerBackspaceFix` is true.
+   * - Adds an ArrowRight key binding to fix cursor navigation issues when moving past images,
+   *   ensuring the cursor does not get stuck or hidden at the image location.
+   *   This is enabled if `options.image.registerArrowRightFix` is true.
+   *
+   * Both bindings are conditionally registered based on the provided options.
+   * Debug information is logged to the console if `options.debug` is enabled.
+   *
+   * @private
+   */
+  _keyboardBindings = () => {
+    if (this.options.video.registerBackspaceFix) {
+      this.quill.keyboard.bindings.Backspace || (this.quill.keyboard.bindings.Backspace = []);
+      const t = {
+        key: "Backspace",
+        empty: true,
+        line: {
+          domNode: {
+            tagName: "IFRAME"
+          }
+        },
+        handler: (e) => {
+          const [i] = this.quill.getLeaf(e.index - 1);
+          if (i?.domNode?.tagName !== "IFRAME")
+            return true;
+          this.quill.deleteText(e.index - 1, 1, "user"), this.options.debug && console.debug(
+            "BlotFormatter Backspace binding triggered, deleting iframe at index",
+            e.index - 1
+          );
+        }
+      };
+      this.quill.keyboard.bindings.Backspace.unshift(t), this.options.debug && console.debug(
+        "BlotFormatter added Backspace keyboard binding",
+        t
+      );
+    }
+    if (this.options.image.registerArrowRightFix) {
+      this.quill.keyboard.bindings.ArrowRight || (this.quill.keyboard.bindings.ArrowRight = []);
+      const t = {
+        key: "ArrowRight",
+        collapsed: true,
+        empty: false,
+        suffix: /^$/,
+        handler: (e) => {
+          const i = e.index + e.length, [s] = this.quill.getLeaf(i + 1);
+          if (!s?.domNode)
+            return true;
+          const o = s.domNode;
+          if (o?.tagName !== "IMG" || !o.parentElement?.matches('span[contenteditable="false"]'))
+            return true;
+          const n = this.quill.getLength();
+          i + 1 >= n - 1 ? this.quill.setSelection(n - 1, 0, "user") : (this.quill.setSelection(i + 2, 0, "user"), _.sendCaretBack(1)), this.options.debug && console.debug(
+            "BlotFormatter ArrowRight binding triggered, moving cursor past image at index",
+            i
+          );
+        }
+      };
+      this.quill.keyboard.bindings.ArrowRight.unshift(t), this.options.debug && console.debug("BlotFormatter added ArrowRightFix keyboard binding", t);
+    }
+  };
+  /**
+   * Determines whether the resizing of the target element should use relative sizing (percentages)
+   * or absolute sizing (pixels), based on the current configuration and the element's width attribute.
+   *
+   * @param targetElement - The HTML element whose sizing mode is being determined.
+   * @returns `true` if relative sizing should be used, `false` otherwise.
+   *
+   * The method checks the `useRelativeSize` option and, if `allowResizeModeChange` is enabled,
+   * inspects the element's `width` attribute to decide whether to use relative or absolute sizing.
+   * If debugging is enabled, logs the decision to the console.
+   */
+  _useRelative = (t) => {
+    let e = this.options.resize.useRelativeSize;
+    if (this.options.resize.allowResizeModeChange) {
+      const i = t.getAttribute("width");
+      i ? e = i.endsWith("%") : e = this.options.resize.useRelativeSize;
+    }
+    return this.options.debug && console.debug("BlotFormatter _useRelative", e, "for element", t), e;
+  };
+  /**
+   * Determines the relative position of a pointer event with respect to the overlay element.
+   *
+   * @param event - The pointer event to evaluate.
+   * @returns The position of the pointer relative to the overlay, as a `PointerPosition` enum value.
+   *
+   * The possible return values are:
+   * - `PointerPosition.ABOVE` if the pointer is above the overlay.
+   * - `PointerPosition.BELOW` if the pointer is below the overlay.
+   * - `PointerPosition.LEFT` if the pointer is to the left of the overlay.
+   * - `PointerPosition.RIGHT` if the pointer is to the right of the overlay.
+   * - `PointerPosition.INSIDE` if the pointer is inside the overlay.
+   *
+   * If the `debug` option is enabled, logs the determined position and event to the console.
+   */
+  _getClickPosition = (t) => {
+    const i = this.overlay.getBoundingClientRect();
+    let s;
+    return t.clientY < i.top ? s = "above" : t.clientY > i.bottom ? s = "below" : t.clientX < i.left ? s = "left" : t.clientX > i.right ? s = "right" : s = "inside", this.options.debug && console.debug("BlotFormatter _getClickPosition", s, "for event", t), s;
+  };
+};
+
+// node_modules/@cropper/utils/dist/utils.esm.raw.js
+var IS_BROWSER = typeof window !== "undefined" && typeof window.document !== "undefined";
+var WINDOW = IS_BROWSER ? window : {};
+var IS_TOUCH_DEVICE = IS_BROWSER ? "ontouchstart" in WINDOW.document.documentElement : false;
+var HAS_POINTER_EVENT = IS_BROWSER ? "PointerEvent" in WINDOW : false;
+var NAMESPACE = "cropper";
+var CROPPER_CANVAS = `${NAMESPACE}-canvas`;
+var CROPPER_CROSSHAIR = `${NAMESPACE}-crosshair`;
+var CROPPER_GIRD = `${NAMESPACE}-grid`;
+var CROPPER_HANDLE = `${NAMESPACE}-handle`;
+var CROPPER_IMAGE = `${NAMESPACE}-image`;
+var CROPPER_SELECTION = `${NAMESPACE}-selection`;
+var CROPPER_SHADE = `${NAMESPACE}-shade`;
+var CROPPER_VIEWER = `${NAMESPACE}-viewer`;
+var ACTION_SELECT = "select";
+var ACTION_MOVE = "move";
+var ACTION_SCALE = "scale";
+var ACTION_ROTATE = "rotate";
+var ACTION_TRANSFORM = "transform";
+var ACTION_NONE = "none";
+var ACTION_RESIZE_NORTH = "n-resize";
+var ACTION_RESIZE_EAST = "e-resize";
+var ACTION_RESIZE_SOUTH = "s-resize";
+var ACTION_RESIZE_WEST = "w-resize";
+var ACTION_RESIZE_NORTHEAST = "ne-resize";
+var ACTION_RESIZE_NORTHWEST = "nw-resize";
+var ACTION_RESIZE_SOUTHEAST = "se-resize";
+var ACTION_RESIZE_SOUTHWEST = "sw-resize";
+var ATTRIBUTE_ACTION = "action";
+var EVENT_TOUCH_END = IS_TOUCH_DEVICE ? "touchend touchcancel" : "mouseup";
+var EVENT_TOUCH_MOVE = IS_TOUCH_DEVICE ? "touchmove" : "mousemove";
+var EVENT_TOUCH_START = IS_TOUCH_DEVICE ? "touchstart" : "mousedown";
+var EVENT_POINTER_DOWN = HAS_POINTER_EVENT ? "pointerdown" : EVENT_TOUCH_START;
+var EVENT_POINTER_MOVE = HAS_POINTER_EVENT ? "pointermove" : EVENT_TOUCH_MOVE;
+var EVENT_POINTER_UP = HAS_POINTER_EVENT ? "pointerup pointercancel" : EVENT_TOUCH_END;
+var EVENT_ERROR = "error";
+var EVENT_KEYDOWN = "keydown";
+var EVENT_LOAD = "load";
+var EVENT_WHEEL = "wheel";
+var EVENT_ACTION = "action";
+var EVENT_ACTION_END = "actionend";
+var EVENT_ACTION_MOVE = "actionmove";
+var EVENT_ACTION_START = "actionstart";
+var EVENT_CHANGE = "change";
+var EVENT_TRANSFORM = "transform";
+function isString(value) {
+  return typeof value === "string";
+}
+var isNaN4 = Number.isNaN || WINDOW.isNaN;
+function isNumber(value) {
+  return typeof value === "number" && !isNaN4(value);
+}
+function isPositiveNumber(value) {
+  return isNumber(value) && value > 0 && value < Infinity;
+}
+function isUndefined(value) {
+  return typeof value === "undefined";
+}
+function isObject2(value) {
+  return typeof value === "object" && value !== null;
+}
+var { hasOwnProperty } = Object.prototype;
+function isPlainObject(value) {
+  if (!isObject2(value)) {
+    return false;
+  }
+  try {
+    const { constructor } = value;
+    const { prototype } = constructor;
+    return constructor && prototype && hasOwnProperty.call(prototype, "isPrototypeOf");
+  } catch (error) {
+    return false;
+  }
+}
+function isFunction(value) {
+  return typeof value === "function";
+}
+function isElement(node) {
+  return typeof node === "object" && node !== null && node.nodeType === 1;
+}
+var REGEXP_CAMEL_CASE = /([a-z\d])([A-Z])/g;
+function toKebabCase(value) {
+  return String(value).replace(REGEXP_CAMEL_CASE, "$1-$2").toLowerCase();
+}
+var REGEXP_KEBAB_CASE = /-[A-z\d]/g;
+function toCamelCase(value) {
+  return value.replace(REGEXP_KEBAB_CASE, (substring) => substring.slice(1).toUpperCase());
+}
+var REGEXP_SPACES = /\s\s*/;
+function off(target, types, listener, options) {
+  types.trim().split(REGEXP_SPACES).forEach((type) => {
+    target.removeEventListener(type, listener, options);
+  });
+}
+function on(target, types, listener, options) {
+  types.trim().split(REGEXP_SPACES).forEach((type) => {
+    target.addEventListener(type, listener, options);
+  });
+}
+function once(target, types, listener, options) {
+  on(target, types, listener, Object.assign(Object.assign({}, options), { once: true }));
+}
+var defaultEventOptions = {
+  bubbles: true,
+  cancelable: true,
+  composed: true
+};
+function emit(target, type, detail, options) {
+  return target.dispatchEvent(new CustomEvent(type, Object.assign(Object.assign(Object.assign({}, defaultEventOptions), { detail }), options)));
+}
+function getComposedPathTarget(event) {
+  if (typeof event.composedPath === "function") {
+    const path = event.composedPath();
+    return path.find(isElement) || event.target;
+  }
+  return event.target;
+}
+var resolvedPromise = Promise.resolve();
+function nextTick(context, callback) {
+  return callback ? resolvedPromise.then(context ? callback.bind(context) : callback) : resolvedPromise;
+}
+function getRootDocument(element2) {
+  const rootNode = element2.getRootNode();
+  switch (rootNode.nodeType) {
+    case 1:
+      return rootNode.ownerDocument;
+    case 9:
+      return rootNode;
+    case 11:
+      return rootNode;
+  }
+  return null;
+}
+function getOffset(element2) {
+  const { documentElement } = element2.ownerDocument;
+  const box = element2.getBoundingClientRect();
+  return {
+    left: box.left + (WINDOW.pageXOffset - documentElement.clientLeft),
+    top: box.top + (WINDOW.pageYOffset - documentElement.clientTop)
+  };
+}
+var REGEXP_ANGLE_UNIT = /deg|g?rad|turn$/i;
+function toAngleInRadian(angle) {
+  const value = parseFloat(angle) || 0;
+  if (value !== 0) {
+    const [unit = "rad"] = String(angle).match(REGEXP_ANGLE_UNIT) || [];
+    switch (unit.toLowerCase()) {
+      case "deg":
+        return value / 360 * (Math.PI * 2);
+      case "grad":
+        return value / 400 * (Math.PI * 2);
+      case "turn":
+        return value * (Math.PI * 2);
+    }
+  }
+  return value;
+}
+var SIZE_ADJUSTMENT_TYPE_CONTAIN = "contain";
+var SIZE_ADJUSTMENT_TYPE_COVER = "cover";
+function getAdjustedSizes(data, type = SIZE_ADJUSTMENT_TYPE_CONTAIN) {
+  const { aspectRatio } = data;
+  let { width, height } = data;
+  const isValidWidth = isPositiveNumber(width);
+  const isValidHeight = isPositiveNumber(height);
+  if (isValidWidth && isValidHeight) {
+    const adjustedWidth = height * aspectRatio;
+    if (type === SIZE_ADJUSTMENT_TYPE_CONTAIN && adjustedWidth > width || type === SIZE_ADJUSTMENT_TYPE_COVER && adjustedWidth < width) {
+      height = width / aspectRatio;
+    } else {
+      width = height * aspectRatio;
+    }
+  } else if (isValidWidth) {
+    height = width / aspectRatio;
+  } else if (isValidHeight) {
+    width = height * aspectRatio;
+  }
+  return {
+    width,
+    height
+  };
+}
+function multiplyMatrices(matrix, ...args2) {
+  if (args2.length === 0) {
+    return matrix;
+  }
+  const [a1, b1, c1, d1, e1, f1] = matrix;
+  const [a2, b2, c2, d2, e2, f2] = args2[0];
+  matrix = [
+    a1 * a2 + c1 * b2,
+    b1 * a2 + d1 * b2,
+    a1 * c2 + c1 * d2,
+    b1 * c2 + d1 * d2,
+    a1 * e2 + c1 * f2 + e1,
+    b1 * e2 + d1 * f2 + f1
+  ];
+  return multiplyMatrices(matrix, ...args2.slice(1));
+}
+
+// node_modules/@cropper/element/dist/element.esm.raw.js
+var style = `:host([hidden]){display:none!important}`;
+var REGEXP_SUFFIX = /left|top|width|height/i;
+var DEFAULT_SHADOW_ROOT_MODE = "open";
+var shadowRoots = /* @__PURE__ */ new WeakMap();
+var styleSheets = /* @__PURE__ */ new WeakMap();
+var tagNames = /* @__PURE__ */ new Map();
+var supportsAdoptedStyleSheets = WINDOW.document && Array.isArray(WINDOW.document.adoptedStyleSheets) && "replaceSync" in WINDOW.CSSStyleSheet.prototype;
+var CropperElement = class extends HTMLElement {
+  get $sharedStyle() {
+    return `${this.themeColor ? `:host{--theme-color: ${this.themeColor};}` : ""}${style}`;
+  }
+  constructor() {
+    var _a, _b;
+    super();
+    this.shadowRootMode = DEFAULT_SHADOW_ROOT_MODE;
+    this.slottable = true;
+    const name = (_b = (_a = Object.getPrototypeOf(this)) === null || _a === void 0 ? void 0 : _a.constructor) === null || _b === void 0 ? void 0 : _b.$name;
+    if (name) {
+      tagNames.set(name, this.tagName.toLowerCase());
+    }
+  }
+  static get observedAttributes() {
+    return [
+      "shadow-root-mode",
+      "slottable",
+      "theme-color"
+    ];
+  }
+  // Convert attribute to property
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (Object.is(newValue, oldValue)) {
+      return;
+    }
+    const propertyName = toCamelCase(name);
+    const oldPropertyValue = this[propertyName];
+    let newPropertyValue = newValue;
+    switch (typeof oldPropertyValue) {
+      case "boolean":
+        newPropertyValue = newValue !== null && newValue !== "false";
+        break;
+      case "number":
+        newPropertyValue = Number(newValue);
+        break;
+    }
+    this[propertyName] = newPropertyValue;
+    switch (name) {
+      case "theme-color": {
+        const styleSheet = styleSheets.get(this);
+        const styles = this.$sharedStyle;
+        if (styleSheet && styles) {
+          if (supportsAdoptedStyleSheets) {
+            styleSheet.replaceSync(styles);
+          } else {
+            styleSheet.textContent = styles;
+          }
+        }
+        break;
+      }
+    }
+  }
+  // Convert property to attribute
+  $propertyChangedCallback(name, oldValue, newValue) {
+    if (Object.is(newValue, oldValue)) {
+      return;
+    }
+    name = toKebabCase(name);
+    switch (typeof newValue) {
+      case "boolean":
+        if (newValue === true) {
+          if (!this.hasAttribute(name)) {
+            this.setAttribute(name, "");
+          }
+        } else {
+          this.removeAttribute(name);
+        }
+        break;
+      case "number":
+        if (isNaN4(newValue)) {
+          newValue = "";
+        } else {
+          newValue = String(newValue);
+        }
+      // Fall through
+      // case 'string':
+      // eslint-disable-next-line no-fallthrough
+      default:
+        if (newValue) {
+          if (this.getAttribute(name) !== newValue) {
+            this.setAttribute(name, newValue);
+          }
+        } else {
+          this.removeAttribute(name);
+        }
+    }
+  }
+  connectedCallback() {
+    Object.getPrototypeOf(this).constructor.observedAttributes.forEach((attribute) => {
+      const property = toCamelCase(attribute);
+      let value = this[property];
+      if (!isUndefined(value)) {
+        this.$propertyChangedCallback(property, void 0, value);
+      }
+      Object.defineProperty(this, property, {
+        enumerable: true,
+        configurable: true,
+        get() {
+          return value;
+        },
+        set(newValue) {
+          const oldValue = value;
+          value = newValue;
+          this.$propertyChangedCallback(property, oldValue, newValue);
+        }
+      });
+    });
+    const shadow = this.shadowRoot || this.attachShadow({
+      mode: this.shadowRootMode || DEFAULT_SHADOW_ROOT_MODE
+    });
+    shadowRoots.set(this, shadow);
+    styleSheets.set(this, this.$addStyles(this.$sharedStyle));
+    if (this.$style) {
+      this.$addStyles(this.$style);
+    }
+    if (this.$template) {
+      const template = document.createElement("template");
+      template.innerHTML = this.$template;
+      shadow.appendChild(template.content);
+    }
+    if (this.slottable) {
+      const slot = document.createElement("slot");
+      shadow.appendChild(slot);
+    }
+  }
+  disconnectedCallback() {
+    if (styleSheets.has(this)) {
+      styleSheets.delete(this);
+    }
+    if (shadowRoots.has(this)) {
+      shadowRoots.delete(this);
+    }
+  }
+  // eslint-disable-next-line class-methods-use-this
+  $getTagNameOf(name) {
+    var _a;
+    return (_a = tagNames.get(name)) !== null && _a !== void 0 ? _a : name;
+  }
+  $setStyles(properties) {
+    Object.keys(properties).forEach((property) => {
+      let value = properties[property];
+      if (isNumber(value)) {
+        if (value !== 0 && REGEXP_SUFFIX.test(property)) {
+          value = `${value}px`;
+        } else {
+          value = String(value);
+        }
+      }
+      this.style[property] = value;
+    });
+    return this;
+  }
+  /**
+   * Outputs the shadow root of the element.
+   * @returns {ShadowRoot} Returns the shadow root.
+   */
+  $getShadowRoot() {
+    return this.shadowRoot || shadowRoots.get(this);
+  }
+  /**
+   * Adds styles to the shadow root.
+   * @param {string} styles The styles to add.
+   * @returns {CSSStyleSheet|HTMLStyleElement} Returns the generated style sheet.
+   */
+  $addStyles(styles) {
+    let styleSheet;
+    const shadow = this.$getShadowRoot();
+    if (supportsAdoptedStyleSheets) {
+      styleSheet = new CSSStyleSheet();
+      styleSheet.replaceSync(styles);
+      shadow.adoptedStyleSheets = shadow.adoptedStyleSheets.concat(styleSheet);
+    } else {
+      styleSheet = document.createElement("style");
+      styleSheet.textContent = styles;
+      shadow.appendChild(styleSheet);
+    }
+    return styleSheet;
+  }
+  /**
+   * Dispatches an event at the element.
+   * @param {string} type The name of the event.
+   * @param {*} [detail] The data passed when initializing the event.
+   * @param {CustomEventInit} [options] The other event options.
+   * @returns {boolean} Returns the result value.
+   */
+  $emit(type, detail, options) {
+    return emit(this, type, detail, options);
+  }
+  /**
+   * Defers the callback to be executed after the next DOM update cycle.
+   * @param {Function} [callback] The callback to execute after the next DOM update cycle.
+   * @returns {Promise} A promise that resolves to nothing.
+   */
+  $nextTick(callback) {
+    return nextTick(this, callback);
+  }
+  /**
+   * Defines the constructor as a new custom element.
+   * {@link https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define}
+   * @param {string|object} [name] The element name.
+   * @param {object} [options] The element definition options.
+   */
+  static $define(name, options) {
+    if (isObject2(name)) {
+      options = name;
+      name = "";
+    }
+    if (!name) {
+      name = this.$name || this.name;
+    }
+    name = toKebabCase(name);
+    if (IS_BROWSER && WINDOW.customElements && !WINDOW.customElements.get(name)) {
+      customElements.define(name, this, options);
+    }
+  }
+};
+CropperElement.$version = "2.1.0";
+
+// node_modules/@cropper/element-canvas/dist/element-canvas.esm.raw.js
+var style2 = `:host{display:block;min-height:100px;min-width:200px;overflow:hidden;position:relative;touch-action:none;-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}:host([background]){background-color:#fff;background-image:repeating-linear-gradient(45deg,#ccc 25%,transparent 0,transparent 75%,#ccc 0,#ccc),repeating-linear-gradient(45deg,#ccc 25%,transparent 0,transparent 75%,#ccc 0,#ccc);background-image:repeating-conic-gradient(#ccc 0 25%,#fff 0 50%);background-position:0 0,.5rem .5rem;background-size:1rem 1rem}:host([disabled]){pointer-events:none}:host([disabled]):after{bottom:0;content:"";cursor:not-allowed;display:block;left:0;pointer-events:none;position:absolute;right:0;top:0}`;
+var CropperCanvas = class extends CropperElement {
+  constructor() {
+    super(...arguments);
+    this.$onPointerDown = null;
+    this.$onPointerMove = null;
+    this.$onPointerUp = null;
+    this.$onWheel = null;
+    this.$wheeling = false;
+    this.$pointers = /* @__PURE__ */ new Map();
+    this.$style = style2;
+    this.$action = ACTION_NONE;
+    this.background = false;
+    this.disabled = false;
+    this.scaleStep = 0.1;
+    this.themeColor = "#39f";
+  }
+  static get observedAttributes() {
+    return super.observedAttributes.concat([
+      "background",
+      "disabled",
+      "scale-step"
+    ]);
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    if (!this.disabled) {
+      this.$bind();
+    }
+  }
+  disconnectedCallback() {
+    if (!this.disabled) {
+      this.$unbind();
+    }
+    super.disconnectedCallback();
+  }
+  $propertyChangedCallback(name, oldValue, newValue) {
+    if (Object.is(newValue, oldValue)) {
+      return;
+    }
+    super.$propertyChangedCallback(name, oldValue, newValue);
+    switch (name) {
+      case "disabled":
+        if (newValue) {
+          this.$unbind();
+        } else {
+          this.$bind();
+        }
+        break;
+    }
+  }
+  $bind() {
+    if (!this.$onPointerDown) {
+      this.$onPointerDown = this.$handlePointerDown.bind(this);
+      on(this, EVENT_POINTER_DOWN, this.$onPointerDown);
+    }
+    if (!this.$onPointerMove) {
+      this.$onPointerMove = this.$handlePointerMove.bind(this);
+      on(this.ownerDocument, EVENT_POINTER_MOVE, this.$onPointerMove);
+    }
+    if (!this.$onPointerUp) {
+      this.$onPointerUp = this.$handlePointerUp.bind(this);
+      on(this.ownerDocument, EVENT_POINTER_UP, this.$onPointerUp);
+    }
+    if (!this.$onWheel) {
+      this.$onWheel = this.$handleWheel.bind(this);
+      on(this, EVENT_WHEEL, this.$onWheel, {
+        passive: false,
+        capture: true
+      });
+    }
+  }
+  $unbind() {
+    if (this.$onPointerDown) {
+      off(this, EVENT_POINTER_DOWN, this.$onPointerDown);
+      this.$onPointerDown = null;
+    }
+    if (this.$onPointerMove) {
+      off(this.ownerDocument, EVENT_POINTER_MOVE, this.$onPointerMove);
+      this.$onPointerMove = null;
+    }
+    if (this.$onPointerUp) {
+      off(this.ownerDocument, EVENT_POINTER_UP, this.$onPointerUp);
+      this.$onPointerUp = null;
+    }
+    if (this.$onWheel) {
+      off(this, EVENT_WHEEL, this.$onWheel, {
+        capture: true
+      });
+      this.$onWheel = null;
+    }
+  }
+  $handlePointerDown(event) {
+    const { buttons, button, type } = event;
+    if (this.disabled || // Handle pointer or mouse event, and ignore touch event
+    (type === "pointerdown" && event.pointerType === "mouse" || type === "mousedown") && // No primary button (Usually the left button)
+    (isNumber(buttons) && buttons !== 1 || isNumber(button) && button !== 0 || event.ctrlKey)) {
+      return;
+    }
+    const { $pointers } = this;
+    let action = "";
+    if (event.changedTouches) {
+      Array.from(event.changedTouches).forEach(({ identifier, pageX, pageY }) => {
+        $pointers.set(identifier, {
+          startX: pageX,
+          startY: pageY,
+          endX: pageX,
+          endY: pageY
+        });
+      });
+    } else {
+      const { pointerId = 0, pageX, pageY } = event;
+      $pointers.set(pointerId, {
+        startX: pageX,
+        startY: pageY,
+        endX: pageX,
+        endY: pageY
+      });
+    }
+    if ($pointers.size > 1) {
+      action = ACTION_TRANSFORM;
+    } else if (isElement(event.target)) {
+      action = event.target.action || event.target.getAttribute(ATTRIBUTE_ACTION) || "";
+    }
+    if (this.$emit(EVENT_ACTION_START, {
+      action,
+      relatedEvent: event
+    }) === false) {
+      return;
+    }
+    event.preventDefault();
+    this.$action = action;
+    this.style.willChange = "transform";
+  }
+  $handlePointerMove(event) {
+    const { $action, $pointers } = this;
+    if (this.disabled || $action === ACTION_NONE || $pointers.size === 0) {
+      return;
+    }
+    if (this.$emit(EVENT_ACTION_MOVE, {
+      action: $action,
+      relatedEvent: event
+    }) === false) {
+      return;
+    }
+    event.preventDefault();
+    if (event.changedTouches) {
+      Array.from(event.changedTouches).forEach(({ identifier, pageX, pageY }) => {
+        const pointer = $pointers.get(identifier);
+        if (pointer) {
+          Object.assign(pointer, {
+            endX: pageX,
+            endY: pageY
+          });
+        }
+      });
+    } else {
+      const { pointerId = 0, pageX, pageY } = event;
+      const pointer = $pointers.get(pointerId);
+      if (pointer) {
+        Object.assign(pointer, {
+          endX: pageX,
+          endY: pageY
+        });
+      }
+    }
+    const detail = {
+      action: $action,
+      relatedEvent: event
+    };
+    if ($action === ACTION_TRANSFORM) {
+      const pointers2 = new Map($pointers);
+      let maxRotateRate = 0;
+      let maxScaleRate = 0;
+      let rotate = 0;
+      let scale = 0;
+      let centerX = event.pageX;
+      let centerY = event.pageY;
+      $pointers.forEach((pointer, pointerId) => {
+        pointers2.delete(pointerId);
+        pointers2.forEach((pointer2) => {
+          let x1 = pointer2.startX - pointer.startX;
+          let y1 = pointer2.startY - pointer.startY;
+          let x2 = pointer2.endX - pointer.endX;
+          let y2 = pointer2.endY - pointer.endY;
+          let z1 = 0;
+          let z2 = 0;
+          let a1 = 0;
+          let a2 = 0;
+          if (x1 === 0) {
+            if (y1 < 0) {
+              a1 = Math.PI * 2;
+            } else if (y1 > 0) {
+              a1 = Math.PI;
+            }
+          } else if (x1 > 0) {
+            a1 = Math.PI / 2 + Math.atan(y1 / x1);
+          } else if (x1 < 0) {
+            a1 = Math.PI * 1.5 + Math.atan(y1 / x1);
+          }
+          if (x2 === 0) {
+            if (y2 < 0) {
+              a2 = Math.PI * 2;
+            } else if (y2 > 0) {
+              a2 = Math.PI;
+            }
+          } else if (x2 > 0) {
+            a2 = Math.PI / 2 + Math.atan(y2 / x2);
+          } else if (x2 < 0) {
+            a2 = Math.PI * 1.5 + Math.atan(y2 / x2);
+          }
+          if (a2 > 0 || a1 > 0) {
+            const rotateRate = a2 - a1;
+            const absRotateRate = Math.abs(rotateRate);
+            if (absRotateRate > maxRotateRate) {
+              maxRotateRate = absRotateRate;
+              rotate = rotateRate;
+              centerX = (pointer.startX + pointer2.startX) / 2;
+              centerY = (pointer.startY + pointer2.startY) / 2;
+            }
+          }
+          x1 = Math.abs(x1);
+          y1 = Math.abs(y1);
+          x2 = Math.abs(x2);
+          y2 = Math.abs(y2);
+          if (x1 > 0 && y1 > 0) {
+            z1 = Math.sqrt(x1 * x1 + y1 * y1);
+          } else if (x1 > 0) {
+            z1 = x1;
+          } else if (y1 > 0) {
+            z1 = y1;
+          }
+          if (x2 > 0 && y2 > 0) {
+            z2 = Math.sqrt(x2 * x2 + y2 * y2);
+          } else if (x2 > 0) {
+            z2 = x2;
+          } else if (y2 > 0) {
+            z2 = y2;
+          }
+          if (z1 > 0 && z2 > 0) {
+            const scaleRate = (z2 - z1) / z1;
+            const absScaleRate = Math.abs(scaleRate);
+            if (absScaleRate > maxScaleRate) {
+              maxScaleRate = absScaleRate;
+              scale = scaleRate;
+              centerX = (pointer.startX + pointer2.startX) / 2;
+              centerY = (pointer.startY + pointer2.startY) / 2;
+            }
+          }
+        });
+      });
+      const rotatable = maxRotateRate > 0;
+      const scalable = maxScaleRate > 0;
+      if (rotatable && scalable) {
+        detail.rotate = rotate;
+        detail.scale = scale;
+        detail.centerX = centerX;
+        detail.centerY = centerY;
+      } else if (rotatable) {
+        detail.action = ACTION_ROTATE;
+        detail.rotate = rotate;
+        detail.centerX = centerX;
+        detail.centerY = centerY;
+      } else if (scalable) {
+        detail.action = ACTION_SCALE;
+        detail.scale = scale;
+        detail.centerX = centerX;
+        detail.centerY = centerY;
+      } else {
+        detail.action = ACTION_NONE;
+      }
+    } else {
+      const [pointer] = Array.from($pointers.values());
+      Object.assign(detail, pointer);
+    }
+    $pointers.forEach((pointer) => {
+      pointer.startX = pointer.endX;
+      pointer.startY = pointer.endY;
+    });
+    if (detail.action !== ACTION_NONE) {
+      this.$emit(EVENT_ACTION, detail, {
+        cancelable: false
+      });
+    }
+  }
+  $handlePointerUp(event) {
+    const { $action, $pointers } = this;
+    if (this.disabled || $action === ACTION_NONE) {
+      return;
+    }
+    if (this.$emit(EVENT_ACTION_END, {
+      action: $action,
+      relatedEvent: event
+    }) === false) {
+      return;
+    }
+    event.preventDefault();
+    if (event.changedTouches) {
+      Array.from(event.changedTouches).forEach(({ identifier }) => {
+        $pointers.delete(identifier);
+      });
+    } else {
+      const { pointerId = 0 } = event;
+      $pointers.delete(pointerId);
+    }
+    if ($pointers.size === 0) {
+      this.style.willChange = "";
+      this.$action = ACTION_NONE;
+    }
+  }
+  $handleWheel(event) {
+    if (this.disabled) {
+      return;
+    }
+    event.preventDefault();
+    if (this.$wheeling) {
+      return;
+    }
+    this.$wheeling = true;
+    setTimeout(() => {
+      this.$wheeling = false;
+    }, 50);
+    const delta = event.deltaY > 0 ? -1 : 1;
+    const scale = delta * this.scaleStep;
+    this.$emit(EVENT_ACTION, {
+      action: ACTION_SCALE,
+      scale,
+      relatedEvent: event
+    }, {
+      cancelable: false
+    });
+  }
+  /**
+   * Changes the current action to a new one.
+   * @param {string} action The new action.
+   * @returns {CropperCanvas} Returns `this` for chaining.
+   */
+  $setAction(action) {
+    if (isString(action)) {
+      this.$action = action;
+    }
+    return this;
+  }
+  /**
+   * Generates a real canvas element, with the image draw into if there is one.
+   * @param {object} [options] The available options.
+   * @param {number} [options.width] The width of the canvas.
+   * @param {number} [options.height] The height of the canvas.
+   * @param {Function} [options.beforeDraw] The function called before drawing the image onto the canvas.
+   * @returns {Promise} Returns a promise that resolves to the generated canvas element.
+   */
+  $toCanvas(options) {
+    return new Promise((resolve, reject) => {
+      if (!this.isConnected) {
+        reject(new Error("The current element is not connected to the DOM."));
+        return;
+      }
+      const canvas = document.createElement("canvas");
+      let width = this.offsetWidth;
+      let height = this.offsetHeight;
+      let scale = 1;
+      if (isPlainObject(options) && (isPositiveNumber(options.width) || isPositiveNumber(options.height))) {
+        ({ width, height } = getAdjustedSizes({
+          aspectRatio: width / height,
+          width: options.width,
+          height: options.height
+        }));
+        scale = width / this.offsetWidth;
+      }
+      canvas.width = width;
+      canvas.height = height;
+      const cropperImage = this.querySelector(this.$getTagNameOf(CROPPER_IMAGE));
+      if (!cropperImage) {
+        resolve(canvas);
+        return;
+      }
+      cropperImage.$ready().then((image) => {
+        const context = canvas.getContext("2d");
+        if (context) {
+          const [a, b, c, d, e, f] = cropperImage.$getTransform();
+          let newE = e;
+          let newF = f;
+          let destWidth = image.naturalWidth;
+          let destHeight = image.naturalHeight;
+          if (scale !== 1) {
+            newE *= scale;
+            newF *= scale;
+            destWidth *= scale;
+            destHeight *= scale;
+          }
+          const centerX = destWidth / 2;
+          const centerY = destHeight / 2;
+          context.fillStyle = "transparent";
+          context.fillRect(0, 0, width, height);
+          if (isPlainObject(options) && isFunction(options.beforeDraw)) {
+            options.beforeDraw.call(this, context, canvas);
+          }
+          context.save();
+          context.translate(centerX, centerY);
+          context.transform(a, b, c, d, newE, newF);
+          context.translate(-centerX, -centerY);
+          context.drawImage(image, 0, 0, destWidth, destHeight);
+          context.restore();
+        }
+        resolve(canvas);
+      }).catch(reject);
+    });
+  }
+};
+CropperCanvas.$name = CROPPER_CANVAS;
+CropperCanvas.$version = "2.1.0";
+
+// node_modules/@cropper/element-image/dist/element-image.esm.raw.js
+var style3 = `:host{display:inline-block}img{display:block;height:100%;max-height:none!important;max-width:none!important;min-height:0!important;min-width:0!important;width:100%}`;
+var canvasCache = /* @__PURE__ */ new WeakMap();
+var NATIVE_ATTRIBUTES = [
+  "alt",
+  "crossorigin",
+  "decoding",
+  "elementtiming",
+  "fetchpriority",
+  "loading",
+  "referrerpolicy",
+  "sizes",
+  "src",
+  "srcset"
+];
+var CropperImage = class extends CropperElement {
+  constructor() {
+    super(...arguments);
+    this.$matrix = [1, 0, 0, 1, 0, 0];
+    this.$onLoad = null;
+    this.$onCanvasAction = null;
+    this.$onCanvasActionEnd = null;
+    this.$onCanvasActionStart = null;
+    this.$actionStartTarget = null;
+    this.$style = style3;
+    this.$image = new Image();
+    this.initialCenterSize = "contain";
+    this.rotatable = false;
+    this.scalable = false;
+    this.skewable = false;
+    this.slottable = false;
+    this.translatable = false;
+    this.alt = "";
+    this.crossorigin = "";
+    this.decoding = "";
+    this.elementtiming = "";
+    this.fetchpriority = "";
+    this.loading = "";
+    this.referrerpolicy = "";
+    this.sizes = "";
+    this.src = "";
+    this.srcset = "";
+  }
+  set $canvas(element2) {
+    canvasCache.set(this, element2);
+  }
+  get $canvas() {
+    return canvasCache.get(this);
+  }
+  static get observedAttributes() {
+    return super.observedAttributes.concat(NATIVE_ATTRIBUTES, [
+      "initial-center-size",
+      "rotatable",
+      "scalable",
+      "skewable",
+      "translatable"
+    ]);
+  }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (Object.is(newValue, oldValue)) {
+      return;
+    }
+    super.attributeChangedCallback(name, oldValue, newValue);
+    if (NATIVE_ATTRIBUTES.includes(name)) {
+      this.$image.setAttribute(name, newValue);
+    }
+  }
+  $propertyChangedCallback(name, oldValue, newValue) {
+    if (Object.is(newValue, oldValue)) {
+      return;
+    }
+    super.$propertyChangedCallback(name, oldValue, newValue);
+    switch (name) {
+      case "initialCenterSize":
+        this.$nextTick(() => {
+          this.$center(newValue);
+        });
+        break;
+    }
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    const { $image } = this;
+    const $canvas = this.closest(this.$getTagNameOf(CROPPER_CANVAS));
+    if ($canvas) {
+      this.$canvas = $canvas;
+      this.$setStyles({
+        // Make it a block element to avoid side effects (#1074).
+        display: "block",
+        position: "absolute"
+      });
+      this.$onCanvasActionStart = (event) => {
+        var _a, _b;
+        this.$actionStartTarget = (_b = (_a = event.detail) === null || _a === void 0 ? void 0 : _a.relatedEvent) === null || _b === void 0 ? void 0 : _b.target;
+      };
+      this.$onCanvasActionEnd = () => {
+        this.$actionStartTarget = null;
+      };
+      this.$onCanvasAction = this.$handleAction.bind(this);
+      on($canvas, EVENT_ACTION_START, this.$onCanvasActionStart);
+      on($canvas, EVENT_ACTION_END, this.$onCanvasActionEnd);
+      on($canvas, EVENT_ACTION, this.$onCanvasAction);
+    }
+    this.$onLoad = this.$handleLoad.bind(this);
+    on($image, EVENT_LOAD, this.$onLoad);
+    this.$getShadowRoot().appendChild($image);
+  }
+  disconnectedCallback() {
+    const { $image, $canvas } = this;
+    if ($canvas) {
+      if (this.$onCanvasActionStart) {
+        off($canvas, EVENT_ACTION_START, this.$onCanvasActionStart);
+        this.$onCanvasActionStart = null;
+      }
+      if (this.$onCanvasActionEnd) {
+        off($canvas, EVENT_ACTION_END, this.$onCanvasActionEnd);
+        this.$onCanvasActionEnd = null;
+      }
+      if (this.$onCanvasAction) {
+        off($canvas, EVENT_ACTION, this.$onCanvasAction);
+        this.$onCanvasAction = null;
+      }
+    }
+    if ($image && this.$onLoad) {
+      off($image, EVENT_LOAD, this.$onLoad);
+      this.$onLoad = null;
+    }
+    this.$getShadowRoot().removeChild($image);
+    super.disconnectedCallback();
+  }
+  $handleLoad() {
+    const { $image } = this;
+    this.$setStyles({
+      width: $image.naturalWidth,
+      height: $image.naturalHeight
+    });
+    if (this.$canvas) {
+      this.$center(this.initialCenterSize);
+    }
+  }
+  $handleAction(event) {
+    if (this.hidden || !(this.rotatable || this.scalable || this.translatable)) {
+      return;
+    }
+    const { $canvas } = this;
+    const { detail } = event;
+    if (detail) {
+      const { relatedEvent } = detail;
+      let { action } = detail;
+      if (action === ACTION_TRANSFORM && (!this.rotatable || !this.scalable)) {
+        if (this.rotatable) {
+          action = ACTION_ROTATE;
+        } else if (this.scalable) {
+          action = ACTION_SCALE;
+        } else {
+          action = ACTION_NONE;
+        }
+      }
+      switch (action) {
+        case ACTION_MOVE:
+          if (this.translatable) {
+            let $selection = null;
+            if (relatedEvent) {
+              $selection = relatedEvent.target.closest(this.$getTagNameOf(CROPPER_SELECTION));
+            }
+            if (!$selection) {
+              $selection = $canvas.querySelector(this.$getTagNameOf(CROPPER_SELECTION));
+            }
+            if ($selection && $selection.multiple && !$selection.active) {
+              $selection = $canvas.querySelector(`${this.$getTagNameOf(CROPPER_SELECTION)}[active]`);
+            }
+            if (!$selection || $selection.hidden || !$selection.movable || $selection.dynamic || !(this.$actionStartTarget && $selection.contains(this.$actionStartTarget))) {
+              this.$move(detail.endX - detail.startX, detail.endY - detail.startY);
+            }
+          }
+          break;
+        case ACTION_ROTATE:
+          if (this.rotatable) {
+            if (relatedEvent) {
+              const { x, y } = this.getBoundingClientRect();
+              this.$rotate(detail.rotate, relatedEvent.clientX - x, relatedEvent.clientY - y);
+            } else {
+              this.$rotate(detail.rotate);
+            }
+          }
+          break;
+        case ACTION_SCALE:
+          if (this.scalable) {
+            if (relatedEvent) {
+              const $selection = relatedEvent.target.closest(this.$getTagNameOf(CROPPER_SELECTION));
+              if (!$selection || !$selection.zoomable || $selection.zoomable && $selection.dynamic) {
+                const { x, y } = this.getBoundingClientRect();
+                this.$zoom(detail.scale, relatedEvent.clientX - x, relatedEvent.clientY - y);
+              }
+            } else {
+              this.$zoom(detail.scale);
+            }
+          }
+          break;
+        case ACTION_TRANSFORM:
+          if (this.rotatable && this.scalable) {
+            const { rotate } = detail;
+            let { scale } = detail;
+            if (scale < 0) {
+              scale = 1 / (1 - scale);
+            } else {
+              scale += 1;
+            }
+            const cos = Math.cos(rotate);
+            const sin = Math.sin(rotate);
+            const [scaleX, skewY, skewX, scaleY] = [
+              cos * scale,
+              sin * scale,
+              -sin * scale,
+              cos * scale
+            ];
+            if (relatedEvent) {
+              const clientRect = this.getBoundingClientRect();
+              const x = relatedEvent.clientX - clientRect.x;
+              const y = relatedEvent.clientY - clientRect.y;
+              const [a, b, c, d] = this.$matrix;
+              const originX = clientRect.width / 2;
+              const originY = clientRect.height / 2;
+              const moveX = x - originX;
+              const moveY = y - originY;
+              const translateX = (moveX * d - c * moveY) / (a * d - c * b);
+              const translateY = (moveY * a - b * moveX) / (a * d - c * b);
+              this.$transform(scaleX, skewY, skewX, scaleY, translateX * (1 - scaleX) + translateY * skewX, translateY * (1 - scaleY) + translateX * skewY);
+            } else {
+              this.$transform(scaleX, skewY, skewX, scaleY, 0, 0);
+            }
+          }
+          break;
+      }
+    }
+  }
+  /**
+   * Defers the callback to execute after successfully loading the image.
+   * @param {Function} [callback] The callback to execute after successfully loading the image.
+   * @returns {Promise} Returns a promise that resolves to the image element.
+   */
+  $ready(callback) {
+    const { $image } = this;
+    const promise = new Promise((resolve, reject) => {
+      const error = new Error("Failed to load the image source");
+      if ($image.complete) {
+        if ($image.naturalWidth > 0 && $image.naturalHeight > 0) {
+          resolve($image);
+        } else {
+          reject(error);
+        }
+      } else {
+        const onLoad = () => {
+          off($image, EVENT_ERROR, onError);
+          setTimeout(() => {
+            resolve($image);
+          });
+        };
+        const onError = () => {
+          off($image, EVENT_LOAD, onLoad);
+          reject(error);
+        };
+        once($image, EVENT_LOAD, onLoad);
+        once($image, EVENT_ERROR, onError);
+      }
+    });
+    if (isFunction(callback)) {
+      promise.then((image) => {
+        callback(image);
+        return image;
+      });
+    }
+    return promise;
+  }
+  /**
+   * Aligns the image to the center of its parent element.
+   * @param {string} [size] The size of the image.
+   * @returns {CropperImage} Returns `this` for chaining.
+   */
+  $center(size2) {
+    const { parentElement } = this;
+    if (!parentElement) {
+      return this;
+    }
+    const container = parentElement.getBoundingClientRect();
+    const containerWidth = container.width;
+    const containerHeight = container.height;
+    const { x, y, width, height } = this.getBoundingClientRect();
+    const startX = x + width / 2;
+    const startY = y + height / 2;
+    const endX = container.x + containerWidth / 2;
+    const endY = container.y + containerHeight / 2;
+    this.$move(endX - startX, endY - startY);
+    if (size2 && (width !== containerWidth || height !== containerHeight)) {
+      const scaleX = containerWidth / width;
+      const scaleY = containerHeight / height;
+      switch (size2) {
+        case "cover":
+          this.$scale(Math.max(scaleX, scaleY));
+          break;
+        case "contain":
+          this.$scale(Math.min(scaleX, scaleY));
+          break;
+      }
+    }
+    return this;
+  }
+  /**
+   * Moves the image.
+   * @param {number} x The moving distance in the horizontal direction.
+   * @param {number} [y] The moving distance in the vertical direction.
+   * @returns {CropperImage} Returns `this` for chaining.
+   */
+  $move(x, y = x) {
+    if (this.translatable && isNumber(x) && isNumber(y)) {
+      const [a, b, c, d] = this.$matrix;
+      const e = (x * d - c * y) / (a * d - c * b);
+      const f = (y * a - b * x) / (a * d - c * b);
+      this.$translate(e, f);
+    }
+    return this;
+  }
+  /**
+   * Moves the image to a specific position.
+   * @param {number} x The new position in the horizontal direction.
+   * @param {number} [y] The new position in the vertical direction.
+   * @returns {CropperImage} Returns `this` for chaining.
+   */
+  $moveTo(x, y = x) {
+    if (this.translatable && isNumber(x) && isNumber(y)) {
+      const [a, b, c, d] = this.$matrix;
+      const e = (x * d - c * y) / (a * d - c * b);
+      const f = (y * a - b * x) / (a * d - c * b);
+      this.$setTransform(a, b, c, d, e, f);
+    }
+    return this;
+  }
+  /**
+   * Rotates the image.
+   * {@link https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/rotate}
+   * {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/rotate}
+   * @param {number|string} angle The rotation angle (in radians).
+   * @param {number} [x] The rotation origin in the horizontal, defaults to the center of the image.
+   * @param {number} [y] The rotation origin in the vertical, defaults to the center of the image.
+   * @returns {CropperImage} Returns `this` for chaining.
+   */
+  $rotate(angle, x, y) {
+    if (this.rotatable) {
+      const radian = toAngleInRadian(angle);
+      const cos = Math.cos(radian);
+      const sin = Math.sin(radian);
+      const [scaleX, skewY, skewX, scaleY] = [cos, sin, -sin, cos];
+      if (isNumber(x) && isNumber(y)) {
+        const [a, b, c, d] = this.$matrix;
+        const { width, height } = this.getBoundingClientRect();
+        const originX = width / 2;
+        const originY = height / 2;
+        const moveX = x - originX;
+        const moveY = y - originY;
+        const translateX = (moveX * d - c * moveY) / (a * d - c * b);
+        const translateY = (moveY * a - b * moveX) / (a * d - c * b);
+        this.$transform(scaleX, skewY, skewX, scaleY, translateX * (1 - scaleX) - translateY * skewX, translateY * (1 - scaleY) - translateX * skewY);
+      } else {
+        this.$transform(scaleX, skewY, skewX, scaleY, 0, 0);
+      }
+    }
+    return this;
+  }
+  /**
+   * Zooms the image.
+   * @param {number} scale The zoom factor. Positive numbers for zooming in, and negative numbers for zooming out.
+   * @param {number} [x] The zoom origin in the horizontal, defaults to the center of the image.
+   * @param {number} [y] The zoom origin in the vertical, defaults to the center of the image.
+   * @returns {CropperImage} Returns `this` for chaining.
+   */
+  $zoom(scale, x, y) {
+    if (!this.scalable || scale === 0) {
+      return this;
+    }
+    if (scale < 0) {
+      scale = 1 / (1 - scale);
+    } else {
+      scale += 1;
+    }
+    if (isNumber(x) && isNumber(y)) {
+      const [a, b, c, d] = this.$matrix;
+      const { width, height } = this.getBoundingClientRect();
+      const originX = width / 2;
+      const originY = height / 2;
+      const moveX = x - originX;
+      const moveY = y - originY;
+      const translateX = (moveX * d - c * moveY) / (a * d - c * b);
+      const translateY = (moveY * a - b * moveX) / (a * d - c * b);
+      this.$transform(scale, 0, 0, scale, translateX * (1 - scale), translateY * (1 - scale));
+    } else {
+      this.$scale(scale);
+    }
+    return this;
+  }
+  /**
+   * Scales the image.
+   * {@link https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/scale}
+   * {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/scale}
+   * @param {number} x The scaling factor in the horizontal direction.
+   * @param {number} [y] The scaling factor in the vertical direction.
+   * @returns {CropperImage} Returns `this` for chaining.
+   */
+  $scale(x, y = x) {
+    if (this.scalable) {
+      this.$transform(x, 0, 0, y, 0, 0);
+    }
+    return this;
+  }
+  /**
+   * Skews the image.
+   * {@link https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/skew}
+   * {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/transform}
+   * @param {number|string} x The skewing angle in the horizontal direction.
+   * @param {number|string} [y] The skewing angle in the vertical direction.
+   * @returns {CropperImage} Returns `this` for chaining.
+   */
+  $skew(x, y = 0) {
+    if (this.skewable) {
+      const radianX = toAngleInRadian(x);
+      const radianY = toAngleInRadian(y);
+      this.$transform(1, Math.tan(radianY), Math.tan(radianX), 1, 0, 0);
+    }
+    return this;
+  }
+  /**
+   * Translates the image.
+   * {@link https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/translate}
+   * {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/translate}
+   * @param {number} x The translating distance in the horizontal direction.
+   * @param {number} [y] The translating distance in the vertical direction.
+   * @returns {CropperImage} Returns `this` for chaining.
+   */
+  $translate(x, y = x) {
+    if (this.translatable && isNumber(x) && isNumber(y)) {
+      this.$transform(1, 0, 0, 1, x, y);
+    }
+    return this;
+  }
+  /**
+   * Transforms the image.
+   * {@link https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/matrix}
+   * {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/transform}
+   * @param {number} a The scaling factor in the horizontal direction.
+   * @param {number} b The skewing angle in the vertical direction.
+   * @param {number} c The skewing angle in the horizontal direction.
+   * @param {number} d The scaling factor in the vertical direction.
+   * @param {number} e The translating distance in the horizontal direction.
+   * @param {number} f The translating distance in the vertical direction.
+   * @returns {CropperImage} Returns `this` for chaining.
+   */
+  $transform(a, b, c, d, e, f) {
+    if (isNumber(a) && isNumber(b) && isNumber(c) && isNumber(d) && isNumber(e) && isNumber(f)) {
+      return this.$setTransform(multiplyMatrices(this.$matrix, [a, b, c, d, e, f]));
+    }
+    return this;
+  }
+  /**
+   * Resets (overrides) the current transform to the specific identity matrix.
+   * {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setTransform}
+   * @param {number|Array} a The scaling factor in the horizontal direction.
+   * @param {number} b The skewing angle in the vertical direction.
+   * @param {number} c The skewing angle in the horizontal direction.
+   * @param {number} d The scaling factor in the vertical direction.
+   * @param {number} e The translating distance in the horizontal direction.
+   * @param {number} f The translating distance in the vertical direction.
+   * @returns {CropperImage} Returns `this` for chaining.
+   */
+  $setTransform(a, b, c, d, e, f) {
+    if (this.rotatable || this.scalable || this.skewable || this.translatable) {
+      if (Array.isArray(a)) {
+        [a, b, c, d, e, f] = a;
+      }
+      if (isNumber(a) && isNumber(b) && isNumber(c) && isNumber(d) && isNumber(e) && isNumber(f)) {
+        const oldMatrix = [...this.$matrix];
+        const newMatrix = [a, b, c, d, e, f];
+        if (this.$emit(EVENT_TRANSFORM, {
+          matrix: newMatrix,
+          oldMatrix
+        }) === false) {
+          return this;
+        }
+        this.$matrix = newMatrix;
+        this.style.transform = `matrix(${newMatrix.join(", ")})`;
+      }
+    }
+    return this;
+  }
+  /**
+   * Retrieves the current transformation matrix being applied to the element.
+   * {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getTransform}
+   * @returns {Array} Returns the readonly transformation matrix.
+   */
+  $getTransform() {
+    return this.$matrix.slice();
+  }
+  /**
+   * Resets the current transform to the initial identity matrix.
+   * {@link https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/resetTransform}
+   * @returns {CropperImage} Returns `this` for chaining.
+   */
+  $resetTransform() {
+    return this.$setTransform([1, 0, 0, 1, 0, 0]);
+  }
+};
+CropperImage.$name = CROPPER_IMAGE;
+CropperImage.$version = "2.1.0";
+
+// node_modules/@cropper/element-shade/dist/element-shade.esm.raw.js
+var style4 = `:host{display:block;height:0;left:0;outline:var(--theme-color) solid 1px;position:relative;top:0;width:0}:host([transparent]){outline-color:transparent}`;
+var canvasCache2 = /* @__PURE__ */ new WeakMap();
+var CropperShade = class extends CropperElement {
+  constructor() {
+    super(...arguments);
+    this.$onCanvasActionEnd = null;
+    this.$onCanvasActionStart = null;
+    this.$onSelectionChange = null;
+    this.$style = style4;
+    this.x = 0;
+    this.y = 0;
+    this.width = 0;
+    this.height = 0;
+    this.slottable = false;
+    this.themeColor = "rgba(0, 0, 0, 0.65)";
+  }
+  set $canvas(element2) {
+    canvasCache2.set(this, element2);
+  }
+  get $canvas() {
+    return canvasCache2.get(this);
+  }
+  static get observedAttributes() {
+    return super.observedAttributes.concat([
+      "height",
+      "width",
+      "x",
+      "y"
+    ]);
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    const $canvas = this.closest(this.$getTagNameOf(CROPPER_CANVAS));
+    if ($canvas) {
+      this.$canvas = $canvas;
+      this.style.position = "absolute";
+      const $selection = $canvas.querySelector(this.$getTagNameOf(CROPPER_SELECTION));
+      if ($selection) {
+        this.$onCanvasActionStart = (event) => {
+          if ($selection.hidden && event.detail.action === ACTION_SELECT) {
+            this.hidden = false;
+          }
+        };
+        this.$onCanvasActionEnd = (event) => {
+          if ($selection.hidden && event.detail.action === ACTION_SELECT) {
+            this.hidden = true;
+          }
+        };
+        this.$onSelectionChange = (event) => {
+          const { x, y, width, height } = event.defaultPrevented ? $selection : event.detail;
+          this.$change(x, y, width, height);
+          if ($selection.hidden || x === 0 && y === 0 && width === 0 && height === 0) {
+            this.hidden = true;
+          }
+        };
+        on($canvas, EVENT_ACTION_START, this.$onCanvasActionStart);
+        on($canvas, EVENT_ACTION_END, this.$onCanvasActionEnd);
+        on($canvas, EVENT_CHANGE, this.$onSelectionChange);
+      }
+    }
+    this.$render();
+  }
+  disconnectedCallback() {
+    const { $canvas } = this;
+    if ($canvas) {
+      if (this.$onCanvasActionStart) {
+        off($canvas, EVENT_ACTION_START, this.$onCanvasActionStart);
+        this.$onCanvasActionStart = null;
+      }
+      if (this.$onCanvasActionEnd) {
+        off($canvas, EVENT_ACTION_END, this.$onCanvasActionEnd);
+        this.$onCanvasActionEnd = null;
+      }
+      if (this.$onSelectionChange) {
+        off($canvas, EVENT_CHANGE, this.$onSelectionChange);
+        this.$onSelectionChange = null;
+      }
+    }
+    super.disconnectedCallback();
+  }
+  /**
+   * Changes the position and/or size of the shade.
+   * @param {number} x The new position in the horizontal direction.
+   * @param {number} y The new position in the vertical direction.
+   * @param {number} [width] The new width.
+   * @param {number} [height] The new height.
+   * @returns {CropperShade} Returns `this` for chaining.
+   */
+  $change(x, y, width = this.width, height = this.height) {
+    if (!isNumber(x) || !isNumber(y) || !isNumber(width) || !isNumber(height) || x === this.x && y === this.y && width === this.width && height === this.height) {
+      return this;
+    }
+    if (this.hidden) {
+      this.hidden = false;
+    }
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    return this.$render();
+  }
+  /**
+   * Resets the shade to its initial position and size.
+   * @returns {CropperShade} Returns `this` for chaining.
+   */
+  $reset() {
+    return this.$change(0, 0, 0, 0);
+  }
+  /**
+   * Refreshes the position or size of the shade.
+   * @returns {CropperShade} Returns `this` for chaining.
+   */
+  $render() {
+    return this.$setStyles({
+      transform: `translate(${this.x}px, ${this.y}px)`,
+      width: this.width,
+      height: this.height,
+      outlineWidth: WINDOW.innerWidth
+    });
+  }
+};
+CropperShade.$name = CROPPER_SHADE;
+CropperShade.$version = "2.1.0";
+
+// node_modules/@cropper/element-handle/dist/element-handle.esm.raw.js
+var style5 = `:host{background-color:var(--theme-color);display:block}:host([action=move]),:host([action=select]){height:100%;left:0;position:absolute;top:0;width:100%}:host([action=move]){cursor:move}:host([action=select]){cursor:crosshair}:host([action$=-resize]){background-color:transparent;height:15px;position:absolute;width:15px}:host([action$=-resize]):after{background-color:var(--theme-color);content:"";display:block;height:5px;left:50%;position:absolute;top:50%;transform:translate(-50%,-50%);width:5px}:host([action=n-resize]),:host([action=s-resize]){cursor:ns-resize;left:50%;transform:translateX(-50%);width:100%}:host([action=n-resize]){top:-8px}:host([action=s-resize]){bottom:-8px}:host([action=e-resize]),:host([action=w-resize]){cursor:ew-resize;height:100%;top:50%;transform:translateY(-50%)}:host([action=e-resize]){right:-8px}:host([action=w-resize]){left:-8px}:host([action=ne-resize]){cursor:nesw-resize;right:-8px;top:-8px}:host([action=nw-resize]){cursor:nwse-resize;left:-8px;top:-8px}:host([action=se-resize]){bottom:-8px;cursor:nwse-resize;right:-8px}:host([action=se-resize]):after{height:15px;width:15px}@media (pointer:coarse){:host([action=se-resize]):after{height:10px;width:10px}}@media (pointer:fine){:host([action=se-resize]):after{height:5px;width:5px}}:host([action=sw-resize]){bottom:-8px;cursor:nesw-resize;left:-8px}:host([plain]){background-color:transparent}`;
+var CropperHandle = class extends CropperElement {
+  constructor() {
+    super(...arguments);
+    this.$onCanvasCropEnd = null;
+    this.$onCanvasCropStart = null;
+    this.$style = style5;
+    this.action = ACTION_NONE;
+    this.plain = false;
+    this.slottable = false;
+    this.themeColor = "rgba(51, 153, 255, 0.5)";
+  }
+  static get observedAttributes() {
+    return super.observedAttributes.concat([
+      "action",
+      "plain"
+    ]);
+  }
+};
+CropperHandle.$name = CROPPER_HANDLE;
+CropperHandle.$version = "2.1.0";
+
+// node_modules/@cropper/element-selection/dist/element-selection.esm.raw.js
+var style6 = `:host{display:block;left:0;position:relative;right:0}:host([outlined]){outline:1px solid var(--theme-color)}:host([multiple]){outline:1px dashed hsla(0,0%,100%,.5)}:host([multiple]):after{bottom:0;content:"";cursor:pointer;display:block;left:0;position:absolute;right:0;top:0}:host([multiple][active]){outline-color:var(--theme-color);z-index:1}:host([multiple])>*{visibility:hidden}:host([multiple][active])>*{visibility:visible}:host([multiple][active]):after{display:none}`;
+var canvasCache3 = /* @__PURE__ */ new WeakMap();
+var CropperSelection = class extends CropperElement {
+  constructor() {
+    super(...arguments);
+    this.$onCanvasAction = null;
+    this.$onCanvasActionStart = null;
+    this.$onCanvasActionEnd = null;
+    this.$onDocumentKeyDown = null;
+    this.$action = "";
+    this.$actionStartTarget = null;
+    this.$changing = false;
+    this.$style = style6;
+    this.$initialSelection = {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0
+    };
+    this.x = 0;
+    this.y = 0;
+    this.width = 0;
+    this.height = 0;
+    this.aspectRatio = NaN;
+    this.initialAspectRatio = NaN;
+    this.initialCoverage = NaN;
+    this.active = false;
+    this.linked = false;
+    this.dynamic = false;
+    this.movable = false;
+    this.resizable = false;
+    this.zoomable = false;
+    this.multiple = false;
+    this.keyboard = false;
+    this.outlined = false;
+    this.precise = false;
+  }
+  set $canvas(element2) {
+    canvasCache3.set(this, element2);
+  }
+  get $canvas() {
+    return canvasCache3.get(this);
+  }
+  static get observedAttributes() {
+    return super.observedAttributes.concat([
+      "active",
+      "aspect-ratio",
+      "dynamic",
+      "height",
+      "initial-aspect-ratio",
+      "initial-coverage",
+      "keyboard",
+      "linked",
+      "movable",
+      "multiple",
+      "outlined",
+      "precise",
+      "resizable",
+      "width",
+      "x",
+      "y",
+      "zoomable"
+    ]);
+  }
+  $propertyChangedCallback(name, oldValue, newValue) {
+    if (Object.is(newValue, oldValue)) {
+      return;
+    }
+    super.$propertyChangedCallback(name, oldValue, newValue);
+    switch (name) {
+      case "x":
+      case "y":
+      case "width":
+      case "height":
+        if (!this.$changing) {
+          this.$nextTick(() => {
+            this.$change(this.x, this.y, this.width, this.height, this.aspectRatio, true);
+          });
+        }
+        break;
+      case "aspectRatio":
+      case "initialAspectRatio":
+        this.$nextTick(() => {
+          this.$initSelection();
+        });
+        break;
+      case "initialCoverage":
+        this.$nextTick(() => {
+          if (isPositiveNumber(newValue) && newValue <= 1) {
+            this.$initSelection(true, true);
+          }
+        });
+        break;
+      case "keyboard":
+        this.$nextTick(() => {
+          if (this.$canvas) {
+            if (newValue) {
+              if (!this.$onDocumentKeyDown) {
+                this.$onDocumentKeyDown = this.$handleKeyDown.bind(this);
+                on(this.ownerDocument, EVENT_KEYDOWN, this.$onDocumentKeyDown);
+              }
+            } else if (this.$onDocumentKeyDown) {
+              off(this.ownerDocument, EVENT_KEYDOWN, this.$onDocumentKeyDown);
+              this.$onDocumentKeyDown = null;
+            }
+          }
+        });
+        break;
+      case "multiple":
+        this.$nextTick(() => {
+          if (this.$canvas) {
+            const selections = this.$getSelections();
+            if (newValue) {
+              selections.forEach((selection) => {
+                selection.active = false;
+              });
+              this.active = true;
+              this.$emit(EVENT_CHANGE, {
+                x: this.x,
+                y: this.y,
+                width: this.width,
+                height: this.height
+              });
+            } else {
+              this.active = false;
+              selections.slice(1).forEach((selection) => {
+                this.$removeSelection(selection);
+              });
+            }
+          }
+        });
+        break;
+      case "precise":
+        this.$nextTick(() => {
+          this.$change(this.x, this.y);
+        });
+        break;
+      // Backwards compatible with 2.0.0-rc
+      case "linked":
+        if (newValue) {
+          this.dynamic = true;
+        }
+        break;
+    }
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    const $canvas = this.closest(this.$getTagNameOf(CROPPER_CANVAS));
+    if ($canvas) {
+      this.$canvas = $canvas;
+      this.$setStyles({
+        position: "absolute",
+        transform: `translate(${this.x}px, ${this.y}px)`
+      });
+      if (!this.hidden) {
+        this.$render();
+      }
+      this.$initSelection(true);
+      this.$onCanvasActionStart = this.$handleActionStart.bind(this);
+      this.$onCanvasActionEnd = this.$handleActionEnd.bind(this);
+      this.$onCanvasAction = this.$handleAction.bind(this);
+      on($canvas, EVENT_ACTION_START, this.$onCanvasActionStart);
+      on($canvas, EVENT_ACTION_END, this.$onCanvasActionEnd);
+      on($canvas, EVENT_ACTION, this.$onCanvasAction);
+    } else {
+      this.$render();
+    }
+  }
+  disconnectedCallback() {
+    const { $canvas } = this;
+    if ($canvas) {
+      if (this.$onCanvasActionStart) {
+        off($canvas, EVENT_ACTION_START, this.$onCanvasActionStart);
+        this.$onCanvasActionStart = null;
+      }
+      if (this.$onCanvasActionEnd) {
+        off($canvas, EVENT_ACTION_END, this.$onCanvasActionEnd);
+        this.$onCanvasActionEnd = null;
+      }
+      if (this.$onCanvasAction) {
+        off($canvas, EVENT_ACTION, this.$onCanvasAction);
+        this.$onCanvasAction = null;
+      }
+    }
+    super.disconnectedCallback();
+  }
+  $getSelections() {
+    let selections = [];
+    if (this.parentElement) {
+      selections = Array.from(this.parentElement.querySelectorAll(this.$getTagNameOf(CROPPER_SELECTION)));
+    }
+    return selections;
+  }
+  $initSelection(center = false, resize = false) {
+    const { initialCoverage, parentElement } = this;
+    if (isPositiveNumber(initialCoverage) && parentElement) {
+      const aspectRatio = this.aspectRatio || this.initialAspectRatio;
+      let width = (resize ? 0 : this.width) || parentElement.offsetWidth * initialCoverage;
+      let height = (resize ? 0 : this.height) || parentElement.offsetHeight * initialCoverage;
+      if (isPositiveNumber(aspectRatio)) {
+        ({ width, height } = getAdjustedSizes({ aspectRatio, width, height }));
+      }
+      this.$change(this.x, this.y, width, height);
+      if (center) {
+        this.$center();
+      }
+      this.$initialSelection = {
+        x: this.x,
+        y: this.y,
+        width: this.width,
+        height: this.height
+      };
+    }
+  }
+  $createSelection() {
+    const newSelection = this.cloneNode(true);
+    if (this.hasAttribute("id")) {
+      newSelection.removeAttribute("id");
+    }
+    newSelection.initialCoverage = NaN;
+    this.active = false;
+    if (this.parentElement) {
+      this.parentElement.insertBefore(newSelection, this.nextSibling);
+    }
+    return newSelection;
+  }
+  $removeSelection(selection = this) {
+    if (this.parentElement) {
+      const selections = this.$getSelections();
+      if (selections.length > 1) {
+        const index = selections.indexOf(selection);
+        const activeSelection = selections[index + 1] || selections[index - 1];
+        if (activeSelection) {
+          selection.active = false;
+          this.parentElement.removeChild(selection);
+          activeSelection.active = true;
+          activeSelection.$emit(EVENT_CHANGE, {
+            x: activeSelection.x,
+            y: activeSelection.y,
+            width: activeSelection.width,
+            height: activeSelection.height
+          });
+        }
+      } else {
+        this.$clear();
+      }
+    }
+  }
+  $handleActionStart(event) {
+    var _a, _b;
+    const relatedTarget = (_b = (_a = event.detail) === null || _a === void 0 ? void 0 : _a.relatedEvent) === null || _b === void 0 ? void 0 : _b.target;
+    this.$action = "";
+    this.$actionStartTarget = relatedTarget;
+    if (!this.hidden && this.multiple && !this.active && relatedTarget === this && this.parentElement) {
+      this.$getSelections().forEach((selection) => {
+        selection.active = false;
+      });
+      this.active = true;
+      this.$emit(EVENT_CHANGE, {
+        x: this.x,
+        y: this.y,
+        width: this.width,
+        height: this.height
+      });
+    }
+  }
+  $handleAction(event) {
+    const { currentTarget, detail } = event;
+    if (!currentTarget || !detail) {
+      return;
+    }
+    const { relatedEvent } = detail;
+    let { action } = detail;
+    const relatedTarget = relatedEvent ? getComposedPathTarget(relatedEvent) : null;
+    if (!action && this.multiple) {
+      action = this.$action || (relatedTarget === null || relatedTarget === void 0 ? void 0 : relatedTarget.action);
+      this.$action = action;
+    }
+    if (!action || this.hidden && action !== ACTION_SELECT || this.multiple && !this.active && action !== ACTION_SCALE) {
+      return;
+    }
+    const { width, height } = this;
+    let moveX = detail.endX - detail.startX;
+    let moveY = detail.endY - detail.startY;
+    let { aspectRatio } = this;
+    if (!isPositiveNumber(aspectRatio) && relatedEvent.shiftKey) {
+      aspectRatio = isPositiveNumber(width) && isPositiveNumber(height) ? width / height : 1;
+    }
+    switch (action) {
+      case ACTION_SELECT:
+        if (moveX !== 0 || moveY !== 0) {
+          if (moveX === 0) {
+            moveX = moveY;
+          } else if (moveY === 0) {
+            moveY = moveX;
+          }
+          const { $canvas } = this;
+          const offset = getOffset(currentTarget);
+          (this.multiple && !this.hidden ? this.$createSelection() : this).$change(detail.startX - offset.left, detail.startY - offset.top, Math.abs(moveX), Math.abs(moveY), aspectRatio);
+          if (moveX < 0) {
+            if (moveY < 0) {
+              action = ACTION_RESIZE_NORTHWEST;
+            } else if (moveY > 0) {
+              action = ACTION_RESIZE_SOUTHWEST;
+            }
+          } else if (moveX > 0) {
+            if (moveY < 0) {
+              action = ACTION_RESIZE_NORTHEAST;
+            } else if (moveY > 0) {
+              action = ACTION_RESIZE_SOUTHEAST;
+            }
+          }
+          if ($canvas) {
+            $canvas.$action = action;
+          }
+        }
+        break;
+      case ACTION_MOVE:
+        if (this.movable && (this.dynamic || this.$actionStartTarget && this.contains(this.$actionStartTarget))) {
+          this.$move(moveX, moveY);
+        }
+        break;
+      case ACTION_SCALE:
+        if (relatedEvent && this.zoomable && (this.dynamic || this.contains(relatedEvent.target))) {
+          const offset = getOffset(currentTarget);
+          this.$zoom(detail.scale, relatedEvent.pageX - offset.left, relatedEvent.pageY - offset.top);
+        }
+        break;
+      default:
+        this.$resize(action, moveX, moveY, aspectRatio);
+    }
+  }
+  $handleActionEnd() {
+    this.$action = "";
+    this.$actionStartTarget = null;
+  }
+  $handleKeyDown(event) {
+    if (this.hidden || !this.keyboard || this.multiple && !this.active || event.defaultPrevented) {
+      return;
+    }
+    const { activeElement } = document;
+    if (activeElement && (["INPUT", "TEXTAREA"].includes(activeElement.tagName) || ["true", "plaintext-only"].includes(activeElement.contentEditable))) {
+      return;
+    }
+    switch (event.key) {
+      case "Backspace":
+        if (event.metaKey) {
+          event.preventDefault();
+          this.$removeSelection();
+        }
+        break;
+      case "Delete":
+        event.preventDefault();
+        this.$removeSelection();
+        break;
+      // Move to the left
+      case "ArrowLeft":
+        event.preventDefault();
+        this.$move(-1, 0);
+        break;
+      // Move to the right
+      case "ArrowRight":
+        event.preventDefault();
+        this.$move(1, 0);
+        break;
+      // Move to the top
+      case "ArrowUp":
+        event.preventDefault();
+        this.$move(0, -1);
+        break;
+      // Move to the bottom
+      case "ArrowDown":
+        event.preventDefault();
+        this.$move(0, 1);
+        break;
+      case "+":
+        event.preventDefault();
+        this.$zoom(0.1);
+        break;
+      case "-":
+        event.preventDefault();
+        this.$zoom(-0.1);
+        break;
+    }
+  }
+  /**
+   * Aligns the selection to the center of its parent element.
+   * @returns {CropperSelection} Returns `this` for chaining.
+   */
+  $center() {
+    const { parentElement } = this;
+    if (!parentElement) {
+      return this;
+    }
+    const x = (parentElement.offsetWidth - this.width) / 2;
+    const y = (parentElement.offsetHeight - this.height) / 2;
+    return this.$change(x, y);
+  }
+  /**
+   * Moves the selection.
+   * @param {number} x The moving distance in the horizontal direction.
+   * @param {number} [y] The moving distance in the vertical direction.
+   * @returns {CropperSelection} Returns `this` for chaining.
+   */
+  $move(x, y = x) {
+    return this.$moveTo(this.x + x, this.y + y);
+  }
+  /**
+   * Moves the selection to a specific position.
+   * @param {number} x The new position in the horizontal direction.
+   * @param {number} [y] The new position in the vertical direction.
+   * @returns {CropperSelection} Returns `this` for chaining.
+   */
+  $moveTo(x, y = x) {
+    if (!this.movable) {
+      return this;
+    }
+    return this.$change(x, y);
+  }
+  /**
+   * Adjusts the size the selection on a specific side or corner.
+   * @param {string} action Indicates the side or corner to resize.
+   * @param {number} [offsetX] The horizontal offset of the specific side or corner.
+   * @param {number} [offsetY] The vertical offset of the specific side or corner.
+   * @param {number} [aspectRatio] The aspect ratio for computing the new size if it is necessary.
+   * @returns {CropperSelection} Returns `this` for chaining.
+   */
+  $resize(action, offsetX = 0, offsetY = 0, aspectRatio = this.aspectRatio) {
+    if (!this.resizable) {
+      return this;
+    }
+    const hasValidAspectRatio = isPositiveNumber(aspectRatio);
+    const { $canvas } = this;
+    let { x, y, width, height } = this;
+    switch (action) {
+      case ACTION_RESIZE_NORTH:
+        y += offsetY;
+        height -= offsetY;
+        if (height < 0) {
+          action = ACTION_RESIZE_SOUTH;
+          height = -height;
+          y -= height;
+        }
+        if (hasValidAspectRatio) {
+          offsetX = offsetY * aspectRatio;
+          x += offsetX / 2;
+          width -= offsetX;
+          if (width < 0) {
+            width = -width;
+            x -= width;
+          }
+        }
+        break;
+      case ACTION_RESIZE_EAST:
+        width += offsetX;
+        if (width < 0) {
+          action = ACTION_RESIZE_WEST;
+          width = -width;
+          x -= width;
+        }
+        if (hasValidAspectRatio) {
+          offsetY = offsetX / aspectRatio;
+          y -= offsetY / 2;
+          height += offsetY;
+          if (height < 0) {
+            height = -height;
+            y -= height;
+          }
+        }
+        break;
+      case ACTION_RESIZE_SOUTH:
+        height += offsetY;
+        if (height < 0) {
+          action = ACTION_RESIZE_NORTH;
+          height = -height;
+          y -= height;
+        }
+        if (hasValidAspectRatio) {
+          offsetX = offsetY * aspectRatio;
+          x -= offsetX / 2;
+          width += offsetX;
+          if (width < 0) {
+            width = -width;
+            x -= width;
+          }
+        }
+        break;
+      case ACTION_RESIZE_WEST:
+        x += offsetX;
+        width -= offsetX;
+        if (width < 0) {
+          action = ACTION_RESIZE_EAST;
+          width = -width;
+          x -= width;
+        }
+        if (hasValidAspectRatio) {
+          offsetY = offsetX / aspectRatio;
+          y += offsetY / 2;
+          height -= offsetY;
+          if (height < 0) {
+            height = -height;
+            y -= height;
+          }
+        }
+        break;
+      case ACTION_RESIZE_NORTHEAST:
+        if (hasValidAspectRatio) {
+          offsetY = -offsetX / aspectRatio;
+        }
+        y += offsetY;
+        height -= offsetY;
+        width += offsetX;
+        if (width < 0 && height < 0) {
+          action = ACTION_RESIZE_SOUTHWEST;
+          width = -width;
+          height = -height;
+          x -= width;
+          y -= height;
+        } else if (width < 0) {
+          action = ACTION_RESIZE_NORTHWEST;
+          width = -width;
+          x -= width;
+        } else if (height < 0) {
+          action = ACTION_RESIZE_SOUTHEAST;
+          height = -height;
+          y -= height;
+        }
+        break;
+      case ACTION_RESIZE_NORTHWEST:
+        if (hasValidAspectRatio) {
+          offsetY = offsetX / aspectRatio;
+        }
+        x += offsetX;
+        y += offsetY;
+        width -= offsetX;
+        height -= offsetY;
+        if (width < 0 && height < 0) {
+          action = ACTION_RESIZE_SOUTHEAST;
+          width = -width;
+          height = -height;
+          x -= width;
+          y -= height;
+        } else if (width < 0) {
+          action = ACTION_RESIZE_NORTHEAST;
+          width = -width;
+          x -= width;
+        } else if (height < 0) {
+          action = ACTION_RESIZE_SOUTHWEST;
+          height = -height;
+          y -= height;
+        }
+        break;
+      case ACTION_RESIZE_SOUTHEAST:
+        if (hasValidAspectRatio) {
+          offsetY = offsetX / aspectRatio;
+        }
+        width += offsetX;
+        height += offsetY;
+        if (width < 0 && height < 0) {
+          action = ACTION_RESIZE_NORTHWEST;
+          width = -width;
+          height = -height;
+          x -= width;
+          y -= height;
+        } else if (width < 0) {
+          action = ACTION_RESIZE_SOUTHWEST;
+          width = -width;
+          x -= width;
+        } else if (height < 0) {
+          action = ACTION_RESIZE_NORTHEAST;
+          height = -height;
+          y -= height;
+        }
+        break;
+      case ACTION_RESIZE_SOUTHWEST:
+        if (hasValidAspectRatio) {
+          offsetY = -offsetX / aspectRatio;
+        }
+        x += offsetX;
+        width -= offsetX;
+        height += offsetY;
+        if (width < 0 && height < 0) {
+          action = ACTION_RESIZE_NORTHEAST;
+          width = -width;
+          height = -height;
+          x -= width;
+          y -= height;
+        } else if (width < 0) {
+          action = ACTION_RESIZE_SOUTHEAST;
+          width = -width;
+          x -= width;
+        } else if (height < 0) {
+          action = ACTION_RESIZE_NORTHWEST;
+          height = -height;
+          y -= height;
+        }
+        break;
+    }
+    if ($canvas) {
+      $canvas.$setAction(action);
+    }
+    return this.$change(x, y, width, height);
+  }
+  /**
+   * Zooms the selection.
+   * @param {number} scale The zoom factor. Positive numbers for zooming in, and negative numbers for zooming out.
+   * @param {number} [x] The zoom origin in the horizontal, defaults to the center of the selection.
+   * @param {number} [y] The zoom origin in the vertical, defaults to the center of the selection.
+   * @returns {CropperSelection} Returns `this` for chaining.
+   */
+  $zoom(scale, x, y) {
+    if (!this.zoomable || scale === 0) {
+      return this;
+    }
+    if (scale < 0) {
+      scale = 1 / (1 - scale);
+    } else {
+      scale += 1;
+    }
+    const { width, height } = this;
+    const newWidth = width * scale;
+    const newHeight = height * scale;
+    let newX = this.x;
+    let newY = this.y;
+    if (isNumber(x) && isNumber(y)) {
+      newX -= (newWidth - width) * ((x - this.x) / width);
+      newY -= (newHeight - height) * ((y - this.y) / height);
+    } else {
+      newX -= (newWidth - width) / 2;
+      newY -= (newHeight - height) / 2;
+    }
+    return this.$change(newX, newY, newWidth, newHeight);
+  }
+  /**
+   * Changes the position and/or size of the selection.
+   * @param {number} x The new position in the horizontal direction.
+   * @param {number} y The new position in the vertical direction.
+   * @param {number} [width] The new width.
+   * @param {number} [height] The new height.
+   * @param {number} [aspectRatio] The new aspect ratio for this change only.
+   * @param {number} [_force] Force change.
+   * @returns {CropperSelection} Returns `this` for chaining.
+   */
+  $change(x, y, width = this.width, height = this.height, aspectRatio = this.aspectRatio, _force = false) {
+    if (this.$changing || !isNumber(x) || !isNumber(y) || !isNumber(width) || !isNumber(height) || width < 0 || height < 0) {
+      return this;
+    }
+    if (isPositiveNumber(aspectRatio)) {
+      ({ width, height } = getAdjustedSizes({ aspectRatio, width, height }, "cover"));
+    }
+    if (!this.precise) {
+      x = Math.round(x);
+      y = Math.round(y);
+      width = Math.round(width);
+      height = Math.round(height);
+    }
+    if (x === this.x && y === this.y && width === this.width && height === this.height && Object.is(aspectRatio, this.aspectRatio) && !_force) {
+      return this;
+    }
+    if (this.hidden) {
+      this.hidden = false;
+    }
+    if (this.$emit(EVENT_CHANGE, {
+      x,
+      y,
+      width,
+      height
+    }) === false) {
+      return this;
+    }
+    this.$changing = true;
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.$changing = false;
+    return this.$render();
+  }
+  /**
+   * Resets the selection to its initial position and size.
+   * @returns {CropperSelection} Returns `this` for chaining.
+   */
+  $reset() {
+    const { x, y, width, height } = this.$initialSelection;
+    return this.$change(x, y, width, height);
+  }
+  /**
+   * Clears the selection.
+   * @returns {CropperSelection} Returns `this` for chaining.
+   */
+  $clear() {
+    this.$change(0, 0, 0, 0, NaN, true);
+    this.hidden = true;
+    return this;
+  }
+  /**
+   * Refreshes the position or size of the selection.
+   * @returns {CropperSelection} Returns `this` for chaining.
+   */
+  $render() {
+    return this.$setStyles({
+      transform: `translate(${this.x}px, ${this.y}px)`,
+      width: this.width,
+      height: this.height
+    });
+  }
+  /**
+   * Generates a real canvas element, with the image (selected area only) draw into if there is one.
+   * @param {object} [options] The available options.
+   * @param {number} [options.width] The width of the canvas.
+   * @param {number} [options.height] The height of the canvas.
+   * @param {Function} [options.beforeDraw] The function called before drawing the image onto the canvas.
+   * @returns {Promise} Returns a promise that resolves to the generated canvas element.
+   */
+  $toCanvas(options) {
+    return new Promise((resolve, reject) => {
+      if (!this.isConnected) {
+        reject(new Error("The current element is not connected to the DOM."));
+        return;
+      }
+      const canvas = document.createElement("canvas");
+      let { width, height } = this;
+      let scale = 1;
+      if (isPlainObject(options) && (isPositiveNumber(options.width) || isPositiveNumber(options.height))) {
+        ({ width, height } = getAdjustedSizes({
+          aspectRatio: width / height,
+          width: options.width,
+          height: options.height
+        }));
+        scale = width / this.width;
+      }
+      canvas.width = width;
+      canvas.height = height;
+      if (!this.$canvas) {
+        resolve(canvas);
+        return;
+      }
+      const cropperImage = this.$canvas.querySelector(this.$getTagNameOf(CROPPER_IMAGE));
+      if (!cropperImage) {
+        resolve(canvas);
+        return;
+      }
+      cropperImage.$ready().then((image) => {
+        const context = canvas.getContext("2d");
+        if (context) {
+          const [a, b, c, d, e, f] = cropperImage.$getTransform();
+          const offsetX = -this.x;
+          const offsetY = -this.y;
+          const translateX = (offsetX * d - c * offsetY) / (a * d - c * b);
+          const translateY = (offsetY * a - b * offsetX) / (a * d - c * b);
+          let newE = a * translateX + c * translateY + e;
+          let newF = b * translateX + d * translateY + f;
+          let destWidth = image.naturalWidth;
+          let destHeight = image.naturalHeight;
+          if (scale !== 1) {
+            newE *= scale;
+            newF *= scale;
+            destWidth *= scale;
+            destHeight *= scale;
+          }
+          const centerX = destWidth / 2;
+          const centerY = destHeight / 2;
+          context.fillStyle = "transparent";
+          context.fillRect(0, 0, width, height);
+          if (isPlainObject(options) && isFunction(options.beforeDraw)) {
+            options.beforeDraw.call(this, context, canvas);
+          }
+          context.save();
+          context.translate(centerX, centerY);
+          context.transform(a, b, c, d, newE, newF);
+          context.translate(-centerX, -centerY);
+          context.drawImage(image, 0, 0, destWidth, destHeight);
+          context.restore();
+        }
+        resolve(canvas);
+      }).catch(reject);
+    });
+  }
+};
+CropperSelection.$name = CROPPER_SELECTION;
+CropperSelection.$version = "2.1.0";
+
+// node_modules/@cropper/element-grid/dist/element-grid.esm.raw.js
+var style7 = `:host{display:flex;flex-direction:column;position:relative;touch-action:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}:host([bordered]){border:1px dashed var(--theme-color)}:host([covered]){bottom:0;left:0;position:absolute;right:0;top:0}:host>span{display:flex;flex:1}:host>span+span{border-top:1px dashed var(--theme-color)}:host>span>span{flex:1}:host>span>span+span{border-left:1px dashed var(--theme-color)}`;
+var CropperGrid = class extends CropperElement {
+  constructor() {
+    super(...arguments);
+    this.$style = style7;
+    this.bordered = false;
+    this.columns = 3;
+    this.covered = false;
+    this.rows = 3;
+    this.slottable = false;
+    this.themeColor = "rgba(238, 238, 238, 0.5)";
+  }
+  static get observedAttributes() {
+    return super.observedAttributes.concat([
+      "bordered",
+      "columns",
+      "covered",
+      "rows"
+    ]);
+  }
+  $propertyChangedCallback(name, oldValue, newValue) {
+    if (Object.is(newValue, oldValue)) {
+      return;
+    }
+    super.$propertyChangedCallback(name, oldValue, newValue);
+    if (name === "rows" || name === "columns") {
+      this.$nextTick(() => {
+        this.$render();
+      });
+    }
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.$render();
+  }
+  $render() {
+    const shadow = this.$getShadowRoot();
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < this.rows; i += 1) {
+      const row = document.createElement("span");
+      row.setAttribute("role", "row");
+      for (let j2 = 0; j2 < this.columns; j2 += 1) {
+        const column = document.createElement("span");
+        column.setAttribute("role", "gridcell");
+        row.appendChild(column);
+      }
+      fragment.appendChild(row);
+    }
+    if (shadow) {
+      shadow.innerHTML = "";
+      shadow.appendChild(fragment);
+    }
+  }
+};
+CropperGrid.$name = CROPPER_GIRD;
+CropperGrid.$version = "2.1.0";
+
+// node_modules/@cropper/element-crosshair/dist/element-crosshair.esm.raw.js
+var style8 = `:host{display:inline-block;height:1em;position:relative;touch-action:none;-webkit-user-select:none;-moz-user-select:none;user-select:none;vertical-align:middle;width:1em}:host:after,:host:before{background-color:var(--theme-color);content:"";display:block;position:absolute}:host:before{height:1px;left:0;top:50%;transform:translateY(-50%);width:100%}:host:after{height:100%;left:50%;top:0;transform:translateX(-50%);width:1px}:host([centered]){left:50%;position:absolute;top:50%;transform:translate(-50%,-50%)}`;
+var CropperCrosshair = class extends CropperElement {
+  constructor() {
+    super(...arguments);
+    this.$style = style8;
+    this.centered = false;
+    this.slottable = false;
+    this.themeColor = "rgba(238, 238, 238, 0.5)";
+  }
+  static get observedAttributes() {
+    return super.observedAttributes.concat([
+      "centered"
+    ]);
+  }
+};
+CropperCrosshair.$name = CROPPER_CROSSHAIR;
+CropperCrosshair.$version = "2.1.0";
+
+// node_modules/@cropper/element-viewer/dist/element-viewer.esm.raw.js
+var style9 = `:host{display:block;height:100%;overflow:hidden;position:relative;width:100%}`;
+var canvasCache4 = /* @__PURE__ */ new WeakMap();
+var imageCache = /* @__PURE__ */ new WeakMap();
+var selectionCache = /* @__PURE__ */ new WeakMap();
+var sourceImageCache = /* @__PURE__ */ new WeakMap();
+var RESIZE_BOTH = "both";
+var RESIZE_HORIZONTAL = "horizontal";
+var RESIZE_VERTICAL = "vertical";
+var RESIZE_NONE = "none";
+var CropperViewer = class extends CropperElement {
+  constructor() {
+    super(...arguments);
+    this.$onSelectionChange = null;
+    this.$onSourceImageLoad = null;
+    this.$onSourceImageTransform = null;
+    this.$scale = 1;
+    this.$style = style9;
+    this.resize = RESIZE_VERTICAL;
+    this.selection = "";
+    this.slottable = false;
+  }
+  set $image(element2) {
+    imageCache.set(this, element2);
+  }
+  get $image() {
+    return imageCache.get(this);
+  }
+  set $sourceImage(element2) {
+    sourceImageCache.set(this, element2);
+  }
+  get $sourceImage() {
+    return sourceImageCache.get(this);
+  }
+  set $canvas(element2) {
+    canvasCache4.set(this, element2);
+  }
+  get $canvas() {
+    return canvasCache4.get(this);
+  }
+  set $selection(element2) {
+    selectionCache.set(this, element2);
+  }
+  get $selection() {
+    return selectionCache.get(this);
+  }
+  static get observedAttributes() {
+    return super.observedAttributes.concat([
+      "resize",
+      "selection"
+    ]);
+  }
+  connectedCallback() {
+    var _a, _b;
+    super.connectedCallback();
+    let $selection = null;
+    if (this.selection) {
+      $selection = (_b = (_a = getRootDocument(this)) === null || _a === void 0 ? void 0 : _a.querySelector(this.selection)) !== null && _b !== void 0 ? _b : null;
+    } else {
+      $selection = this.closest(this.$getTagNameOf(CROPPER_SELECTION));
+    }
+    if (isElement($selection)) {
+      this.$selection = $selection;
+      this.$onSelectionChange = this.$handleSelectionChange.bind(this);
+      on($selection, EVENT_CHANGE, this.$onSelectionChange);
+      const $canvas = $selection.closest(this.$getTagNameOf(CROPPER_CANVAS));
+      if ($canvas) {
+        this.$canvas = $canvas;
+        const $sourceImage = $canvas.querySelector(this.$getTagNameOf(CROPPER_IMAGE));
+        if ($sourceImage) {
+          this.$sourceImage = $sourceImage;
+          this.$image = $sourceImage.cloneNode(true);
+          this.$getShadowRoot().appendChild(this.$image);
+          this.$onSourceImageLoad = this.$handleSourceImageLoad.bind(this);
+          this.$onSourceImageTransform = this.$handleSourceImageTransform.bind(this);
+          on($sourceImage.$image, EVENT_LOAD, this.$onSourceImageLoad);
+          on($sourceImage, EVENT_TRANSFORM, this.$onSourceImageTransform);
+        }
+      }
+      this.$render();
+    }
+  }
+  disconnectedCallback() {
+    const { $selection, $sourceImage } = this;
+    if ($selection && this.$onSelectionChange) {
+      off($selection, EVENT_CHANGE, this.$onSelectionChange);
+      this.$onSelectionChange = null;
+    }
+    if ($sourceImage && this.$onSourceImageLoad) {
+      off($sourceImage.$image, EVENT_LOAD, this.$onSourceImageLoad);
+      this.$onSourceImageLoad = null;
+    }
+    if ($sourceImage && this.$onSourceImageTransform) {
+      off($sourceImage, EVENT_TRANSFORM, this.$onSourceImageTransform);
+      this.$onSourceImageTransform = null;
+    }
+    super.disconnectedCallback();
+  }
+  $handleSelectionChange(event) {
+    this.$render(event.defaultPrevented ? this.$selection : event.detail);
+  }
+  $handleSourceImageLoad() {
+    const { $image, $sourceImage } = this;
+    const oldSrc = $image.getAttribute("src");
+    const newSrc = $sourceImage.getAttribute("src");
+    if (newSrc && newSrc !== oldSrc) {
+      $image.setAttribute("src", newSrc);
+      $image.$ready(() => {
+        this.$render();
+      });
+    }
+  }
+  $handleSourceImageTransform(event) {
+    this.$render(void 0, event.detail.matrix);
+  }
+  $render(selection, matrix) {
+    const { $canvas, $selection } = this;
+    if (!selection && !$selection.hidden) {
+      selection = $selection;
+    }
+    if (!selection || selection.x === 0 && selection.y === 0 && selection.width === 0 && selection.height === 0) {
+      selection = {
+        x: 0,
+        y: 0,
+        width: $canvas.offsetWidth,
+        height: $canvas.offsetHeight
+      };
+    }
+    const { x, y, width, height } = selection;
+    const styles = {};
+    const { clientWidth, clientHeight } = this;
+    let newWidth = clientWidth;
+    let newHeight = clientHeight;
+    let scale = NaN;
+    switch (this.resize) {
+      case RESIZE_BOTH:
+        scale = 1;
+        newWidth = width;
+        newHeight = height;
+        styles.width = width;
+        styles.height = height;
+        break;
+      case RESIZE_HORIZONTAL:
+        scale = height > 0 ? clientHeight / height : 0;
+        newWidth = width * scale;
+        styles.width = newWidth;
+        break;
+      case RESIZE_VERTICAL:
+        scale = width > 0 ? clientWidth / width : 0;
+        newHeight = height * scale;
+        styles.height = newHeight;
+        break;
+      case RESIZE_NONE:
+      default:
+        if (clientWidth > 0) {
+          scale = width > 0 ? clientWidth / width : 0;
+        } else if (clientHeight > 0) {
+          scale = height > 0 ? clientHeight / height : 0;
+        }
+    }
+    this.$scale = scale;
+    this.$setStyles(styles);
+    if (this.$sourceImage) {
+      setTimeout(() => {
+        this.$transformImageByOffset(matrix !== null && matrix !== void 0 ? matrix : this.$sourceImage.$getTransform(), -x, -y);
+      });
+    }
+  }
+  $transformImageByOffset(matrix, x, y) {
+    const { $image, $scale, $sourceImage } = this;
+    if ($sourceImage && $image && $scale >= 0) {
+      const [a, b, c, d, e, f] = matrix;
+      const translateX = (x * d - c * y) / (a * d - c * b);
+      const translateY = (y * a - b * x) / (a * d - c * b);
+      const newE = a * translateX + c * translateY + e;
+      const newF = b * translateX + d * translateY + f;
+      $image.$ready((image) => {
+        this.$setStyles.call($image, {
+          width: image.naturalWidth * $scale,
+          height: image.naturalHeight * $scale
+        });
+      });
+      $image.$setTransform(a, b, c, d, newE * $scale, newF * $scale);
+    }
+  }
+};
+CropperViewer.$name = CROPPER_VIEWER;
+CropperViewer.$version = "2.1.0";
+
+// node_modules/cropperjs/dist/cropper.esm.raw.js
+var DEFAULT_TEMPLATE = '<cropper-canvas background><cropper-image rotatable scalable skewable translatable></cropper-image><cropper-shade hidden></cropper-shade><cropper-handle action="select" plain></cropper-handle><cropper-selection initial-coverage="0.5" movable resizable><cropper-grid role="grid" bordered covered></cropper-grid><cropper-crosshair centered></cropper-crosshair><cropper-handle action="move" theme-color="rgba(255, 255, 255, 0.35)"></cropper-handle><cropper-handle action="n-resize"></cropper-handle><cropper-handle action="e-resize"></cropper-handle><cropper-handle action="s-resize"></cropper-handle><cropper-handle action="w-resize"></cropper-handle><cropper-handle action="ne-resize"></cropper-handle><cropper-handle action="nw-resize"></cropper-handle><cropper-handle action="se-resize"></cropper-handle><cropper-handle action="sw-resize"></cropper-handle></cropper-selection></cropper-canvas>';
+var REGEXP_ALLOWED_ELEMENTS = /^img|canvas$/;
+var REGEXP_BLOCKED_TAGS = /<(\/?(?:script|style)[^>]*)>/gi;
+var DEFAULT_OPTIONS = {
+  template: DEFAULT_TEMPLATE
+};
+CropperCanvas.$define();
+CropperCrosshair.$define();
+CropperGrid.$define();
+CropperHandle.$define();
+CropperImage.$define();
+CropperSelection.$define();
+CropperShade.$define();
+CropperViewer.$define();
+var Cropper = class {
+  constructor(element2, options) {
+    var _a;
+    this.options = DEFAULT_OPTIONS;
+    if (isString(element2)) {
+      element2 = document.querySelector(element2);
+    }
+    if (!isElement(element2) || !REGEXP_ALLOWED_ELEMENTS.test(element2.localName)) {
+      throw new Error("The first argument is required and must be an <img> or <canvas> element.");
+    }
+    this.element = element2;
+    options = Object.assign(Object.assign({}, DEFAULT_OPTIONS), options);
+    this.options = options;
+    let { container } = options;
+    if (container) {
+      if (isString(container)) {
+        container = (_a = getRootDocument(element2)) === null || _a === void 0 ? void 0 : _a.querySelector(container);
+      }
+      if (!isElement(container)) {
+        throw new Error("The `container` option must be an element or a valid selector.");
+      }
+    }
+    if (!isElement(container)) {
+      if (element2.parentElement) {
+        container = element2.parentElement;
+      } else {
+        container = element2.ownerDocument.body;
+      }
+    }
+    this.container = container;
+    const tagName = element2.localName;
+    let src = "";
+    if (tagName === "img") {
+      ({ src } = element2);
+    } else if (tagName === "canvas" && window.HTMLCanvasElement) {
+      src = element2.toDataURL();
+    }
+    const { template } = options;
+    if (template && isString(template)) {
+      const templateElement = document.createElement("template");
+      const documentFragment = document.createDocumentFragment();
+      templateElement.innerHTML = template.replace(REGEXP_BLOCKED_TAGS, "&lt;$1&gt;");
+      documentFragment.appendChild(templateElement.content);
+      Array.from(documentFragment.querySelectorAll(CROPPER_IMAGE)).forEach((image) => {
+        image.setAttribute("src", src);
+        image.setAttribute("alt", element2.alt || "The image to crop");
+        if (tagName === "img") {
+          [
+            "crossorigin",
+            "decoding",
+            "elementtiming",
+            "fetchpriority",
+            "loading",
+            "referrerpolicy",
+            "sizes",
+            "srcset"
+          ].forEach((attribute) => {
+            if (element2.hasAttribute(attribute)) {
+              image.setAttribute(attribute, element2.getAttribute(attribute) || "");
+            }
+          });
+        }
+      });
+      if (element2.parentElement) {
+        element2.style.display = "none";
+        container.insertBefore(documentFragment, element2.nextSibling);
+      } else {
+        container.appendChild(documentFragment);
+      }
+    }
+  }
+  getCropperCanvas() {
+    return this.container.querySelector(CROPPER_CANVAS);
+  }
+  getCropperImage() {
+    return this.container.querySelector(CROPPER_IMAGE);
+  }
+  getCropperSelection() {
+    return this.container.querySelector(CROPPER_SELECTION);
+  }
+  getCropperSelections() {
+    return this.container.querySelectorAll(CROPPER_SELECTION);
+  }
+  destroy() {
+    var _a;
+    const cropperCanvas = this.getCropperCanvas();
+    if (cropperCanvas) {
+      (_a = cropperCanvas.parentElement) === null || _a === void 0 ? void 0 : _a.removeChild(cropperCanvas);
+    }
+    if (this.element) {
+      this.element.style.display = "";
+    }
+  }
+};
+Cropper.version = "2.1.0";
+
+// src/editor.js
 var Quill = window.Quill;
 Quill.register("modules/cursors", import_quill_cursors.default);
+Quill.register("modules/blotFormatter", nt);
 var Font = Quill.import("attributors/class/font");
 Font.whitelist = ["serif", "monospace", "arial", "courier-new", "georgia", "times-new-roman", "verdana"];
 Quill.register(Font, true);
@@ -11276,8 +17142,8 @@ var Size = Quill.import("attributors/style/size");
 Size.whitelist = ["8px", "10px", "12px", "14px", "18px", "20px", "24px", "28px", "32px", "36px", "48px", "72px"];
 Quill.register(Size, true);
 (function injectFontCSS() {
-  const style = document.createElement("style");
-  style.textContent = `
+  const style10 = document.createElement("style");
+  style10.textContent = `
     .ql-font-arial { font-family: Arial, Helvetica, sans-serif; }
     .ql-font-courier-new { font-family: 'Courier New', Courier, monospace; }
     .ql-font-georgia { font-family: Georgia, 'Times New Roman', serif; }
@@ -11286,7 +17152,7 @@ Quill.register(Size, true);
     .ql-font-serif { font-family: Georgia, 'Times New Roman', serif; }
     .ql-font-monospace { font-family: 'Courier New', Courier, monospace; }
   `;
-  document.head.appendChild(style);
+  document.head.appendChild(style10);
 })();
 function getSupabase() {
   if (window.supabaseClient) return window.supabaseClient;
@@ -11391,6 +17257,29 @@ showLoadingOverlay("Connecting\u2026");
         } catch (e) {
         }
       });
+    }, loadFileIntoCropper = function(file) {
+      if (file.size > 5 * 1024 * 1024) {
+        showToast("\u26A0\uFE0F Image must be under 5MB", "#f59e0b");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        document.getElementById("img-drop-zone").classList.add("hidden");
+        const cropContainer = document.getElementById("crop-container");
+        const cropImage = document.getElementById("crop-image");
+        cropContainer.classList.remove("hidden");
+        cropImage.src = ev.target.result;
+        if (cropperInstance) cropperInstance.destroy();
+        setTimeout(() => {
+          cropperInstance = new Cropper(cropImage, {
+            viewMode: 1,
+            autoCropArea: 0.95,
+            dragMode: "move",
+            background: false
+          });
+        }, 50);
+      };
+      reader.readAsDataURL(file);
     };
     const sb = getSupabase();
     if (!sb) {
@@ -11463,6 +17352,7 @@ showLoadingOverlay("Connecting\u2026");
       modules: {
         toolbar: isReadOnly ? false : "#toolbar",
         history: { userOnly: true },
+        blotFormatter: {},
         cursors: {
           hideDelayMs: 5e3,
           hideSpeedMs: 300,
@@ -11681,22 +17571,30 @@ showLoadingOverlay("Connecting\u2026");
     });
     setTimeout(applyHighlighting, 800);
     window._imgInsertIndex = null;
-    window._imgBase64 = null;
     window._imgTab = "upload";
+    let cropperInstance = null;
     window.openImageModal = function() {
       if (myRole === "viewer") return;
       window._imgInsertIndex = quill.getSelection()?.index ?? quill.getLength();
-      window._imgBase64 = null;
-      document.getElementById("img-drop-label").textContent = "Click to choose or drag & drop an image";
+      document.getElementById("img-drop-zone").classList.remove("hidden");
       document.getElementById("img-drop-zone").style.borderColor = "";
+      document.getElementById("img-drop-label").textContent = "Click to choose or drag & drop an image";
+      document.getElementById("crop-container").classList.add("hidden");
       document.getElementById("image-url-input").value = "";
       document.getElementById("image-file-input").value = "";
+      if (cropperInstance) {
+        cropperInstance.destroy();
+        cropperInstance = null;
+      }
       switchImgTab("upload");
       document.getElementById("image-modal").classList.remove("hidden");
     };
     window.closeImageModal = function() {
       document.getElementById("image-modal").classList.add("hidden");
-      window._imgBase64 = null;
+      if (cropperInstance) {
+        cropperInstance.destroy();
+        cropperInstance = null;
+      }
     };
     window.switchImgTab = function(tab) {
       window._imgTab = tab;
@@ -11708,26 +17606,25 @@ showLoadingOverlay("Connecting\u2026");
     window.handleImageFileSelected = function(e) {
       const file = e.target.files[0];
       if (!file) return;
-      if (file.size > 2 * 1024 * 1024) {
-        showToast("\u26A0\uFE0F Image must be under 2MB", "#f59e0b");
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        window._imgBase64 = ev.target.result;
-        document.getElementById("img-drop-label").textContent = "\u2705 " + file.name;
-        document.getElementById("img-drop-zone").style.borderColor = "#10b981";
-      };
-      reader.readAsDataURL(file);
+      loadFileIntoCropper(file);
     };
     window.confirmInsertImage = function() {
       const idx = window._imgInsertIndex ?? quill.getLength();
       if (window._imgTab === "upload") {
-        if (!window._imgBase64) {
-          showToast("Please select an image first.");
+        if (!cropperInstance) {
+          showToast("Please select and crop an image first.");
           return;
         }
-        quill.insertEmbed(idx, "image", window._imgBase64, "user");
+        const croppedCanvas = cropperInstance.getCroppedCanvas({
+          maxWidth: 1600,
+          maxHeight: 1600
+        });
+        if (!croppedCanvas) {
+          showToast("Error cropping image.");
+          return;
+        }
+        const finalBase64 = croppedCanvas.toDataURL("image/jpeg", 0.85);
+        quill.insertEmbed(idx, "image", finalBase64, "user");
         quill.setSelection(idx + 1);
       } else {
         const url = document.getElementById("image-url-input").value.trim();
@@ -11758,17 +17655,8 @@ showLoadingOverlay("Connecting\u2026");
         e.preventDefault();
         const file = e.dataTransfer.files[0];
         if (!file || !file.type.startsWith("image/")) return;
-        if (file.size > 2 * 1024 * 1024) {
-          showToast("\u26A0\uFE0F Image must be under 2MB", "#f59e0b");
-          return;
-        }
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          window._imgBase64 = ev.target.result;
-          document.getElementById("img-drop-label").textContent = "\u2705 " + file.name;
-          dropZone.style.borderColor = "#10b981";
-        };
-        reader.readAsDataURL(file);
+        document.getElementById("image-file-input").files = e.dataTransfer.files;
+        loadFileIntoCropper(file);
       });
     }
   } catch (err) {
@@ -12071,18 +17959,18 @@ function renderHistory() {
     return;
   }
   historyList.innerHTML = "";
-  versionHistory.forEach((v) => {
+  versionHistory.forEach((v2) => {
     const item = document.createElement("div");
     item.className = "version-item";
     item.innerHTML = `
-      <div class="version-name">${escapeHtml(v.name)}</div>
-      <div class="version-meta">${escapeHtml(v.author)} \xB7 ${timeAgo(v.timestamp)}</div>
+      <div class="version-name">${escapeHtml(v2.name)}</div>
+      <div class="version-meta">${escapeHtml(v2.author)} \xB7 ${timeAgo(v2.timestamp)}</div>
     `;
     item.addEventListener("click", () => {
       if (confirm("Restore this version? Current content will be replaced.")) {
-        const delta = quill.clipboard.convert({ html: v.content });
+        const delta = quill.clipboard.convert({ html: v2.content });
         quill.setContents(delta);
-        showToast(`\u{1F504} Restored "${v.name}"`);
+        showToast(`\u{1F504} Restored "${v2.name}"`);
         window.closeHistory();
       }
     });
@@ -12306,4 +18194,7 @@ function timeAgo(iso) {
 
 quill-cursors/dist/quill-cursors.js:
   (*! For license information please see quill-cursors.js.LICENSE.txt *)
+
+cropperjs/dist/cropper.esm.raw.js:
+  (*! Cropper.js v2.1.0 | (c) 2015-present Chen Fengyuan | MIT *)
 */

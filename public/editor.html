@@ -10,6 +10,7 @@
   <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/quill-cursors@4/dist/quill-cursors.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="editor.css" />
 </head>
@@ -261,6 +262,9 @@
           <span style="font-size:11px;color:#9ca3af">Max 2MB · PNG, JPG, GIF, WebP</span>
         </label>
         <input type="file" id="image-file-input" accept="image/*" style="display:none" onchange="handleImageFileSelected(event)" />
+        <div id="crop-container" class="hidden" style="margin-top:10px; width:100%; max-height:300px; display:flex; justify-content:center; background:#f1f5f9; border-radius:6px; overflow:hidden;">
+          <img id="crop-image" style="max-width:100%; display:block;" />
+        </div>
       </div>
 
       <!-- URL Panel -->
