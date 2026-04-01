@@ -71,6 +71,25 @@ function getSupabase() {
   }
 })();
 
+// Google Sign In
+window.handleGoogleSignIn = async function() {
+  try {
+    const sb = getSupabase();
+    if (!sb) { showError('si-error', 'Client not ready. Please refresh.'); return; }
+    
+    const { data, error } = await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin + '/auth-callback.html'
+      }
+    });
+    
+    if (error) throw error;
+  } catch(err) {
+    showError('si-error', 'Google Sign-In failed. Please try again.');
+  }
+};
+
 // Sign In
 window.handleSignIn = async function(e) {
   e.preventDefault();

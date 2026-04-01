@@ -11269,6 +11269,25 @@ var QuillBinding = class {
 var import_quill_cursors = __toESM(require_quill_cursors());
 var Quill = window.Quill;
 Quill.register("modules/cursors", import_quill_cursors.default);
+var Font = Quill.import("attributors/class/font");
+Font.whitelist = ["serif", "monospace", "arial", "courier-new", "georgia", "times-new-roman", "verdana"];
+Quill.register(Font, true);
+var Size = Quill.import("attributors/style/size");
+Size.whitelist = ["8px", "10px", "12px", "14px", "18px", "20px", "24px", "28px", "32px", "36px", "48px", "72px"];
+Quill.register(Size, true);
+(function injectFontCSS() {
+  const style = document.createElement("style");
+  style.textContent = `
+    .ql-font-arial { font-family: Arial, Helvetica, sans-serif; }
+    .ql-font-courier-new { font-family: 'Courier New', Courier, monospace; }
+    .ql-font-georgia { font-family: Georgia, 'Times New Roman', serif; }
+    .ql-font-times-new-roman { font-family: 'Times New Roman', Times, serif; }
+    .ql-font-verdana { font-family: Verdana, Geneva, sans-serif; }
+    .ql-font-serif { font-family: Georgia, 'Times New Roman', serif; }
+    .ql-font-monospace { font-family: 'Courier New', Courier, monospace; }
+  `;
+  document.head.appendChild(style);
+})();
 function getSupabase() {
   if (window.supabaseClient) return window.supabaseClient;
   if (window.supabase) {
@@ -11543,6 +11562,67 @@ showLoadingOverlay("Connecting\u2026");
     document.title = `${doc2.title} \u2013 CoDoc`;
     renderComments();
     renderHistory();
+    const fontContainer = document.getElementById("custom-font-container");
+    if (fontContainer) {
+      fontContainer.innerHTML = `
+      <select id="custom-font-select" class="tool-select" title="Font Family" style="width:130px;">
+        <option value="">Sans Serif</option>
+        <option value="serif">Serif</option>
+        <option value="monospace">Monospace</option>
+        <option value="arial">Arial</option>
+        <option value="courier-new">Courier New</option>
+        <option value="georgia">Georgia</option>
+        <option value="times-new-roman">Times New Roman</option>
+        <option value="verdana">Verdana</option>
+      </select>
+    `;
+    }
+    const sizeContainer = document.getElementById("custom-size-container");
+    if (sizeContainer) {
+      sizeContainer.innerHTML = `
+      <select id="custom-size-select" class="tool-select" title="Font Size" style="width:70px;">
+        <option value="8px">8</option>
+        <option value="10px">10</option>
+        <option value="12px">12</option>
+        <option value="14px">14</option>
+        <option value="" selected>16</option>
+        <option value="18px">18</option>
+        <option value="20px">20</option>
+        <option value="24px">24</option>
+        <option value="28px">28</option>
+        <option value="32px">32</option>
+        <option value="36px">36</option>
+        <option value="48px">48</option>
+        <option value="72px">72</option>
+      </select>
+    `;
+    }
+    const customFontSelect = document.getElementById("custom-font-select");
+    const customSizeSelect = document.getElementById("custom-size-select");
+    if (customFontSelect) {
+      customFontSelect.addEventListener("change", () => {
+        const val = customFontSelect.value;
+        quill.format("font", val || false);
+        quill.focus();
+      });
+    }
+    if (customSizeSelect) {
+      customSizeSelect.addEventListener("change", () => {
+        const val = customSizeSelect.value;
+        quill.format("size", val || false);
+        quill.focus();
+      });
+    }
+    quill.on("selection-change", () => {
+      if (!quill.getSelection()) return;
+      const formats = quill.getFormat();
+      if (customFontSelect) {
+        customFontSelect.value = formats.font || "";
+      }
+      if (customSizeSelect) {
+        customSizeSelect.value = formats.size || "";
+      }
+    });
     setupMyAvatar();
     hideLoadingOverlay();
   } catch (err) {

@@ -41,20 +41,20 @@
         <div id="nav-user-avatars" class="nav-avatars"></div>
         <button id="history-btn" class="btn-ghost" title="Version History">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
-          History
+          <span class="btn-text">History</span>
         </button>
         <button id="ai-chat-btn" class="btn-ghost ai-chat-toggle-btn" title="Chat with AI about this document">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          AI Chat
+          <span class="btn-text">AI Chat</span>
         </button>
         <button id="share-btn" class="btn-ghost" title="Share Document">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          Share
+          <span class="btn-text">Share</span>
         </button>
         <div class="export-wrap">
           <button id="export-btn" class="btn-ghost" title="Export Document" onclick="toggleExportMenu()">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Export
+            <span class="btn-text">Export</span>
           </button>
           <div id="export-dropdown" class="export-dropdown hidden">
             <button class="export-option" onclick="exportDocument('html')">
@@ -73,7 +73,7 @@
         </div>
         <button id="save-version-btn" class="btn-primary-sm editor-only hidden" title="Save Version">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-          Save
+          <span class="btn-text">Save</span>
         </button>
         <div id="my-avatar" class="avatar" title="You"></div>
       </div>
@@ -94,14 +94,9 @@
         <button class="tool-btn ql-strike" id="btn-strike" title="Strikethrough"><s>S</s></button>
       </div>
       <div class="toolbar-divider"></div>
-      <div class="toolbar-group">
-        <select id="font-size-select" class="tool-select ql-size" title="Font Size">
-          <option value="small">Small</option>
-          <option value="" selected>Normal</option>
-          <option value="large">Large</option>
-          <option value="huge">Huge</option>
-        </select>
-      </div>
+      <div class="toolbar-group" id="custom-font-container"></div>
+      <div class="toolbar-divider"></div>
+      <div class="toolbar-group" id="custom-size-container"></div>
       <div class="toolbar-divider"></div>
       <div class="toolbar-group">
         <select class="tool-select ql-color" title="Text Color"></select>

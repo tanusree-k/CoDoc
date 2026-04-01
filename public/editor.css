@@ -372,7 +372,8 @@
 #toolbar .ql-icon-picker {
   width: 30px; height: 30px;
 }
-#toolbar .ql-picker-label {
+#toolbar .ql-color-picker .ql-picker-label,
+#toolbar .ql-icon-picker .ql-picker-label {
   border: none !important;
   padding: 0 !important;
 }
@@ -382,7 +383,35 @@
   border-radius: var(--radius) !important;
   box-shadow: var(--shadow-xl) !important;
   padding: 6px !important;
+  z-index: 100 !important;
 }
+
+/* Custom native font/size selects */
+#custom-font-select,
+#custom-size-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  padding-right: 22px !important;
+}
+#custom-font-select:focus,
+#custom-size-select:focus {
+  border-color: var(--emerald);
+  box-shadow: 0 0 0 2px var(--emerald-glow);
+}
+
+/* Font preview in dropdown */
+#custom-font-select option[value="serif"]           { font-family: Georgia, serif; }
+#custom-font-select option[value="monospace"]       { font-family: 'Courier New', monospace; }
+#custom-font-select option[value="arial"]           { font-family: Arial, sans-serif; }
+#custom-font-select option[value="courier-new"]     { font-family: 'Courier New', monospace; }
+#custom-font-select option[value="georgia"]         { font-family: Georgia, serif; }
+#custom-font-select option[value="times-new-roman"] { font-family: 'Times New Roman', serif; }
+#custom-font-select option[value="verdana"]         { font-family: Verdana, sans-serif; }
+
+
 
 /* Fix toolbar button inner SVGs */
 #toolbar button svg { width: 18px; height: 18px; }
