@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/quill-cursors@4/dist/quill-cursors.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="editor.css" />
 </head>
@@ -117,7 +118,29 @@
       <div class="toolbar-group">
         <button class="tool-btn ql-blockquote" title="Quote">❝</button>
         <button class="tool-btn ql-code-block" title="Code Block">&lt;/&gt;</button>
+        <select id="code-lang-select" class="tool-select" title="Code Language" style="width:100px;opacity:0.45;pointer-events:none;">
+          <option value="plaintext">Plain Text</option>
+          <option value="javascript">JavaScript</option>
+          <option value="python">Python</option>
+          <option value="html">HTML</option>
+          <option value="css">CSS</option>
+          <option value="java">Java</option>
+          <option value="cpp">C++</option>
+          <option value="csharp">C#</option>
+          <option value="sql">SQL</option>
+          <option value="json">JSON</option>
+          <option value="bash">Bash</option>
+          <option value="typescript">TypeScript</option>
+          <option value="xml">XML</option>
+        </select>
         <button class="tool-btn ql-clean" title="Clear Formatting"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+      </div>
+      <div class="toolbar-divider"></div>
+      <div class="toolbar-group">
+        <button class="tool-btn" id="insert-image-btn" title="Insert Image" onclick="openImageModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Image
+        </button>
       </div>
       <div class="toolbar-group">
         <button class="tool-btn add-comment-btn" id="add-comment-btn" onmousedown="event.preventDefault()" onclick="startAddComment()" title="Add Comment">
@@ -221,6 +244,38 @@
 
 
 
+  <!-- ─── Image Insert Modal ─────────────────────────────────── -->
+  <div id="image-modal" class="comment-modal hidden">
+    <div class="comment-modal-card" style="width:420px">
+      <h4>Insert Image</h4>
+      <div class="img-modal-tabs">
+        <button id="img-tab-upload" class="img-tab active" onclick="switchImgTab('upload')">📁 Upload File</button>
+        <button id="img-tab-url" class="img-tab" onclick="switchImgTab('url')">🔗 From URL</button>
+      </div>
+
+      <!-- Upload Panel -->
+      <div id="img-panel-upload" class="img-panel">
+        <label class="img-drop-zone" for="image-file-input" id="img-drop-zone">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span id="img-drop-label">Click to choose or drag & drop an image</span>
+          <span style="font-size:11px;color:#9ca3af">Max 2MB · PNG, JPG, GIF, WebP</span>
+        </label>
+        <input type="file" id="image-file-input" accept="image/*" style="display:none" onchange="handleImageFileSelected(event)" />
+      </div>
+
+      <!-- URL Panel -->
+      <div id="img-panel-url" class="img-panel hidden">
+        <input id="image-url-input" type="url" placeholder="https://example.com/image.png" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:var(--font);font-size:13px;outline:none;box-sizing:border-box;" />
+        <p style="font-size:11px;color:#9ca3af;margin:6px 0 0">Paste any public image URL</p>
+      </div>
+
+      <div class="comment-modal-actions" style="margin-top:14px">
+        <button onclick="closeImageModal()" class="btn-ghost-sm">Cancel</button>
+        <button onclick="confirmInsertImage()" class="btn-primary-sm" id="img-insert-btn">Insert Image</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ─── Save Version Modal ───────────────────────────────────── -->
   <div id="save-version-modal" class="comment-modal hidden">
     <div class="comment-modal-card">
@@ -299,6 +354,7 @@
   <div id="toast" class="toast hidden"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/highlight.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
   <script src="supabase.js"></script>
 

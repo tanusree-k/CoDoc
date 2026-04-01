@@ -11373,6 +11373,25 @@ function showForbidden() {
 showLoadingOverlay("Connecting\u2026");
 (async () => {
   try {
+    let applyHighlighting = function() {
+      if (!window.hljs) return;
+      quill.root.querySelectorAll(".ql-code-block").forEach((block) => {
+        const lang = block.getAttribute("data-lang") || "plaintext";
+        if (lang === "plaintext" || !hljs.getLanguage(lang)) {
+          block.removeAttribute("data-highlighted");
+          block.style.color = "";
+          return;
+        }
+        block.removeAttribute("data-highlighted");
+        try {
+          const result = hljs.highlight(block.textContent, { language: lang, ignoreIllegals: true });
+          block.innerHTML = result.value;
+          block.setAttribute("data-highlighted", "yes");
+          block.setAttribute("data-lang", lang);
+        } catch (e) {
+        }
+      });
+    };
     const sb = getSupabase();
     if (!sb) {
       showSessionError("Could not connect \u2014 please refresh.");
@@ -11625,6 +11644,133 @@ showLoadingOverlay("Connecting\u2026");
     });
     setupMyAvatar();
     hideLoadingOverlay();
+    const codeLangSelect = document.getElementById("code-lang-select");
+    quill.on("selection-change", () => {
+      if (!codeLangSelect) return;
+      const range = quill.getSelection();
+      if (!range) return;
+      const [block] = quill.scroll.descendant(
+        (blot) => blot.statics && blot.statics.blotName === "code-block",
+        range.index
+      );
+      const inCode = !!block;
+      codeLangSelect.style.opacity = inCode ? "1" : "0.45";
+      codeLangSelect.style.pointerEvents = inCode ? "auto" : "none";
+      if (inCode) {
+        const lang = block.domNode.getAttribute("data-lang") || "plaintext";
+        codeLangSelect.value = lang;
+      }
+    });
+    if (codeLangSelect) {
+      codeLangSelect.addEventListener("change", () => {
+        const range = quill.getSelection();
+        if (!range) return;
+        quill.format("code-block", true);
+        const codeBlocks = quill.root.querySelectorAll(".ql-code-block");
+        codeBlocks.forEach((bl) => {
+          const blot = Quill.find(bl);
+          if (blot) bl.setAttribute("data-lang", codeLangSelect.value);
+        });
+        applyHighlighting();
+      });
+    }
+    let hlTimer = null;
+    quill.on("text-change", () => {
+      clearTimeout(hlTimer);
+      hlTimer = setTimeout(applyHighlighting, 400);
+    });
+    setTimeout(applyHighlighting, 800);
+    window._imgInsertIndex = null;
+    window._imgBase64 = null;
+    window._imgTab = "upload";
+    window.openImageModal = function() {
+      if (myRole === "viewer") return;
+      window._imgInsertIndex = quill.getSelection()?.index ?? quill.getLength();
+      window._imgBase64 = null;
+      document.getElementById("img-drop-label").textContent = "Click to choose or drag & drop an image";
+      document.getElementById("img-drop-zone").style.borderColor = "";
+      document.getElementById("image-url-input").value = "";
+      document.getElementById("image-file-input").value = "";
+      switchImgTab("upload");
+      document.getElementById("image-modal").classList.remove("hidden");
+    };
+    window.closeImageModal = function() {
+      document.getElementById("image-modal").classList.add("hidden");
+      window._imgBase64 = null;
+    };
+    window.switchImgTab = function(tab) {
+      window._imgTab = tab;
+      document.getElementById("img-tab-upload").classList.toggle("active", tab === "upload");
+      document.getElementById("img-tab-url").classList.toggle("active", tab === "url");
+      document.getElementById("img-panel-upload").classList.toggle("hidden", tab !== "upload");
+      document.getElementById("img-panel-url").classList.toggle("hidden", tab !== "url");
+    };
+    window.handleImageFileSelected = function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) {
+        showToast("\u26A0\uFE0F Image must be under 2MB", "#f59e0b");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        window._imgBase64 = ev.target.result;
+        document.getElementById("img-drop-label").textContent = "\u2705 " + file.name;
+        document.getElementById("img-drop-zone").style.borderColor = "#10b981";
+      };
+      reader.readAsDataURL(file);
+    };
+    window.confirmInsertImage = function() {
+      const idx = window._imgInsertIndex ?? quill.getLength();
+      if (window._imgTab === "upload") {
+        if (!window._imgBase64) {
+          showToast("Please select an image first.");
+          return;
+        }
+        quill.insertEmbed(idx, "image", window._imgBase64, "user");
+        quill.setSelection(idx + 1);
+      } else {
+        const url = document.getElementById("image-url-input").value.trim();
+        if (!url) {
+          showToast("Please enter an image URL.");
+          return;
+        }
+        quill.insertEmbed(idx, "image", url, "user");
+        quill.setSelection(idx + 1);
+      }
+      window.closeImageModal();
+      showToast("\u{1F5BC}\uFE0F Image inserted!", "#10b981");
+      debounceDbSave();
+    };
+    document.getElementById("image-modal").addEventListener("click", (e) => {
+      if (e.target === document.getElementById("image-modal")) window.closeImageModal();
+    });
+    const dropZone = document.getElementById("img-drop-zone");
+    if (dropZone) {
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = "#10b981";
+      });
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.style.borderColor = "";
+      });
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (!file || !file.type.startsWith("image/")) return;
+        if (file.size > 2 * 1024 * 1024) {
+          showToast("\u26A0\uFE0F Image must be under 2MB", "#f59e0b");
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          window._imgBase64 = ev.target.result;
+          document.getElementById("img-drop-label").textContent = "\u2705 " + file.name;
+          dropZone.style.borderColor = "#10b981";
+        };
+        reader.readAsDataURL(file);
+      });
+    }
   } catch (err) {
     console.error("Editor init error:", err);
     showSessionError("Failed to load: " + (err.message || "unknown error"));

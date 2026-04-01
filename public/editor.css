@@ -584,3 +584,160 @@
   .ql-editor { padding: 28px 20px !important; }
   .ql-editor.ql-blank::before { left: 20px !important; right: 20px !important; }
 }
+
+/* ─── Image Insert Modal ──────────────────────────────────────────── */
+.img-modal-tabs {
+  display: flex;
+  gap: 0;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.img-tab {
+  flex: 1;
+  padding: 9px 0;
+  background: var(--slate-50);
+  border: none;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.img-tab:first-child { border-right: 1.5px solid var(--border); }
+.img-tab.active {
+  background: var(--white);
+  color: var(--emerald-dark);
+  font-weight: 600;
+}
+.img-tab:hover:not(.active) { background: var(--white); color: var(--text-secondary); }
+
+.img-panel { width: 100%; }
+
+.img-drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 28px 20px;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--slate-50);
+  cursor: pointer;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  transition: border-color .2s, background .2s;
+  user-select: none;
+  box-sizing: border-box;
+  width: 100%;
+}
+.img-drop-zone:hover {
+  border-color: var(--emerald);
+  background: var(--emerald-50);
+}
+
+/* ─── Inline Images in Editor ─────────────────────────────────────── */
+.ql-editor img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  margin: 8px 0;
+  cursor: pointer;
+  transition: box-shadow .2s, transform .2s;
+  display: block;
+}
+.ql-editor img:hover {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  transform: scale(1.005);
+}
+.ql-editor img.ql-selected,
+.ql-editor img:focus {
+  outline: 2.5px solid var(--emerald);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--emerald-glow);
+}
+
+/* ─── Enhanced Code Blocks ────────────────────────────────────────── */
+.ql-editor pre.ql-syntax,
+.ql-editor .ql-code-block-container {
+  background: #1e2433 !important;
+  border-radius: var(--radius) !important;
+  padding: 0 !important;
+  margin: 12px 0 !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2) !important;
+}
+
+/* Individual code lines */
+.ql-editor .ql-code-block {
+  display: block;
+  padding: 2px 20px !important;
+  font-family: 'Courier New', 'Fira Code', 'JetBrains Mono', Consolas, monospace !important;
+  font-size: 13.5px !important;
+  line-height: 1.7 !important;
+  color: #abb2bf !important;
+  background: transparent !important;
+  white-space: pre !important;
+  tab-size: 2;
+}
+
+/* First line gets top padding */
+.ql-editor .ql-code-block:first-of-type {
+  padding-top: 14px !important;
+}
+/* Last line gets bottom padding */
+.ql-editor .ql-code-block:last-of-type {
+  padding-bottom: 14px !important;
+}
+
+/* Highlight.js token colours work inside code blocks */
+.ql-editor .ql-code-block .hljs-keyword   { color: #c678dd; }
+.ql-editor .ql-code-block .hljs-string    { color: #98c379; }
+.ql-editor .ql-code-block .hljs-comment   { color: #5c6370; font-style: italic; }
+.ql-editor .ql-code-block .hljs-number    { color: #d19a66; }
+.ql-editor .ql-code-block .hljs-function  { color: #61afef; }
+.ql-editor .ql-code-block .hljs-built_in  { color: #e5c07b; }
+.ql-editor .ql-code-block .hljs-type      { color: #e5c07b; }
+.ql-editor .ql-code-block .hljs-title     { color: #61afef; }
+.ql-editor .ql-code-block .hljs-variable  { color: #e06c75; }
+.ql-editor .ql-code-block .hljs-attr      { color: #e06c75; }
+.ql-editor .ql-code-block .hljs-literal   { color: #56b6c2; }
+
+/* Language label shown at top-right of code block */
+.ql-editor .ql-code-block-container {
+  position: relative;
+}
+.ql-editor .ql-code-block-container::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  font-family: var(--font);
+  pointer-events: none;
+}
+
+/* Code language select in toolbar — matches tool-select style */
+#code-lang-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  padding-right: 22px !important;
+  transition: opacity .2s;
+}
+#code-lang-select:focus {
+  border-color: var(--emerald);
+  box-shadow: 0 0 0 2px var(--emerald-glow);
+}
