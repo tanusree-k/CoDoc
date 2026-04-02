@@ -56,7 +56,12 @@ Rules:
         responseMimeType: 'application/json'
       }
     });
-    const resultJson = JSON.parse(response.text);
+    let rawText = response.text.trim();
+    if (rawText.startsWith('```json')) rawText = rawText.replace(/^```json/, '');
+    if (rawText.startsWith('```')) rawText = rawText.replace(/^```/, '');
+    if (rawText.endsWith('```')) rawText = rawText.replace(/```$/, '');
+    
+    const resultJson = JSON.parse(rawText.trim());
     res.json(resultJson);
   } catch (error) {
     console.error('AI Error:', error);
