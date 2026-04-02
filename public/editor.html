@@ -40,10 +40,20 @@
         </span>
       </div>
       <div class="navbar-right">
+        <button id="theme-toggle-btn" class="btn-ghost" title="Toggle Theme" onclick="toggleTheme()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <span class="btn-text">Theme</span>
+        </button>
         <div id="nav-user-avatars" class="nav-avatars"></div>
         <button id="history-btn" class="btn-ghost" title="Version History">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
           <span class="btn-text">History</span>
+        </button>
+        <button id="comments-btn" class="btn-ghost" title="Comments" onclick="toggleCommentsSidebar()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="btn-text">Comments</span>
         </button>
         <button id="ai-chat-btn" class="btn-ghost ai-chat-toggle-btn" title="Chat with AI about this document">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -84,25 +94,10 @@
     <!-- Toolbar (hidden for viewers) — Quill will use its own toolbar -->
     <div class="toolbar editor-only hidden" id="toolbar">
       <div class="toolbar-group">
-        <select id="format-block-select" class="tool-select ql-header" title="Text Style" style="margin-right:8px">
-          <option value="" selected>Normal</option>
-          <option value="1">Title</option>
-          <option value="2">Subtitle</option>
-          <option value="3">Heading 3</option>
-        </select>
         <button class="tool-btn ql-bold" id="btn-bold" title="Bold (Ctrl+B)"><strong>B</strong></button>
         <button class="tool-btn ql-italic" id="btn-italic" title="Italic (Ctrl+I)"><em>I</em></button>
         <button class="tool-btn ql-underline" id="btn-underline" title="Underline (Ctrl+U)"><u>U</u></button>
         <button class="tool-btn ql-strike" id="btn-strike" title="Strikethrough"><s>S</s></button>
-      </div>
-      <div class="toolbar-divider"></div>
-      <div class="toolbar-group" id="custom-font-container"></div>
-      <div class="toolbar-divider"></div>
-      <div class="toolbar-group" id="custom-size-container"></div>
-      <div class="toolbar-divider"></div>
-      <div class="toolbar-group">
-        <select class="tool-select ql-color" title="Text Color"></select>
-        <select class="tool-select ql-background" title="Highlight"></select>
       </div>
       <div class="toolbar-divider"></div>
       <div class="toolbar-group">
@@ -137,22 +132,18 @@
         <button class="tool-btn ql-clean" title="Clear Formatting"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
       </div>
       <div class="toolbar-divider"></div>
-      <div class="toolbar-group">
-        <button class="tool-btn" id="dictation-btn" title="Voice Typing (Mic)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
-          Dictate
+      <div class="toolbar-group toolbar-icon-group" style="margin-left: auto; gap: 8px !important;">
+        <button class="tool-btn tool-btn-labeled" id="dictation-btn" title="Voice Typing (Mic)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+          <span class="tool-btn-label">Mic</span>
         </button>
-      </div>
-      <div class="toolbar-group">
-        <button class="tool-btn" id="insert-image-btn" title="Insert Image" onclick="openImageModal()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          Image
+        <button class="tool-btn tool-btn-labeled" id="insert-image-btn" title="Insert Image" onclick="openImageModal()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span class="tool-btn-label">Image</span>
         </button>
-      </div>
-      <div class="toolbar-group">
-        <button class="tool-btn add-comment-btn" id="add-comment-btn" onmousedown="event.preventDefault()" onclick="startAddComment()" title="Add Comment">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Comment
+        <button class="tool-btn tool-btn-labeled add-comment-btn" id="add-comment-btn" onmousedown="event.preventDefault()" onclick="startAddComment()" title="Add Comment">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="tool-btn-label">Comment</span>
         </button>
       </div>
     </div>
@@ -184,13 +175,16 @@
       </div>
 
       <!-- Comments Sidebar -->
-      <aside class="comments-sidebar" id="comments-sidebar">
+      <aside class="comments-sidebar hidden" id="comments-sidebar">
         <div class="sidebar-header">
           <h3>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             Comments
           </h3>
-          <span id="comment-count" class="comment-badge">0</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span id="comment-count" class="comment-badge">0</span>
+            <button class="close-btn" id="close-comments-sidebar" title="Close Comments" onclick="toggleCommentsSidebar()">&times;</button>
+          </div>
         </div>
         <div id="comments-list" class="comments-list">
           <div class="no-comments">

@@ -921,6 +921,11 @@ function showRecentChange(name, color) {
 }
 
 // ── Comments ────────────────────────────────────────────────────────────
+window.toggleCommentsSidebar = function() {
+  const sidebar = document.getElementById('comments-sidebar');
+  if (sidebar) sidebar.classList.toggle('hidden');
+};
+
 window.startAddComment = function() {
   if (myRole === 'viewer') return;
   const range = quill?.getSelection();
@@ -1147,21 +1152,25 @@ window.sendChatMessage = async function() {
       aiChatMessages.innerHTML += `<div class="chat-bubble-ai"><div class="chat-bubble-content">${escapeHtml(data.reply || "Done.")}</div><div class="chat-time">Now</div></div>`;
       
       if (data.action && data.action !== 'none' && data.content && quill && myRole !== 'viewer') {
-        if (data.action === 'replace') {
-          if (aiLastSelection && aiLastSelection.length > 0) {
-            quill.deleteText(aiLastSelection.index, aiLastSelection.length);
-            quill.insertText(aiLastSelection.index, data.content);
-            aiChatMessages.innerHTML += `<div class="chat-bubble-ai" style="opacity:0.8; background:#fffbdd;"><div class="chat-bubble-content" style="font-size:12px; color:#b45309">🪄 Applied replace to selection.</div></div>`;
-          } else {
-            quill.setText('');
-            quill.insertText(0, data.content);
-            aiChatMessages.innerHTML += `<div class="chat-bubble-ai" style="opacity:0.8; background:#fffbdd;"><div class="chat-bubble-content" style="font-size:12px; color:#b45309">🪄 Replaced entire document.</div></div>`;
-          }
-        } else if (data.action === 'insert') {
-          const idx = aiLastSelection ? aiLastSelection.index + aiLastSelection.length : quill.getLength();
-          quill.insertText(idx, data.content);
-          aiChatMessages.innerHTML += `<div class="chat-bubble-ai" style="opacity:0.8; background:#fffbdd;"><div class="chat-bubble-content" style="font-size:12px; color:#b45309">🪄 Inserted text at cursor.</div></div>`;
-        }
+        window.pendingAiAction = {
+          action: data.action,
+          content: data.content,
+          selection: aiLastSelection ? { ...aiLastSelection } : null
+        };
+        const actionId = 'ai-action-' + Date.now();
+        window.pendingAiAction.id = actionId;
+        
+        aiChatMessages.innerHTML += `
+          <div class="chat-bubble-ai" id="${actionId}" style="opacity:0.95; background:var(--bg); border:1px solid var(--border);">
+            <div class="chat-bubble-content" style="font-size:13px; color:var(--text-primary);">
+              <strong>Proposed Change:</strong><br/>
+              <pre style="white-space: pre-wrap; font-family:var(--font-mono); font-size:11px; background:var(--slate-100); padding:6px; border-radius:4px; max-height:150px; overflow-y:auto; margin-top:6px; margin-bottom:8px; color:var(--text-secondary);">${escapeHtml(data.content)}</pre>
+              <div style="display:flex; gap:8px;">
+                <button onclick="confirmAiAction('${actionId}')" class="btn-primary-sm" style="flex:1;">Apply</button>
+                <button onclick="cancelAiAction('${actionId}')" class="btn-ghost-sm" style="flex:1;">Cancel</button>
+              </div>
+            </div>
+          </div>`;
       }
     } else if (data.error) {
       aiChatMessages.innerHTML += `<div class="chat-bubble-ai"><div class="chat-bubble-content" style="color:#f87171">Error: ${escapeHtml(data.error || 'Unknown error')}</div></div>`;
@@ -1401,3 +1410,47 @@ if (SpeechRecognition && aiMicBtn) {
 } else if (aiMicBtn) {
   aiMicBtn.style.display = 'none';
 }
+
+// ── AI Action Confirmation ────────────────────────────────────────────────
+window.pendingAiAction = null;
+
+window.confirmAiAction = function(id) {
+  if (!window.pendingAiAction || window.pendingAiAction.id !== id) return;
+  const { action, content, selection } = window.pendingAiAction;
+  
+  if (action === 'replace') {
+    if (selection && selection.length > 0) {
+      quill.deleteText(selection.index, selection.length);
+      quill.insertText(selection.index, content);
+    } else {
+      quill.setText('');
+      quill.insertText(0, content);
+    }
+  } else if (action === 'insert') {
+    const idx = selection ? selection.index + selection.length : window.quill.getLength();
+    quill.insertText(idx, content);
+  }
+  
+  document.getElementById(id).innerHTML = `<div class="chat-bubble-content" style="font-size:12px; color:var(--emerald);">✓ Change applied successfully.</div>`;
+  window.pendingAiAction = null;
+  debounceDbSave();
+};
+
+window.cancelAiAction = function(id) {
+  if (!window.pendingAiAction || window.pendingAiAction.id !== id) return;
+  document.getElementById(id).innerHTML = `<div class="chat-bubble-content" style="font-size:12px; color:var(--text-muted);">✗ Change cancelled.</div>`;
+  window.pendingAiAction = null;
+};
+
+// ── Theme Toggle ────────────────────────────────────────────────────────
+window.toggleTheme = function() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  if (isDark) {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('theme', 'light');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+  }
+};
+
