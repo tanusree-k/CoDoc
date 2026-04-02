@@ -1161,12 +1161,12 @@ window.sendChatMessage = async function() {
         window.pendingAiAction.id = actionId;
         
         aiChatMessages.innerHTML += `
-          <div class="chat-bubble-ai" id="${actionId}" style="opacity:0.95; background:var(--bg); border:1px solid var(--border);">
-            <div class="chat-bubble-content" style="font-size:13px; color:var(--text-primary);">
+          <div class="chat-bubble-ai" id="${actionId}" style="opacity:0.95; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08);">
+            <div class="chat-bubble-content" style="font-size:13px; color:#e5e7eb;">
               <strong>Proposed Change:</strong><br/>
-              <pre style="white-space: pre-wrap; font-family:var(--font-mono); font-size:11px; background:var(--slate-100); padding:6px; border-radius:4px; max-height:150px; overflow-y:auto; margin-top:6px; margin-bottom:8px; color:var(--text-secondary);">${escapeHtml(data.content)}</pre>
+              <pre style="white-space: pre-wrap; font-family:var(--font-mono); font-size:11px; background:rgba(0,0,0,0.3); padding:6px; border-radius:4px; max-height:150px; overflow-y:auto; margin-top:6px; margin-bottom:8px; color:#9ca3af;">${escapeHtml(data.content)}</pre>
               <div style="display:flex; gap:8px;">
-                <button onclick="confirmAiAction('${actionId}')" class="btn-primary-sm" style="flex:1;">Apply</button>
+                <button onclick="confirmAiAction('${actionId}')" class="btn-primary-sm" style="flex:1;">Paste</button>
                 <button onclick="cancelAiAction('${actionId}')" class="btn-ghost-sm" style="flex:1;">Cancel</button>
               </div>
             </div>
@@ -1427,7 +1427,7 @@ window.confirmAiAction = function(id) {
       quill.insertText(0, content);
     }
   } else if (action === 'insert') {
-    const idx = selection ? selection.index + selection.length : window.quill.getLength();
+    const idx = selection ? selection.index + selection.length : quill.getLength();
     quill.insertText(idx, content);
   }
   
