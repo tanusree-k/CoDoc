@@ -88,6 +88,15 @@
 
     <div class="toolbar editor-only hidden" id="toolbar">
       <div class="toolbar-group">
+        <button class="tool-btn" id="btn-undo" title="Undo (Ctrl+Z)" onclick="if(window._quill) window._quill.history.undo()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+        </button>
+        <button class="tool-btn" id="btn-redo" title="Redo (Ctrl+Y)" onclick="if(window._quill) window._quill.history.redo()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
+        </button>
+      </div>
+      <div class="toolbar-divider"></div>
+      <div class="toolbar-group">
         <span id="custom-font-container"></span>
         <span id="custom-size-container"></span>
         <select id="format-block-select" class="tool-select ql-header" title="Text Style" style="margin-right:8px">

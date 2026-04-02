@@ -17386,6 +17386,7 @@ showLoadingOverlay("Connecting\u2026");
       placeholder: "Start typing your collaborative document here\u2026",
       readOnly: isReadOnly
     });
+    window._quill = quill;
     quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
       delta.ops.forEach((op) => {
         if (op.attributes) {

@@ -221,6 +221,7 @@ showLoadingOverlay('Connecting…');
     placeholder: 'Start typing your collaborative document here…',
     readOnly: isReadOnly
   });
+  window._quill = quill; // expose for undo/redo toolbar buttons
 
   // Strip colors and backgrounds on paste to prevent invisible text
   quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
