@@ -154,9 +154,23 @@ showLoadingOverlay('Connecting…');
   showLoadingOverlay('Loading profile…');
   let { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).single();
   if (!profile) {
-    const username = user.user_metadata?.username || user.email?.split('@')[0] || 'User';
+    const username = user.user_metadata?.username || user.email?.split('@')[0] || 'Guest';
+    // Try direct insert first
     const { data: newProf } = await sb.from('profiles').insert({ id: user.id, username }).select().single();
     profile = newProf;
+
+    // Fallback: use server API (bypasses RLS for anonymous/guest users)
+    if (!profile) {
+      try {
+        const resp = await fetch('/api/ensure-profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user.id, username })
+        });
+        const json = await resp.json();
+        if (json.profile) profile = json.profile;
+      } catch (e) { console.error('ensure-profile API error:', e); }
+    }
   }
   if (!profile) {
     await sb.auth.signOut().catch(() => {});

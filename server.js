@@ -21,8 +21,50 @@ if (process.env.GEMINI_API_KEY) {
   ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 }
 
+// Supabase admin client (service role — bypasses RLS)
+let supabaseAdmin = null;
+if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  const { createClient } = require('@supabase/supabase-js');
+  const SUPABASE_URL = 'https://qkxqfruwtiquvtcnjboe.supabase.co';
+  supabaseAdmin = createClient(SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
+    auth: { autoRefreshToken: false, persistSession: false }
+  });
+}
+
 // Redirect root
 app.get('/', (req, res) => res.redirect('/auth.html'));
+
+// Ensure profile exists (used by guest/anonymous users to bypass RLS)
+app.post('/api/ensure-profile', async (req, res) => {
+  const { userId, username } = req.body;
+  if (!userId) return res.status(400).json({ error: 'userId required' });
+
+  if (!supabaseAdmin) return res.status(503).json({ error: 'Service role not configured' });
+
+  try {
+    // Check if profile already exists
+    const { data: existing } = await supabaseAdmin
+      .from('profiles')
+      .select('id, username')
+      .eq('id', userId)
+      .single();
+
+    if (existing) return res.json({ profile: existing });
+
+    // Create the profile
+    const { data: newProfile, error } = await supabaseAdmin
+      .from('profiles')
+      .insert([{ id: userId, username: username || 'Guest', color: '#10b981' }])
+      .select()
+      .single();
+
+    if (error) throw error;
+    res.json({ profile: newProfile });
+  } catch (err) {
+    console.error('ensure-profile error:', err);
+    res.status(500).json({ error: err.message || 'Failed to create profile' });
+  }
+});
 
 // AI Endpoint
 app.post('/api/ai', async (req, res) => {

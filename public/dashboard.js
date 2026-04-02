@@ -46,9 +46,11 @@ function showLoadError(msg) {
       .single();
 
     if (!profile) {
-      // Auto-create profile if missing
+      // For anonymous/guest users, RLS may block direct insert — use server-side API
       const username = user.user_metadata?.username || (user.email ? user.email.split('@')[0] : 'Guest');
-      const { data: newProfile, error: insertErr } = await sb
+
+      // Try direct insert first
+      const { data: newProfile } = await sb
         .from('profiles')
         .insert([{ id: user.id, username, color: '#10b981' }])
         .select()
@@ -57,10 +59,25 @@ function showLoadError(msg) {
       if (newProfile) {
         currentUser = newProfile;
       } else {
-        console.error('Failed to create profile:', insertErr);
-        await sb.auth.signOut().catch(() => {});
-        window.location.href = '/auth.html?error=no_profile';
-        return;
+        // Fallback: use server API (bypasses RLS for anonymous users)
+        try {
+          const resp = await fetch('/api/ensure-profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: user.id, username })
+          });
+          const json = await resp.json();
+          if (json.profile) {
+            currentUser = json.profile;
+          } else {
+            throw new Error(json.error || 'Profile creation failed');
+          }
+        } catch (apiErr) {
+          console.error('Failed to create profile via API:', apiErr);
+          await sb.auth.signOut().catch(() => {});
+          window.location.href = '/auth.html?error=no_profile';
+          return;
+        }
       }
     } else {
       currentUser = profile;
