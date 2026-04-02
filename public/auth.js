@@ -2,10 +2,13 @@
    CoDoc auth.js — handles sign in / sign up logic
 ───────────────────────────────────────────────────────────────── */
 
-// Tab switching
+// Tab switching — defined first, before anything async so it's always available
 window.showTab = function(tab) {
-  const formSignin = document.getElementById('form-signin');
-  if (formSignin) formSignin.classList.remove('hidden');
+  const isSignin = tab === 'signin';
+  document.getElementById('form-signin').classList.toggle('hidden', !isSignin);
+  document.getElementById('form-signup').classList.toggle('hidden', isSignin);
+  document.getElementById('tab-signin').classList.toggle('active', isSignin);
+  document.getElementById('tab-signup').classList.toggle('active', !isSignin);
 };
 
 // Show / clear error
@@ -34,7 +37,9 @@ function showSuccess(id, msg) {
 // Attach tab click listeners once DOM is ready (backup for onclick attrs)
 document.addEventListener('DOMContentLoaded', function() {
   const tabSignin = document.getElementById('tab-signin');
+  const tabSignup = document.getElementById('tab-signup');
   if (tabSignin) tabSignin.addEventListener('click', () => showTab('signin'));
+  if (tabSignup) tabSignup.addEventListener('click', () => showTab('signup'));
 });
 
 // Get supabase client — wait for it to be available
@@ -114,33 +119,6 @@ window.handleSignIn = async function(e) {
   }
 };
 
-// Guest Sign In
-window.handleGuestLogin = async function(e) {
-  if (e) e.preventDefault();
-  clearError('si-error');
-  const btn = document.getElementById('si-btn');
-  btn.disabled = true; btn.textContent = 'Signing in as guest…';
-
-  try {
-    const sb = getSupabase();
-    if (!sb) { showError('si-error', 'Client not ready. Please refresh.'); btn.disabled = false; btn.textContent = 'Sign In →'; return; }
-
-    const { data, error } = await sb.auth.signInAnonymously();
-
-    if (error) { 
-      showError('si-error', error.message || 'Guest login failed'); 
-      btn.disabled = false; btn.textContent = 'Sign In →'; 
-      return; 
-    }
-
-    const params = new URLSearchParams(window.location.search);
-    window.location.href = params.get('next') || '/dashboard.html';
-  } catch(err) {
-    showError('si-error', 'Network error. Please try again.');
-    btn.disabled = false; btn.textContent = 'Sign In →';
-  }
-};
-
 // Sign Up
 window.handleSignUp = async function(e) {
   e.preventDefault();
@@ -180,6 +158,33 @@ window.handleSignUp = async function(e) {
   } catch(err) {
     showError('su-error', 'Network error. Please try again.');
     btn.disabled = false; btn.textContent = 'Create Account →';
+  }
+};
+
+// Guest Login
+window.handleGuestLogin = async function(e) {
+  if(e) e.preventDefault();
+  clearError('si-error');
+  const btn = document.getElementById('si-btn');
+  if(btn) { btn.disabled = true; btn.textContent = 'Signing in as guest…'; }
+
+  try {
+    const sb = getSupabase();
+    if (!sb) { showError('si-error', 'Client not ready. Please refresh.'); if(btn) { btn.disabled = false; btn.textContent = 'Sign In →'; } return; }
+
+    const { data, error } = await sb.auth.signInAnonymously();
+
+    if (error) { 
+      showError('si-error', error.message || 'Guest login failed'); 
+      if(btn) { btn.disabled = false; btn.textContent = 'Sign In →'; }
+      return; 
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    window.location.href = params.get('next') || '/dashboard.html';
+  } catch(err) {
+    showError('si-error', 'Network error. Please try again.');
+    if(btn) { btn.disabled = false; btn.textContent = 'Sign In →'; }
   }
 };
 
