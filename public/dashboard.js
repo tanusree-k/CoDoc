@@ -47,7 +47,7 @@ function showLoadError(msg) {
 
     if (!profile) {
       // Auto-create profile if missing
-      const username = user.user_metadata?.username || user.email.split('@')[0];
+      const username = user.user_metadata?.username || (user.email ? user.email.split('@')[0] : 'Guest');
       const { data: newProfile, error: insertErr } = await sb
         .from('profiles')
         .insert([{ id: user.id, username, color: '#10b981' }])
