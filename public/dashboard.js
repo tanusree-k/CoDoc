@@ -165,6 +165,7 @@ function createDocCard(doc, i) {
   const isOwner = doc.ownerId === currentUser.id;
   const roleLabel = doc.role.charAt(0).toUpperCase() + doc.role.slice(1);
   const roleClass = `role-${doc.role}`;
+  const deleteTitle = isOwner ? 'Delete document' : 'Remove from my list';
 
   card.innerHTML = `
     <div class="doc-card-icon">
@@ -173,15 +174,14 @@ function createDocCard(doc, i) {
     <div class="doc-title">${escHtml(doc.title)}</div>
     <div class="doc-meta">
       <span>Edited ${timeAgo(doc.updatedAt)}</span>
-      ${!isOwner ? `<span>by ${escHtml(doc.ownerName)}</span>` : ''}
+      ${!isOwner ? '<span>by ' + escHtml(doc.ownerName || '') + '</span>' : ''}
     </div>
     <span class="doc-role-badge ${roleClass}">${roleLabel}</span>
-    ${isOwner ? `
     <div class="doc-card-actions">
-      <button class="icon-btn" title="Delete document" onclick="deleteDoc(event, '${doc.id}')">
+      <button class="icon-btn" title="${deleteTitle}" onclick="deleteDoc(event, '${doc.id}', '${doc.role}')">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
       </button>
-    </div>` : ''}
+    </div>
   `;
 
   card.addEventListener('click', () => {
@@ -190,7 +190,6 @@ function createDocCard(doc, i) {
 
   return card;
 }
-
 // ── Actions ───────────────────────────────────────────────────────
 document.getElementById('new-doc-btn').addEventListener('click', () => {
   document.getElementById('new-doc-modal').classList.remove('hidden');
@@ -224,12 +223,57 @@ window.createDocument = async function() {
   window.location.href = `/editor.html?doc=${data.id}`;
 };
 
-window.deleteDoc = async function(e, docId) {
+window.deleteDoc = async function(e, docId, role) {
   e.stopPropagation();
-  if (!confirm('Delete this document permanently?')) return;
+
+  const isOwner = role === 'owner';
+  const confirmMsg = isOwner
+    ? 'Delete this document permanently? This cannot be undone.'
+    : 'Remove this document from your list? (The document will still exist for the owner.)';
+
+  if (!confirm(confirmMsg)) return;
+
+  // Find the card element to remove it from the DOM immediately
+  const card = e.currentTarget.closest('.doc-card');
+
   const sb = getSupabase();
-  const { error } = await sb.from('documents').delete().eq('id', docId);
-  if (!error) { loadDocs(); } else { alert('Failed to delete document.'); }
+
+  if (isOwner) {
+    // Hard delete — only the owner can do this
+    const { error } = await sb.from('documents').delete().eq('id', docId);
+    if (error) {
+      alert('Failed to delete document: ' + (error.message || 'Unknown error'));
+      return;
+    }
+  } else {
+    // Remove only the permission row for the current user (leave the doc intact)
+    const { error } = await sb
+      .from('document_permissions')
+      .delete()
+      .eq('doc_id', docId)
+      .eq('user_id', currentUser.id);
+    if (error) {
+      alert('Failed to remove document: ' + (error.message || 'Unknown error'));
+      return;
+    }
+  }
+
+  // Instantly remove the card from the DOM (no reload needed)
+  if (card) {
+    card.style.transition = 'opacity 0.2s, transform 0.2s';
+    card.style.opacity = '0';
+    card.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      card.remove();
+      // If no cards remain, show empty state
+      const grid = document.getElementById('docs-grid');
+      if (grid && grid.querySelectorAll('.doc-card').length === 0) {
+        grid.classList.add('hidden');
+        const emptyEl = document.getElementById('empty-state');
+        if (emptyEl) emptyEl.classList.remove('hidden');
+      }
+    }, 200);
+  }
 };
 
 document.getElementById('logout-btn').addEventListener('click', async () => {

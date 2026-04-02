@@ -30,16 +30,34 @@ app.post('/api/ai', async (req, res) => {
   if (!text) return res.status(400).json({ error: 'No text provided' });
   if (!ai) return res.status(500).json({ error: 'AI is not configured.' });
 
-  try {
-    let prompt = '';
-    if (action === 'summarize') prompt = `Provide a very concise summary of the following text. Do not add conversational filler:\n\n${text}`;
-    else if (action === 'polish') prompt = `Fix any grammar mistakes and improve the tone of the following text to make it professional and clear. Just output the polished text directly:\n\n${text}`;
-    else if (action === 'translate') prompt = `Translate the following text to ${language || 'Spanish'} accurately. Output only the translated text:\n\n${text}`;
-    else if (action === 'chat') prompt = text;
-    else return res.status(400).json({ error: 'Invalid action' });
+  const systemInstruction = `You are CoDoc AI, a writing assistant integrated into a collaborative document editor. Your goal is to help the user write, edit, and understand their document. You must ALWAYS respond with a valid JSON object.
 
-    const response = await ai.models.generateContent({ model: 'gemini-2.5-flash', contents: prompt });
-    res.json({ result: response.text });
+JSON Schema:
+{
+  "reply": "Your conversational response here.",
+  "action": "none" | "replace" | "insert",
+  "content": "The exact text to inject or replace into the document. Leave empty if action is none."
+}
+
+Rules:
+1. If the user asks to modify, rewrite, summarize, or translate the text, set 'action' to 'replace' or 'insert' and put the resulting text EXACTLY in 'content'.
+2. If the user provided selected text and asks you to edit it, use 'replace' to replace that specific selection.
+3. If the user asks to rewrite everything, use 'replace' to overwrite everything.
+4. If the user asks to add something new (e.g., "continue writing"), use 'insert'.
+5. Provide helpful feedback in 'reply'. Your reply MUST be plain text (no markdown).
+6. CRITICAL: Output ONLY valid JSON. No markdown code blocks like \`\`\`json.`;
+
+  try {
+    const response = await ai.models.generateContent({ 
+      model: 'gemini-2.5-flash', 
+      contents: text,
+      config: {
+        systemInstruction,
+        responseMimeType: 'application/json'
+      }
+    });
+    const resultJson = JSON.parse(response.text);
+    res.json(resultJson);
   } catch (error) {
     console.error('AI Error:', error);
     res.status(500).json({ error: 'Failed to generate AI content.' });

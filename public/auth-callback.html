@@ -55,13 +55,14 @@
         const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).single();
 
         if (!profile) {
-          // New user! Create profile.
-          const googleName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
-          
-          await sb.from('profiles').insert({
-            id: user.id,
-            username: googleName
-          });
+          // New Google user — redirect them to the sign-up tab so they can choose a username.
+          // The session (Google OAuth) is already active; we just need the profile to be created.
+          const email = encodeURIComponent(user.email || '');
+          const name = encodeURIComponent(
+            user.user_metadata?.full_name || user.user_metadata?.name || ''
+          );
+          window.location.href = `/auth.html?new_google_user=1&email=${email}&name=${name}`;
+          return;
         }
 
         window.location.href = '/dashboard.html';
