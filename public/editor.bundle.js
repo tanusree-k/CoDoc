@@ -17179,6 +17179,7 @@ var comments = [];
 var versionHistory = [];
 var savedRange = null;
 var dbSaveTimer = null;
+var aiLastSelection = null;
 var commentsList = document.getElementById("comments-list");
 var commentCount = document.getElementById("comment-count");
 var usersList = document.getElementById("users-list");
@@ -17487,6 +17488,9 @@ showLoadingOverlay("Connecting\u2026");
     connectMetaWs();
     quill.on("text-change", () => {
       debounceDbSave();
+    });
+    quill.on("selection-change", (range) => {
+      if (range) aiLastSelection = range;
     });
     applyRoleUI(myRole);
     docTitleInput.value = doc2.title;
@@ -18077,14 +18081,27 @@ window.sendChatMessage = async function() {
   input.style.height = "auto";
   const includeCtx = document.getElementById("include-doc-ctx")?.checked;
   let prompt2 = text2;
+  let selectedTextObj = "";
+  if (quill && aiLastSelection && aiLastSelection.length > 0) {
+    selectedTextObj = quill.getText(aiLastSelection.index, aiLastSelection.length);
+  }
   if (includeCtx && quill) {
-    prompt2 = `Document content:
+    prompt2 = `Document Content:
 
 ${quill.getText()}
 
 ---
 
-User question/request: ${text2}`;
+`;
+    if (selectedTextObj) {
+      prompt2 += `User's Currently Selected Text:
+"${selectedTextObj}"
+
+---
+
+`;
+    }
+    prompt2 += `User Request: ${text2}`;
   }
   aiChatMessages.innerHTML += `
     <div class="chat-bubble-user"><div class="chat-bubble-content">${escapeHtml(text2)}</div><div class="chat-time">Now</div></div>
@@ -18098,11 +18115,26 @@ User question/request: ${text2}`;
     });
     const data = await resp.json();
     document.getElementById("ai-typing")?.remove();
-    if (data.result) {
-      const copyIcon = `<svg style="width:12px;height:12px;margin-right:3px;vertical-align:middle;display:inline-block;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
-      const encodedMsg = escapeHtml(data.result).replace(/"/g, "&quot;");
-      aiChatMessages.innerHTML += `<div class="chat-bubble-ai"><div class="chat-bubble-content">${escapeHtml(data.result)}</div><div class="chat-time" style="display:flex;gap:12px;align-items:center;"><span>Now</span><span class="chat-copy-btn" onclick="copyAiText(this)" data-text="${encodedMsg}" style="cursor:pointer;color:#10b981;transition:0.2s;">${copyIcon}Copy</span></div></div>`;
-    } else {
+    if (data.reply || data.action) {
+      aiChatMessages.innerHTML += `<div class="chat-bubble-ai"><div class="chat-bubble-content">${escapeHtml(data.reply || "Done.")}</div><div class="chat-time">Now</div></div>`;
+      if (data.action && data.action !== "none" && data.content && quill && myRole !== "viewer") {
+        if (data.action === "replace") {
+          if (aiLastSelection && aiLastSelection.length > 0) {
+            quill.deleteText(aiLastSelection.index, aiLastSelection.length);
+            quill.insertText(aiLastSelection.index, data.content);
+            aiChatMessages.innerHTML += `<div class="chat-bubble-ai" style="opacity:0.8; background:#fffbdd;"><div class="chat-bubble-content" style="font-size:12px; color:#b45309">\u{1FA84} Applied replace to selection.</div></div>`;
+          } else {
+            quill.setText("");
+            quill.insertText(0, data.content);
+            aiChatMessages.innerHTML += `<div class="chat-bubble-ai" style="opacity:0.8; background:#fffbdd;"><div class="chat-bubble-content" style="font-size:12px; color:#b45309">\u{1FA84} Replaced entire document.</div></div>`;
+          }
+        } else if (data.action === "insert") {
+          const idx = aiLastSelection ? aiLastSelection.index + aiLastSelection.length : quill.getLength();
+          quill.insertText(idx, data.content);
+          aiChatMessages.innerHTML += `<div class="chat-bubble-ai" style="opacity:0.8; background:#fffbdd;"><div class="chat-bubble-content" style="font-size:12px; color:#b45309">\u{1FA84} Inserted text at cursor.</div></div>`;
+        }
+      }
+    } else if (data.error) {
       aiChatMessages.innerHTML += `<div class="chat-bubble-ai"><div class="chat-bubble-content" style="color:#f87171">Error: ${escapeHtml(data.error || "Unknown error")}</div></div>`;
     }
   } catch (err) {
@@ -18110,13 +18142,6 @@ User question/request: ${text2}`;
     aiChatMessages.innerHTML += `<div class="chat-bubble-ai"><div class="chat-bubble-content" style="color:#f87171">Network error</div></div>`;
   }
   aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
-};
-window.copyAiText = function(btn) {
-  const text2 = btn.getAttribute("data-text");
-  navigator.clipboard.writeText(text2);
-  const oldHtml = btn.innerHTML;
-  btn.innerHTML = "\u2713 Copied!";
-  setTimeout(() => btn.innerHTML = oldHtml, 2e3);
 };
 window.sendQuickPrompt = function(type) {
   const selectedText = quill ? quill.getText(quill.getSelection()?.index || 0, quill.getSelection()?.length || 0) : "";
@@ -18261,6 +18286,79 @@ function timeAgo(iso) {
   if (diff < 3600) return Math.floor(diff / 60) + "m ago";
   if (diff < 86400) return Math.floor(diff / 3600) + "h ago";
   return Math.floor(diff / 86400) + "d ago";
+}
+var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+var dictationBtn = document.getElementById("dictation-btn");
+if (SpeechRecognition && dictationBtn) {
+  let isDictating = false;
+  const recognition = new SpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = false;
+  recognition.onstart = () => {
+    isDictating = true;
+    dictationBtn.style.color = "#ef4444";
+    showToast('\u{1F3A4} Listening... (Say "new line", "comma", "period")');
+  };
+  recognition.onresult = (event) => {
+    if (!quill) return;
+    const result = event.results[event.results.length - 1];
+    let transcript = result[0].transcript.trim();
+    const lower = transcript.toLowerCase();
+    if (lower === "new line") transcript = "\n";
+    else if (lower === "comma") transcript = ",";
+    else if (lower === "period" || lower === "full stop") transcript = ".";
+    else if (lower === "question mark") transcript = "?";
+    else transcript = " " + transcript;
+    const range = quill.getSelection(true);
+    if (range) {
+      quill.insertText(range.index, transcript);
+      quill.setSelection(range.index + transcript.length);
+    }
+  };
+  recognition.onend = () => {
+    isDictating = false;
+    dictationBtn.style.color = "";
+  };
+  dictationBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (myRole === "viewer") {
+      showToast("You do not have permission to edit.");
+      return;
+    }
+    if (isDictating) recognition.stop();
+    else recognition.start();
+  });
+} else if (dictationBtn) {
+  dictationBtn.style.display = "none";
+}
+var aiMicBtn = document.getElementById("ai-mic-btn");
+if (SpeechRecognition && aiMicBtn) {
+  let isAiDictating = false;
+  const aiRec = new SpeechRecognition();
+  aiRec.continuous = false;
+  aiRec.interimResults = false;
+  aiRec.onstart = () => {
+    isAiDictating = true;
+    aiMicBtn.style.color = "#ef4444";
+  };
+  aiRec.onresult = (event) => {
+    const speech = event.results[0][0].transcript;
+    const currentVal = aiChatInput.value;
+    aiChatInput.value = currentVal ? currentVal + " " + speech : speech;
+    aiChatInput.style.height = "auto";
+    aiChatInput.style.height = Math.min(aiChatInput.scrollHeight, 120) + "px";
+  };
+  aiRec.onend = () => {
+    isAiDictating = false;
+    aiMicBtn.style.color = "#9ca3af";
+  };
+  aiMicBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (isAiDictating) aiRec.stop();
+    else aiRec.start();
+  });
+} else if (aiMicBtn) {
+  aiMicBtn.style.display = "none";
 }
 /*! Bundled license information:
 
