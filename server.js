@@ -23,12 +23,16 @@ if (process.env.GEMINI_API_KEY) {
 
 // Supabase admin client (service role — bypasses RLS)
 let supabaseAdmin = null;
-if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+const SERVICE_KEY = (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
+if (SERVICE_KEY) {
   const { createClient } = require('@supabase/supabase-js');
   const SUPABASE_URL = 'https://qkxqfruwtiquvtcnjboe.supabase.co';
-  supabaseAdmin = createClient(SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
+  supabaseAdmin = createClient(SUPABASE_URL, SERVICE_KEY, {
     auth: { autoRefreshToken: false, persistSession: false }
   });
+  console.log(`[Supabase] Admin client ready. Key length: ${SERVICE_KEY.length}`);
+} else {
+  console.warn('[Supabase] SUPABASE_SERVICE_ROLE_KEY not set — guest profile creation will fail.');
 }
 
 // Redirect root
