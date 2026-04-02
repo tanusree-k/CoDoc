@@ -24,9 +24,10 @@ if (process.env.GEMINI_API_KEY) {
 // Supabase admin client (service role — bypasses RLS)
 let supabaseAdmin = null;
 
-// Using hardcoded key since environment variable setup was failing
-const fallbackKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFreHFmcnV3dGlxdXZ0Y25qYm9lIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDM1NzIzMywiZXhwIjoyMDg5OTMzMjMzfQ.-AR8jhTM0NSsye4sYmDP98r7Hy7LTnF7ogFsPcEf0uc';
-const SERVICE_KEY = (process.env.SUPABASE_SERVICE_ROLE_KEY || fallbackKey).trim();
+// FORCE the hardcoded key because if an invalid key is stored in Render's env vars, it will override this
+const SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFreHFmcnV3dGlxdXZ0Y25qYm9lIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDM1NzIzMywiZXhwIjoyMDg5OTMzMjMzfQ.-AR8jhTM0NSsye4sYmDP98r7Hy7LTnF7ogFsPcEf0uc';
+
+
 if (SERVICE_KEY) {
   const { createClient } = require('@supabase/supabase-js');
   const SUPABASE_URL = 'https://qkxqfruwtiquvtcnjboe.supabase.co';
