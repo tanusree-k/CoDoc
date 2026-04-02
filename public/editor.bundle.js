@@ -17280,6 +17280,28 @@ showLoadingOverlay("Connecting\u2026");
         }, 50);
       };
       reader.readAsDataURL(file);
+    }, getDropIndex = function(e, quillInstance) {
+      if (document.caretPositionFromPoint) {
+        const pos = document.caretPositionFromPoint(e.clientX, e.clientY);
+        if (pos && pos.offsetNode) {
+          const range = document.createRange();
+          range.setStart(pos.offsetNode, pos.offset);
+          range.collapse(true);
+          const sel = document.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          return quillInstance.getSelection()?.index;
+        }
+      } else if (document.caretRangeFromPoint) {
+        const range = document.caretRangeFromPoint(e.clientX, e.clientY);
+        if (range) {
+          const sel = document.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          return quillInstance.getSelection()?.index;
+        }
+      }
+      return null;
     };
     const sb = getSupabase();
     if (!sb) {
@@ -17659,6 +17681,56 @@ showLoadingOverlay("Connecting\u2026");
         loadFileIntoCropper(file);
       });
     }
+    let draggedImageIndex = null;
+    let draggedImageUrl = null;
+    quill.root.addEventListener("dragstart", (e) => {
+      if (e.target.tagName === "IMG") {
+        const blot = Quill.find(e.target);
+        if (blot) {
+          draggedImageIndex = quill.getIndex(blot);
+          draggedImageUrl = e.target.src;
+          e.dataTransfer.setData("text/plain", "");
+        }
+      }
+    });
+    quill.root.addEventListener("dragover", (e) => {
+      if (draggedImageIndex !== null || e.dataTransfer.types && e.dataTransfer.types.includes("Files")) {
+        e.preventDefault();
+      }
+    });
+    quill.root.addEventListener("drop", (e) => {
+      if (draggedImageIndex !== null && draggedImageUrl !== null) {
+        e.preventDefault();
+        const currentUrl = draggedImageUrl;
+        const oldIndex = draggedImageIndex;
+        draggedImageIndex = null;
+        draggedImageUrl = null;
+        let dropIndex = getDropIndex(e, quill);
+        if (dropIndex !== null && dropIndex !== void 0) {
+          let insertIndex = dropIndex;
+          if (insertIndex > oldIndex) {
+            insertIndex -= 1;
+          }
+          quill.deleteText(oldIndex, 1, "user");
+          quill.insertEmbed(insertIndex, "image", currentUrl, "user");
+          quill.setSelection(insertIndex + 1);
+          debounceDbSave();
+        }
+      } else if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith("image/")) {
+          e.preventDefault();
+          let dropIndex = getDropIndex(e, quill);
+          window._imgInsertIndex = dropIndex !== null ? dropIndex : quill.getLength();
+          document.getElementById("img-drop-zone").classList.add("hidden");
+          document.getElementById("crop-container").classList.add("hidden");
+          switchImgTab("upload");
+          document.getElementById("image-modal").classList.remove("hidden");
+          document.getElementById("image-file-input").files = e.dataTransfer.files;
+          loadFileIntoCropper(file);
+        }
+      }
+    });
   } catch (err) {
     console.error("Editor init error:", err);
     showSessionError("Failed to load: " + (err.message || "unknown error"));
