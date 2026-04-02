@@ -362,6 +362,10 @@ showLoadingOverlay('Connecting…');
 
   // ── Auto-save to Supabase ─────────────────────────────────────────
   quill.on('text-change', () => {
+    const statusEl = document.getElementById('autosave-status');
+    if (statusEl) {
+      statusEl.innerHTML = `<span style="display:inline-block; margin-right:4px; font-weight:bold; font-size:16px;">•</span> Saving...`;
+    }
     debounceDbSave();
   });
   quill.on('selection-change', (range) => { if (range) aiLastSelection = range; });
@@ -786,7 +790,10 @@ function debounceDbSave() {
         content: quill.root.innerHTML,
         comments: comments,
         versions: versionHistory
-      }).eq('id', docId).then();
+      }).eq('id', docId).then(() => {
+        const statusEl = document.getElementById('autosave-status');
+        if (statusEl) statusEl.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Autosaved`;
+      });
     }
   }, 2000);
 }
@@ -1034,7 +1041,7 @@ window.resolveComment = function(commentId) {
 };
 
 // ── Version History ─────────────────────────────────────────────────────
-document.getElementById('history-btn').addEventListener('click', () => {
+document.getElementById('history-btn')?.addEventListener('click', () => {
   historyPanel.classList.remove('hidden');
   historyOverlay.classList.remove('hidden');
 });
