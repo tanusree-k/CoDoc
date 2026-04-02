@@ -91,9 +91,16 @@
       </div>
     </header>
 
-    <!-- Toolbar (hidden for viewers) — Quill will use its own toolbar -->
     <div class="toolbar editor-only hidden" id="toolbar">
       <div class="toolbar-group">
+        <span id="custom-font-container"></span>
+        <span id="custom-size-container"></span>
+        <select id="format-block-select" class="tool-select ql-header" title="Text Style" style="margin-right:8px">
+          <option value="" selected>Normal</option>
+          <option value="1">Title</option>
+          <option value="2">Subtitle</option>
+          <option value="3">Heading 3</option>
+        </select>
         <button class="tool-btn ql-bold" id="btn-bold" title="Bold (Ctrl+B)"><strong>B</strong></button>
         <button class="tool-btn ql-italic" id="btn-italic" title="Italic (Ctrl+I)"><em>I</em></button>
         <button class="tool-btn ql-underline" id="btn-underline" title="Underline (Ctrl+U)"><u>U</u></button>
@@ -114,21 +121,6 @@
       <div class="toolbar-group">
         <button class="tool-btn ql-blockquote" title="Quote">❝</button>
         <button class="tool-btn ql-code-block" title="Code Block">&lt;/&gt;</button>
-        <select id="code-lang-select" class="tool-select" title="Code Language" style="width:100px;opacity:0.45;pointer-events:none;">
-          <option value="plaintext">Plain Text</option>
-          <option value="javascript">JavaScript</option>
-          <option value="python">Python</option>
-          <option value="html">HTML</option>
-          <option value="css">CSS</option>
-          <option value="java">Java</option>
-          <option value="cpp">C++</option>
-          <option value="csharp">C#</option>
-          <option value="sql">SQL</option>
-          <option value="json">JSON</option>
-          <option value="bash">Bash</option>
-          <option value="typescript">TypeScript</option>
-          <option value="xml">XML</option>
-        </select>
         <button class="tool-btn ql-clean" title="Clear Formatting"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
       </div>
       <div class="toolbar-divider"></div>
