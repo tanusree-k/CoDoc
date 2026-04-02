@@ -59,10 +59,16 @@ app.post('/api/ensure-profile', async (req, res) => {
 
     if (existing) return res.json({ profile: existing });
 
+    // Generate a unique guest name if 'Guest' was passed
+    let finalUsername = username || 'Guest';
+    if (finalUsername === 'Guest') {
+      finalUsername = `Guest_${Math.floor(Math.random() * 100000)}`;
+    }
+
     // Create the profile
     const { data: newProfile, error } = await supabaseAdmin
       .from('profiles')
-      .insert([{ id: userId, username: username || 'Guest', color: '#10b981' }])
+      .insert([{ id: userId, username: finalUsername, color: '#10b981' }])
       .select()
       .single();
 
