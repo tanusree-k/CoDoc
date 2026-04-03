@@ -1893,9 +1893,9 @@ function setupComments() {
     window.commentCount.textContent = active.length;
     if ([...active, ...resolved].length === 0) {
       window.commentsList.innerHTML = `
-      <div class="no-window.comments">
+      <div class="no-comments">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        <p>No window.comments yet.<br/>Select text and click Comment.</p>
+        <p>No comments yet.<br/>Select text and click Comment.</p>
       </div>`;
       return;
     }
@@ -1962,7 +1962,7 @@ function setupHistory() {
     }
     window.historyPanel.classList.remove("hidden");
     window.historyOverlay.classList.remove("hidden");
-    window.historyList.innerHTML = '<div class="no-window.comments"><p>Loading history...</p></div>';
+    window.historyList.innerHTML = '<div class="no-comments"><p>Loading history...</p></div>';
     try {
       const res = await fetch(`/api/history/${window.myId}?window.docId=${window.docId}`);
       const data = await res.json();
@@ -1972,7 +1972,7 @@ function setupHistory() {
         throw new Error();
       }
     } catch (e) {
-      window.historyList.innerHTML = '<div class="no-window.comments"><p>Failed to load history.</p></div>';
+      window.historyList.innerHTML = '<div class="no-comments"><p>Failed to load history.</p></div>';
     }
   });
   window.closeHistory = function() {
@@ -2002,7 +2002,7 @@ function setupHistory() {
   });
   function renderHistoryGrid(apiVersions) {
     if (!apiVersions || apiVersions.length === 0) {
-      window.historyList.innerHTML = '<div class="no-window.comments"><p>No saved versions yet.</p></div>';
+      window.historyList.innerHTML = '<div class="no-comments"><p>No saved versions yet.</p></div>';
       return;
     }
     window.historyList.innerHTML = "";

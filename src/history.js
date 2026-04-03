@@ -9,7 +9,7 @@ document.getElementById('history-btn')?.addEventListener('click', async () => {
   }
   window.historyPanel.classList.remove('hidden');
   window.historyOverlay.classList.remove('hidden');
-  window.historyList.innerHTML = '<div class="no-window.comments"><p>Loading history...</p></div>';
+  window.historyList.innerHTML = '<div class="no-comments"><p>Loading history...</p></div>';
   try {
     const res = await fetch(`/api/history/${window.myId}?window.docId=${window.docId}`);
     const data = await res.json();
@@ -19,7 +19,7 @@ document.getElementById('history-btn')?.addEventListener('click', async () => {
       throw new Error();
     }
   } catch (e) {
-    window.historyList.innerHTML = '<div class="no-window.comments"><p>Failed to load history.</p></div>';
+    window.historyList.innerHTML = '<div class="no-comments"><p>Failed to load history.</p></div>';
   }
 });
 
@@ -51,7 +51,7 @@ window.versionNameInput.addEventListener('keydown', e => {
 
 function renderHistoryGrid(apiVersions) {
   if (!apiVersions || apiVersions.length === 0) {
-    window.historyList.innerHTML = '<div class="no-window.comments"><p>No saved versions yet.</p></div>';
+    window.historyList.innerHTML = '<div class="no-comments"><p>No saved versions yet.</p></div>';
     return;
   }
   window.historyList.innerHTML = '';
