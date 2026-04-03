@@ -4,6 +4,7 @@ const path = require('path');
 const http = require('http');
 const WebSocket = require('ws');
 const { GoogleGenAI } = require('@google/genai');
+const Groq = require('groq-sdk');
 const Y = require('yjs');
 const syncProtocol = require('y-protocols/sync');
 const awarenessProtocol = require('y-protocols/awareness');
@@ -19,6 +20,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 let ai = null;
 if (process.env.GEMINI_API_KEY) {
   ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+}
+
+let groq = null;
+if (process.env.GROQ_API_KEY) {
+  groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 }
 
 // Supabase admin client (service role — bypasses RLS)
@@ -84,7 +90,7 @@ app.post('/api/ensure-profile', async (req, res) => {
 app.post('/api/ai', async (req, res) => {
   const { action, text, language } = req.body;
   if (!text) return res.status(400).json({ error: 'No text provided' });
-  if (!ai) return res.status(500).json({ error: 'AI is not configured.' });
+  if (!ai && !groq) return res.status(500).json({ error: 'AI is not configured.' });
 
   const systemInstruction = `You are CoDoc AI, a writing assistant integrated into a collaborative document editor. Your goal is to help the user write, edit, and understand their document. You must ALWAYS respond with a valid JSON object.
 
@@ -104,24 +110,150 @@ Rules:
 6. CRITICAL: Output ONLY valid JSON. No markdown code blocks like \`\`\`json.`;
 
   try {
-    const response = await ai.models.generateContent({ 
-      model: 'gemini-2.5-flash', 
-      contents: text,
-      config: {
-        systemInstruction,
-        responseMimeType: 'application/json'
+    let rawText = "";
+
+    if (groq) {
+      try {
+        const chatCompletion = await groq.chat.completions.create({
+          messages: [
+            { role: "system", content: systemInstruction },
+            { role: "user", content: text }
+          ],
+          model: "llama-3.3-70b-versatile", // Fast and powerful model suitable for logic
+          response_format: { type: "json_object" },
+          temperature: 0.7,
+        });
+        rawText = chatCompletion.choices[0]?.message?.content || "";
+        console.log('[AI] Used Groq');
+      } catch (groqErr) {
+        console.error('[AI] Groq failed, falling back to Gemini:', groqErr.message);
+        if (ai) {
+          const response = await ai.models.generateContent({ 
+            model: 'gemini-1.5-flash', 
+            contents: text,
+            config: {
+              systemInstruction,
+              responseMimeType: 'application/json'
+            }
+          });
+          rawText = response.text.trim();
+          console.log('[AI] Used Gemini (Fallback)');
+        } else {
+          throw groqErr;
+        }
       }
-    });
-    let rawText = response.text.trim();
-    if (rawText.startsWith('```json')) rawText = rawText.replace(/^```json/, '');
-    if (rawText.startsWith('```')) rawText = rawText.replace(/^```/, '');
+    } else if (ai) {
+      const response = await ai.models.generateContent({ 
+        model: 'gemini-1.5-flash', 
+        contents: text,
+        config: {
+          systemInstruction,
+          responseMimeType: 'application/json'
+        }
+      });
+      rawText = response.text.trim();
+      console.log('[AI] Used Gemini');
+    } else {
+      throw new Error('No AI configured');
+    }
+
+    rawText = rawText.trim();
+    if (rawText.startsWith('```json')) rawText = rawText.replace(/^```json\n?/, '');
+    if (rawText.startsWith('```')) rawText = rawText.replace(/^```\n?/, '');
     if (rawText.endsWith('```')) rawText = rawText.replace(/```$/, '');
+    rawText = rawText.trim();
     
-    const resultJson = JSON.parse(rawText.trim());
+    let resultJson;
+    try {
+      resultJson = JSON.parse(rawText);
+    } catch (parseError) {
+      console.error('JSON Parse Error:', parseError.message);
+      console.error('Raw Text was:', rawText);
+      throw parseError; // Re-throw to be caught by the outer catch
+    }
+    
     res.json(resultJson);
   } catch (error) {
     console.error('AI Error:', error);
-    res.status(500).json({ error: 'Failed to generate AI content.' });
+    res.status(500).json({ error: 'Failed to generate AI content.', details: error.message });
+  }
+});
+
+// History Endpoints
+app.post('/api/save-history', async (req, res) => {
+  const { userId, documentId, content } = req.body;
+  if (!userId || !documentId || !content) return res.status(400).json({ error: 'Missing parameters' });
+  if (!supabaseAdmin) return res.status(503).json({ error: 'Database service role not configured' });
+
+  try {
+    // 1. Get the latest version to avoid duplicate saves if content hasn't changed.
+    const { data: latest } = await supabaseAdmin
+      .from('document_history')
+      .select('content')
+      .eq('user_id', userId)
+      .eq('document_id', documentId)
+      .order('created_at', { ascending: false })
+      .limit(1);
+    
+    if (latest && latest.length > 0 && latest[0].content === content) {
+      return res.json({ success: true, message: 'Content unchanged, skipped save.' });
+    }
+
+    // 2. Insert new version
+    const { data: newVersion, error } = await supabaseAdmin
+      .from('document_history')
+      .insert({ user_id: userId, document_id: documentId, content })
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    // 3. Limit history to the last 20 entries per user per document.
+    const { data: historyItems } = await supabaseAdmin
+      .from('document_history')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('document_id', documentId)
+      .order('created_at', { ascending: false });
+
+    if (historyItems && historyItems.length > 20) {
+      const idsToDelete = historyItems.slice(20).map(item => item.id);
+      await supabaseAdmin
+        .from('document_history')
+        .delete()
+        .in('id', idsToDelete);
+    }
+
+    res.json({ success: true, version: newVersion });
+  } catch (err) {
+    console.error('History Save Error:', err);
+    res.status(500).json({ error: 'Failed to save history' });
+  }
+});
+
+app.get('/api/history/:user_id', async (req, res) => {
+  const { user_id } = req.params;
+  const { docId } = req.query;
+  if (!supabaseAdmin) return res.status(503).json({ error: 'Database service role not configured' });
+
+  try {
+    let query = supabaseAdmin
+      .from('document_history')
+      .select('*')
+      .eq('user_id', user_id)
+      .order('created_at', { ascending: false });
+    
+    if (docId) {
+      query = query.eq('document_id', docId);
+    }
+
+    const { data: versions, error } = await query;
+
+    if (error) throw error;
+    res.json({ versions });
+  } catch (err) {
+    console.error('History Fetch Error:', err);
+    res.status(500).json({ error: 'Failed to fetch history' });
   }
 });
 

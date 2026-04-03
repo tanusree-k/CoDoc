@@ -17799,14 +17799,36 @@ function syncState() {
   metaSend({ type: "sync-state", comments, versionHistory });
   debounceDbSave();
 }
+async function saveToHistoryApi(content) {
+  if (!myId || !docId || myRole === "viewer") return;
+  try {
+    const res = await fetch("/api/save-history", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: myId, documentId: docId, content })
+    });
+    const data = await res.json();
+    if (data.success && data.version) {
+      const statusEl = document.getElementById("autosave-status");
+      if (statusEl) {
+        statusEl.classList.remove("hidden");
+        statusEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Autosaved';
+        setTimeout(() => statusEl.classList.add("hidden"), 3e3);
+      }
+    }
+  } catch (e) {
+    console.error("Auto-save history failed", e);
+  }
+}
 function debounceDbSave() {
   if (myRole === "viewer") return;
   clearTimeout(dbSaveTimer);
-  dbSaveTimer = setTimeout(() => {
+  dbSaveTimer = setTimeout(async () => {
     const sb = getSupabase();
+    const currentContent = quill ? quill.root.innerHTML : "";
     if (sb && quill) {
       sb.from("documents").update({
-        content: quill.root.innerHTML,
+        content: currentContent,
         comments,
         versions: versionHistory
       }).eq("id", docId).then(() => {
@@ -17814,8 +17836,16 @@ function debounceDbSave() {
         if (statusEl) statusEl.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Autosaved`;
       });
     }
+    await saveToHistoryApi(currentContent);
   }, 2e3);
 }
+window.addEventListener("beforeunload", () => {
+  if (myRole === "viewer" || !quill) return;
+  const content = quill.root.innerHTML;
+  if (!content) return;
+  const data = new Blob([JSON.stringify({ userId: myId, documentId: docId, content })], { type: "application/json" });
+  navigator.sendBeacon("/api/save-history", data);
+});
 function applyRoleUI(role) {
   const editorEls = document.querySelectorAll(".editor-only");
   const commenterEls = document.querySelectorAll(".commenter-only");
@@ -18025,9 +18055,25 @@ window.resolveComment = function(commentId) {
     renderComments();
   }
 };
-document.getElementById("history-btn")?.addEventListener("click", () => {
+document.getElementById("history-btn")?.addEventListener("click", async () => {
+  if (myRole === "viewer") {
+    showToast("Only editors can view full history.");
+    return;
+  }
   historyPanel.classList.remove("hidden");
   historyOverlay.classList.remove("hidden");
+  historyList.innerHTML = '<div class="no-comments"><p>Loading history...</p></div>';
+  try {
+    const res = await fetch(`/api/history/${myId}?docId=${docId}`);
+    const data = await res.json();
+    if (data.versions) {
+      renderHistoryGrid(data.versions);
+    } else {
+      throw new Error();
+    }
+  } catch (e) {
+    historyList.innerHTML = '<div class="no-comments"><p>Failed to load history.</p></div>';
+  }
 });
 window.closeHistory = function() {
   historyPanel.classList.add("hidden");
@@ -18054,29 +18100,38 @@ versionNameInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") window.confirmSaveVersion();
   if (e.key === "Escape") window.cancelSaveVersion();
 });
-function renderHistory() {
-  if (versionHistory.length === 0) {
+function renderHistoryGrid(apiVersions) {
+  if (!apiVersions || apiVersions.length === 0) {
     historyList.innerHTML = '<div class="no-comments"><p>No saved versions yet.</p></div>';
     return;
   }
   historyList.innerHTML = "";
-  versionHistory.forEach((v2) => {
+  const total = apiVersions.length;
+  apiVersions.forEach((v2, index) => {
+    const vNumber = total - index;
     const item = document.createElement("div");
     item.className = "version-item";
     item.innerHTML = `
-      <div class="version-name">${escapeHtml(v2.name)}</div>
-      <div class="version-meta">${escapeHtml(v2.author)} \xB7 ${timeAgo(v2.timestamp)}</div>
+      <div class="version-name" style="display:flex; justify-content:space-between; align-items:center; width: 100%;">
+        <span>Version v${vNumber}</span>
+        <button class="btn-primary-sm restore-btn" style="padding: 4px 10px; font-size: 11px; z-index: 10;">Restore</button>
+      </div>
+      <div class="version-meta">${timeAgo(v2.created_at)}</div>
     `;
-    item.addEventListener("click", () => {
-      if (confirm("Restore this version? Current content will be replaced.")) {
+    item.querySelector(".restore-btn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (confirm(`Restore Version v${vNumber}? Current content will be replaced.`)) {
         const delta = quill.clipboard.convert({ html: v2.content });
         quill.setContents(delta);
-        showToast(`\u{1F504} Restored "${v2.name}"`);
+        showToast(`\u{1F504} Restored Version v${vNumber}`);
+        debounceDbSave();
         window.closeHistory();
       }
     });
     historyList.appendChild(item);
   });
+}
+function renderHistory() {
 }
 var aiChatPanel = document.getElementById("ai-chat-panel");
 var aiChatOverlay = document.getElementById("ai-chat-overlay");
