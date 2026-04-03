@@ -10,6 +10,9 @@ const syncProtocol = require('y-protocols/sync');
 const awarenessProtocol = require('y-protocols/awareness');
 const encoding = require('lib0/encoding');
 const decoding = require('lib0/decoding');
+const { LeveldbPersistence } = require('y-leveldb');
+const rateLimit = require('express-rate-limit');
+
 
 const app = express();
 const server = http.createServer(app);
@@ -30,8 +33,8 @@ if (process.env.GROQ_API_KEY) {
 // Supabase admin client (service role — bypasses RLS)
 let supabaseAdmin = null;
 
-// FORCE the hardcoded key because if an invalid key is stored in Render's env vars, it will override this
-const SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFreHFmcnV3dGlxdXZ0Y25qYm9lIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDM1NzIzMywiZXhwIjoyMDg5OTMzMjMzfQ.-AR8jhTM0NSsye4sYmDP98r7Hy7LTnF7ogFsPcEf0uc';
+// Get the key from environment variables (Make sure SUPABASE_SERVICE_ROLE_KEY is set in Render)
+const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 
 if (SERVICE_KEY) {
@@ -87,7 +90,14 @@ app.post('/api/ensure-profile', async (req, res) => {
 });
 
 // AI Endpoint
-app.post('/api/ai', async (req, res) => {
+
+const aiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 15, // limit each IP to 15 requests per windowMs
+  message: { error: 'Too many requests, please try again later.' }
+});
+
+app.post('/api/ai', aiLimiter, async (req, res) => {
   const { action, text, language } = req.body;
   if (!text) return res.status(400).json({ error: 'No text provided' });
   if (!ai && !groq) return res.status(500).json({ error: 'AI is not configured.' });
@@ -258,7 +268,11 @@ app.get('/api/history/:user_id', async (req, res) => {
 });
 
 // ── Yjs Document Store ──────────────────────────────────────────────────
+
+// ── Yjs Document Store ──────────────────────────────────────────────────
+const persistence = new LeveldbPersistence('./yjs-data');
 const docs = new Map();      // roomName -> Y.Doc
+
 const conns = new Map();     // WebSocket -> { room, awarenessIds }
 
 const messageSync = 0;
@@ -267,6 +281,12 @@ const messageAwareness = 1;
 function getYDoc(roomName) {
   if (!docs.has(roomName)) {
     const doc = new Y.Doc();
+    
+    // Bind persistence
+    persistence.bindState(roomName, doc).then(() => {
+      console.log(`[Yjs Persistence] Loaded doc: ${roomName}`);
+    });
+
     doc._conns = new Set();
     doc._awareness = new awarenessProtocol.Awareness(doc);
     doc._awareness.setLocalState(null);

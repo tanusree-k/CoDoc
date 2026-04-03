@@ -3,6 +3,7 @@
 ───────────────────────────────────────────────────────────────── */
 
 let currentUser = null;
+let allDocs = [];
 
 // Defensive Supabase client lookup
 function getSupabase() {
@@ -88,6 +89,18 @@ function showLoadError(msg) {
     if (av) av.textContent = currentUser.username.charAt(0).toUpperCase();
     const nameEl = document.getElementById('user-name');
     if (nameEl) nameEl.textContent = currentUser.username;
+    if (currentUser.username.startsWith('Guest')) {
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.textContent = 'Sign In to Save';
+        logoutBtn.style.background = '#10b981';
+        logoutBtn.style.color = '#fff';
+        logoutBtn.style.border = 'none';
+        logoutBtn.style.padding = '8px 12px';
+        logoutBtn.style.borderRadius = '6px';
+      }
+    }
+
 
     loadDocs();
   } catch (err) {
@@ -162,12 +175,9 @@ async function loadDocs() {
       return;
     }
 
-    const grid = document.getElementById('docs-grid');
-    if (grid) {
-      grid.classList.remove('hidden');
-      grid.innerHTML = '';
-      docs.forEach((doc, i) => grid.appendChild(createDocCard(doc, i)));
-    }
+    allDocs = docs;
+    renderDocs(allDocs);
+
   } catch (err) {
     console.error('loadDocs error:', err);
     showLoadError('Failed to load documents. Please refresh.');
@@ -189,9 +199,12 @@ function createDocCard(doc, i) {
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
     </div>
     <div class="doc-title">${escHtml(doc.title)}</div>
-    <div class="doc-meta">
-      <span>Edited ${timeAgo(doc.updatedAt)}</span>
-      ${!isOwner ? '<span>by ' + escHtml(doc.ownerName || '') + '</span>' : ''}
+    <div class="doc-meta" style="display:flex; justify-content:space-between; align-items:flex-start;">
+      <div>
+        <div style="font-size: 13px; color: #4b5563;">${formatDate(doc.updatedAt)}</div>
+        <div style="font-size: 12px; color: #9ca3af; margin-top: 2px;">${timeAgo(doc.updatedAt)}</div>
+      </div>
+      ${!isOwner ? '<div class="avatar" style="width:24px;height:24px;font-size:12px;background:#6366f1;">' + (doc.ownerName ? doc.ownerName.charAt(0).toUpperCase() : 'U') + '</div>' : ''}
     </div>
     <span class="doc-role-badge ${roleClass}">${roleLabel}</span>
     <div class="doc-card-actions">
@@ -207,6 +220,38 @@ function createDocCard(doc, i) {
 
   return card;
 }
+
+function renderDocs(docsToRender) {
+  const grid = document.getElementById('docs-grid');
+  const emptyEl = document.getElementById('empty-state');
+  
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  if (docsToRender.length === 0) {
+    grid.classList.add('hidden');
+    if (emptyEl) {
+      emptyEl.classList.remove('hidden');
+      emptyEl.querySelector('h3').textContent = allDocs.length === 0 ? 'No documents yet' : 'No matches found';
+      emptyEl.querySelector('p').textContent = allDocs.length === 0 ? 'Click "New Document" to create your first one.' : 'Try a different search term.';
+    }
+    return;
+  }
+
+  if (emptyEl) emptyEl.classList.add('hidden');
+  grid.classList.remove('hidden');
+  docsToRender.forEach((doc, i) => grid.appendChild(createDocCard(doc, i)));
+}
+
+const searchInput = document.getElementById('doc-search');
+if (searchInput) {
+  searchInput.addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    const filtered = allDocs.filter(d => d.title.toLowerCase().includes(term));
+    renderDocs(filtered);
+  });
+}
+
 // ── Actions ───────────────────────────────────────────────────────
 document.getElementById('new-doc-btn').addEventListener('click', () => {
   document.getElementById('new-doc-modal').classList.remove('hidden');
@@ -304,6 +349,12 @@ function escHtml(str) {
   return String(str)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;')
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 function timeAgo(iso) {

@@ -741,3 +741,26 @@
   border-color: var(--emerald);
   box-shadow: 0 0 0 2px var(--emerald-glow);
 }
+
+
+/* ── Responsiveness ────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .ai-chat-panel { width: 100vw; max-width: 100vw; border-left: none; }
+  .toolbar { 
+    flex-wrap: wrap; 
+    height: auto; 
+    padding: 8px;
+    gap: 4px;
+    justify-content: flex-start;
+  }
+  .toolbar-group {
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+  .modal-card {
+    width: 95vw;
+    margin: 10px;
+  }
+  .navbar-right { gap: 8px; }
+  .user-name-text { display: none; } /* hide name on mobile to save space */
+}

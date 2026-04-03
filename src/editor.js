@@ -1,3 +1,18 @@
+
+import { setupComments } from './comments.js';
+import { setupHistory } from './history.js';
+import { setupAiChat } from './ai-chat.js';
+import { setupSharing } from './sharing.js';
+import { escapeHtml, timeAgo } from './utils.js';
+import { toggleTheme } from './theme.js';
+import { toggleExportMenu } from './export.js';
+
+// Expose modules to global for HTML inline onclick handlers
+window.escapeHtml = escapeHtml;
+window.timeAgo = timeAgo;
+window.toggleTheme = toggleTheme;
+window.toggleExportMenu = toggleExportMenu;
+
 /* ─────────────────────────────────────────────────────────────────
    CoDoc editor.js — Yjs CRDT Collaborative Editor
    Sync: Yjs + y-websocket  |  Editor: Quill 2  |  Storage: Supabase
@@ -235,7 +250,15 @@ showLoadingOverlay('Connecting…');
     placeholder: 'Start typing your collaborative document here…',
     readOnly: isReadOnly
   });
-  window._quill = quill; // expose for undo/redo toolbar buttons
+  window._quill = quill;
+
+// Hook the native Image Toolbar button to our custom Modal
+quill.getModule('toolbar').addHandler('image', function() {
+  if (window.openImageModal) {
+    window.openImageModal();
+  }
+});
+ // expose for undo/redo toolbar buttons
 
   // Strip colors and backgrounds on paste to prevent invisible text
   quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
@@ -974,410 +997,7 @@ function showRecentChange(name, color) {
   recentBadgeTimer = setTimeout(() => recentBadge.classList.add('hidden'), 3000);
 }
 
-// ── Comments ────────────────────────────────────────────────────────────
-window.toggleCommentsSidebar = function() {
-  const sidebar = document.getElementById('comments-sidebar');
-  if (sidebar) sidebar.classList.toggle('hidden');
-};
-
-window.startAddComment = function() {
-  if (myRole === 'viewer') return;
-  const range = quill?.getSelection();
-  if (!range || range.length === 0) { showToast('Select some text first to add a comment.'); return; }
-  savedRange = range;
-  commentText.value = '';
-  commentModal.classList.remove('hidden');
-  setTimeout(() => commentText.focus(), 50);
-};
-
-window.cancelComment = function() { commentModal.classList.add('hidden'); savedRange = null; };
-
-window.submitComment = function() {
-  const text = commentText.value.trim();
-  if (!text) return;
-  let selectedText = '';
-  if (savedRange && quill) {
-    selectedText = quill.getText(savedRange.index, savedRange.length);
-    // Highlight the selected text with a background color
-    quill.formatText(savedRange.index, savedRange.length, 'background', '#fef3c7');
-  }
-  comments.push({
-    id: 'c' + Date.now(),
-    author: myName,
-    authorColor: myColor,
-    text,
-    selectedText: selectedText || null,
-    timestamp: new Date().toISOString(),
-    resolved: false,
-    replies: []
-  });
-  syncState();
-  renderComments();
-  commentModal.classList.add('hidden');
-  savedRange = null;
-};
-
-function renderComments() {
-  const active = comments.filter(c => !c.resolved);
-  const resolved = comments.filter(c => c.resolved);
-  commentCount.textContent = active.length;
-
-  if ([...active, ...resolved].length === 0) {
-    commentsList.innerHTML = `
-      <div class="no-comments">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        <p>No comments yet.<br/>Select text and click Comment.</p>
-      </div>`;
-    return;
-  }
-
-  commentsList.innerHTML = '';
-  [...active, ...resolved].forEach(c => {
-    const card = document.createElement('div');
-    card.className = 'comment-card' + (c.resolved ? ' resolved' : '');
-    card.id = 'comment-card-' + c.id;
-    const canAct = myRole !== 'viewer';
-    card.innerHTML = `
-      <div class="comment-author">
-        <span class="comment-dot" style="background:${c.authorColor || '#d1d5db'}"></span>
-        <span class="comment-name">${escapeHtml(c.author)}</span>
-        <span class="comment-time">${timeAgo(c.timestamp)}</span>
-      </div>
-      ${c.selectedText ? `<div class="comment-quoted">"${escapeHtml(c.selectedText)}"</div>` : ''}
-      <div class="comment-text">${escapeHtml(c.text)}</div>
-      ${c.replies.length > 0 ? `<div class="comment-replies">${c.replies.map(r=>`
-        <div class="reply-item">
-          <span class="reply-dot" style="background:${r.authorColor || '#d1d5db'}"></span>
-          <div class="reply-content"><span class="reply-author">${escapeHtml(r.author)}: </span>${escapeHtml(r.text)}</div>
-        </div>`).join('')}</div>` : ''}
-      ${canAct && !c.resolved ? `
-      <div class="reply-input-row">
-        <input class="reply-input" placeholder="Reply… (Enter to send)" id="reply-${c.id}" onkeydown="if(event.key==='Enter') sendReply('${c.id}')" />
-        <button class="reply-send-btn" onclick="sendReply('${c.id}')">→</button>
-      </div>
-      <div class="comment-actions">
-        <button class="comment-action-btn" onclick="resolveComment('${c.id}')">✓ Resolve</button>
-      </div>` : !c.resolved ? '' : '<div class="comment-actions"><span class="comment-action-btn">✓ Resolved</span></div>'}
-    `;
-    commentsList.appendChild(card);
-  });
-}
-
-window.sendReply = function(commentId) {
-  const input = document.getElementById('reply-' + commentId);
-  if (!input) return;
-  const text = input.value.trim();
-  if (!text) return;
-  input.value = '';
-  const c = comments.find(x => x.id === commentId);
-  if (c) {
-    c.replies.push({ author: myName, authorColor: myColor, text, timestamp: new Date().toISOString() });
-    syncState();
-    renderComments();
-  }
-};
-
-window.resolveComment = function(commentId) {
-  const c = comments.find(x => x.id === commentId);
-  if (c) {
-    c.resolved = true;
-    syncState();
-    renderComments();
-  }
-};
-
-// ── Version History ─────────────────────────────────────────────────────
-document.getElementById('history-btn')?.addEventListener('click', async () => {
-  if (myRole === 'viewer') {
-    showToast('Only editors can view full history.');
-    return;
-  }
-  historyPanel.classList.remove('hidden');
-  historyOverlay.classList.remove('hidden');
-  historyList.innerHTML = '<div class="no-comments"><p>Loading history...</p></div>';
-  try {
-    const res = await fetch(`/api/history/${myId}?docId=${docId}`);
-    const data = await res.json();
-    if (data.versions) {
-      renderHistoryGrid(data.versions);
-    } else {
-      throw new Error();
-    }
-  } catch (e) {
-    historyList.innerHTML = '<div class="no-comments"><p>Failed to load history.</p></div>';
-  }
-});
-
-window.closeHistory = function() {
-  historyPanel.classList.add('hidden');
-  historyOverlay.classList.add('hidden');
-};
-
-window.cancelSaveVersion = function() { saveVersionModal.classList.add('hidden'); };
-window.confirmSaveVersion = function() {
-  const name = versionNameInput.value.trim();
-  versionHistory.unshift({
-    id: 'v' + Date.now(),
-    name: name || 'Unnamed Version',
-    content: quill.root.innerHTML,
-    author: myName,
-    timestamp: new Date().toISOString()
-  });
-  syncState();
-  renderHistory();
-  saveVersionModal.classList.add('hidden');
-  showToast(`💾 Version "${name || 'Unnamed Version'}" saved`);
-};
-
-versionNameInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') window.confirmSaveVersion();
-  if (e.key === 'Escape') window.cancelSaveVersion();
-});
-
-function renderHistoryGrid(apiVersions) {
-  if (!apiVersions || apiVersions.length === 0) {
-    historyList.innerHTML = '<div class="no-comments"><p>No saved versions yet.</p></div>';
-    return;
-  }
-  historyList.innerHTML = '';
-  const total = apiVersions.length;
-  apiVersions.forEach((v, index) => {
-    const vNumber = total - index;
-    const item = document.createElement('div');
-    item.className = 'version-item';
-    item.innerHTML = `
-      <div class="version-name" style="display:flex; justify-content:space-between; align-items:center; width: 100%;">
-        <span>Version v${vNumber}</span>
-        <button class="btn-primary-sm restore-btn" style="padding: 4px 10px; font-size: 11px; z-index: 10;">Restore</button>
-      </div>
-      <div class="version-meta">${timeAgo(v.created_at)}</div>
-    `;
-    item.querySelector('.restore-btn').addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (confirm(`Restore Version v${vNumber}? Current content will be replaced.`)) {
-        const delta = quill.clipboard.convert({ html: v.content });
-        quill.setContents(delta);
-        showToast(`🔄 Restored Version v${vNumber}`);
-        debounceDbSave(); // trigger a save
-        window.closeHistory();
-      }
-    });
-    historyList.appendChild(item);
-  });
-}
-
-function renderHistory() {
-  // Legacy renderHistory for compat
-}
-
-// ── AI Chat ─────────────────────────────────────────────────────────────
-const aiChatPanel = document.getElementById('ai-chat-panel');
-const aiChatOverlay = document.getElementById('ai-chat-overlay');
-const aiChatMessages = document.getElementById('ai-chat-messages');
-const aiChatInput = document.getElementById('ai-chat-input');
-
-document.getElementById('ai-chat-btn')?.addEventListener('click', () => {
-  const isOpen = aiChatPanel.classList.contains('open');
-  if (isOpen) { window.closeAIChat(); }
-  else {
-    aiChatPanel.classList.add('open');
-    aiChatOverlay.classList.remove('hidden');
-    document.getElementById('ai-chat-btn')?.classList.add('active');
-    aiChatInput?.focus();
-  }
-});
-
-window.closeAIChat = function() {
-  aiChatPanel.classList.remove('open');
-  aiChatOverlay.classList.add('hidden');
-  document.getElementById('ai-chat-btn')?.classList.remove('active');
-};
-
-window.sendChatMessage = async function() {
-  const input = aiChatInput;
-  const text = input.value.trim();
-  if (!text) return;
-  input.value = '';
-  input.style.height = 'auto';
-
-  const includeCtx = document.getElementById('include-doc-ctx')?.checked;
-  let prompt = text;
-  
-  let selectedTextObj = '';
-  if (quill && aiLastSelection && aiLastSelection.length > 0) {
-    selectedTextObj = quill.getText(aiLastSelection.index, aiLastSelection.length);
-  }
-
-  if (includeCtx && quill) {
-    prompt = `Document Content:\n\n${quill.getText()}\n\n---\n\n`;
-    if (selectedTextObj) {
-      prompt += `User's Currently Selected Text:\n"${selectedTextObj}"\n\n---\n\n`;
-    }
-    prompt += `User Request: ${text}`;
-  }
-
-  aiChatMessages.innerHTML += `
-    <div class="chat-bubble-user"><div class="chat-bubble-content">${escapeHtml(text)}</div><div class="chat-time">Now</div></div>
-    <div class="chat-bubble-ai typing-indicator" id="ai-typing"><div class="chat-bubble-content"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
-  aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
-
-  try {
-    const resp = await fetch('/api/ai', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'chat', text: prompt })
-    });
-    const data = await resp.json();
-    document.getElementById('ai-typing')?.remove();
-    
-    if (data.reply || data.action) {
-      aiChatMessages.innerHTML += `<div class="chat-bubble-ai"><div class="chat-bubble-content">${escapeHtml(data.reply || "Done.")}</div><div class="chat-time">Now</div></div>`;
-      
-      if (data.action && data.action !== 'none' && data.content && quill && myRole !== 'viewer') {
-        window.pendingAiAction = {
-          action: data.action,
-          content: data.content,
-          selection: aiLastSelection ? { ...aiLastSelection } : null
-        };
-        const actionId = 'ai-action-' + Date.now();
-        window.pendingAiAction.id = actionId;
-        
-        aiChatMessages.innerHTML += `
-          <div class="chat-bubble-ai" id="${actionId}" style="opacity:0.95; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08);">
-            <div class="chat-bubble-content" style="font-size:13px; color:#e5e7eb;">
-              <strong>Proposed Change:</strong><br/>
-              <pre style="white-space: pre-wrap; font-family:var(--font-mono); font-size:11px; background:rgba(0,0,0,0.3); padding:6px; border-radius:4px; max-height:150px; overflow-y:auto; margin-top:6px; margin-bottom:8px; color:#9ca3af;">${escapeHtml(data.content)}</pre>
-              <div style="display:flex; gap:8px;">
-                <button onclick="confirmAiAction('${actionId}')" class="btn-primary-sm" style="flex:1;">Paste</button>
-                <button onclick="cancelAiAction('${actionId}')" class="btn-ghost-sm" style="flex:1;">Cancel</button>
-              </div>
-            </div>
-          </div>`;
-      }
-    } else if (data.error) {
-      aiChatMessages.innerHTML += `<div class="chat-bubble-ai"><div class="chat-bubble-content" style="color:#f87171">Error: ${escapeHtml(data.error || 'Unknown error')}</div></div>`;
-    }
-  } catch (err) {
-    document.getElementById('ai-typing')?.remove();
-    aiChatMessages.innerHTML += `<div class="chat-bubble-ai"><div class="chat-bubble-content" style="color:#f87171">Network error</div></div>`;
-  }
-  aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
-};
-
-window.sendQuickPrompt = function(type) {
-  const selectedText = quill ? quill.getText(quill.getSelection()?.index || 0, quill.getSelection()?.length || 0) : '';
-  if (type === 'summarize') {
-    aiChatInput.value = selectedText ? 'Summarize:\n\n"' + selectedText + '"' : 'Summarize this document.';
-  } else if (type === 'polish') {
-    aiChatInput.value = selectedText
-      ? 'Polish and improve this text:\n\n"' + selectedText + '"'
-      : 'Please polish and improve the writing style of this document.';
-  } else if (type === 'translate') {
-    const lang = prompt('Translate to what language?', 'Spanish');
-    if (!lang) return;
-    aiChatInput.value = selectedText
-      ? 'Translate to ' + lang + ':\n\n"' + selectedText + '"'
-      : 'Translate this document to ' + lang + '.';
-  }
-  window.sendChatMessage();
-};
-
-aiChatInput?.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.sendChatMessage(); }
-});
-aiChatInput?.addEventListener('input', () => {
-  aiChatInput.style.height = 'auto';
-  aiChatInput.style.height = Math.min(aiChatInput.scrollHeight, 120) + 'px';
-});
-
-commentModal.addEventListener('click', e => { if (e.target === commentModal) window.cancelComment(); });
-
-// ── Share ───────────────────────────────────────────────────────────────
-window.openShareModal = function() {
-  const canInvite = myRole === 'owner' || myRole === 'editor';
-  const roleGroup = document.querySelector('.share-role-group');
-  const genBtn = document.getElementById('generate-link-btn');
-  const desc = document.querySelector('#share-modal p');
-  if (roleGroup) roleGroup.style.display = canInvite ? '' : 'none';
-  if (genBtn) genBtn.style.display = canInvite ? '' : 'none';
-  if (desc) desc.textContent = canInvite
-    ? 'Choose a permission level and copy the link to share.'
-    : 'Copy this link to share the document with others.';
-  document.getElementById('share-modal').classList.remove('hidden');
-  window.generateShareLink();
-};
-window.closeShareModal = function() { document.getElementById('share-modal').classList.add('hidden'); };
-window.generateShareLink = function() {
-  const canInvite = myRole === 'owner' || myRole === 'editor';
-  let link;
-  if (canInvite) {
-    const roleOpt = document.querySelector('input[name="share-role"]:checked');
-    const role = roleOpt ? roleOpt.value : 'viewer';
-    link = window.location.origin + '/editor.html?doc=' + docId + '&invite=' + btoa(role);
-  } else {
-    link = window.location.origin + '/editor.html?doc=' + docId;
-  }
-  document.getElementById('share-link-input').value = link;
-};
-window.copyShareLink = function() {
-  const linkInput = document.getElementById('share-link-input');
-  navigator.clipboard.writeText(linkInput.value).catch(() => { linkInput.select(); document.execCommand('copy'); });
-  showToast('🔗 Link copied to clipboard!', '#10b981');
-};
-
-document.querySelectorAll('input[name="share-role"]').forEach(el => {
-  el.addEventListener('change', window.generateShareLink);
-});
-document.getElementById('share-btn')?.addEventListener('click', window.openShareModal);
-
-// ── Export ───────────────────────────────────────────────────────────────
-window.toggleExportMenu = function() {
-  const menu = document.getElementById('export-dropdown');
-  menu.classList.toggle('hidden');
-  if (!menu.classList.contains('hidden')) {
-    setTimeout(() => {
-      const handler = (e) => {
-        if (!menu.contains(e.target) && !e.target.closest('#export-btn')) {
-          menu.classList.add('hidden');
-          document.removeEventListener('click', handler);
-        }
-      };
-      document.addEventListener('click', handler);
-    }, 0);
-  }
-};
-
-window.exportDocument = function(format) {
-  document.getElementById('export-dropdown').classList.add('hidden');
-  const title = docTitleInput.value.trim() || 'Untitled Document';
-
-  if (format === 'html') {
-    const html = `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"><title>${escapeHtml(title)}</title>\n<style>body{font-family:Georgia,'Times New Roman',serif;max-width:780px;margin:40px auto;padding:0 24px;line-height:1.75;color:#111827;}</style>\n</head>\n<body>\n<h1>${escapeHtml(title)}</h1>\n${quill.root.innerHTML}\n</body></html>`;
-    downloadFile(title + '.html', html, 'text/html');
-    showToast('📄 Exported as HTML', '#10b981');
-  } else if (format === 'txt') {
-    downloadFile(title + '.txt', quill.getText(), 'text/plain');
-    showToast('📄 Exported as TXT', '#10b981');
-  } else if (format === 'pdf') {
-    const printW = window.open('', '_blank');
-    printW.document.write(`<!DOCTYPE html><html><head><title>${escapeHtml(title)}</title>\n<style>body{font-family:Georgia,'Times New Roman',serif;max-width:780px;margin:40px auto;padding:0 24px;line-height:1.75;color:#111827;}@media print{body{margin:0;padding:20px;}}</style>\n</head><body><h1>${escapeHtml(title)}</h1>${quill.root.innerHTML}</body></html>`);
-    printW.document.close();
-    printW.focus();
-    setTimeout(() => { printW.print(); printW.close(); }, 400);
-    showToast('🖨️ Print/PDF dialog opened', '#10b981');
-  }
-};
-
-function downloadFile(filename, content, mimeType) {
-  const blob = new Blob([content], { type: mimeType + ';charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
-}
-
+// --- Extracted to export.js ---
 // ── Toast ───────────────────────────────────────────────────────────────
 let toastTimer = null;
 function showToast(message, color = null) {
@@ -1389,20 +1009,8 @@ function showToast(message, color = null) {
   toastTimer = setTimeout(() => toastEl.classList.add('hidden'), 3500);
 }
 
-// ── Utilities ───────────────────────────────────────────────────────────
-function escapeHtml(str) {
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function timeAgo(iso) {
-  if (!iso) return 'just now';
-  const diff = (Date.now() - new Date(iso)) / 1000;
-  if (diff < 60) return 'just now';
-  if (diff < 3600) return Math.floor(diff/60) + 'm ago';
-  if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
-  return Math.floor(diff/86400) + 'd ago';
-}
 
-
+// --- Extracted to utils.js ---
 // ── Speech to Text (Dictation) ──────────────────────────────────────────
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -1411,6 +1019,7 @@ const dictationBtn = document.getElementById('dictation-btn');
 if (SpeechRecognition && dictationBtn) {
   let isDictating = false;
   const recognition = new SpeechRecognition();
+  recognition.lang = 'en-US';
   recognition.continuous = true;
   recognition.interimResults = false;
   
@@ -1524,15 +1133,11 @@ window.cancelAiAction = function(id) {
   window.pendingAiAction = null;
 };
 
-// ── Theme Toggle ────────────────────────────────────────────────────────
-window.toggleTheme = function() {
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  if (isDark) {
-    document.documentElement.removeAttribute('data-theme');
-    localStorage.setItem('theme', 'light');
-  } else {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    localStorage.setItem('theme', 'dark');
-  }
-};
 
+// --- Extracted to theme.js ---
+
+// --- Run Modules ---
+setupComments();
+setupHistory();
+setupAiChat();
+setupSharing();
