@@ -113,6 +113,57 @@ const shareModal     = document.getElementById('share-modal');
 const shareLink      = document.getElementById('share-link-input');
 const permsList      = document.getElementById('perms-list');
 
+// --- Expose State to Window ---
+window.quill = quill;
+window.ydoc = ydoc;
+window.ytext = ytext;
+window.wsProvider = wsProvider;
+window.metaWs = metaWs;
+window.myId = myId;
+window.myName = myName;
+window.myColor = myColor;
+window.myRole = myRole;
+window.docId = docId;
+window.users = users;
+window.comments = comments;
+window.versionHistory = versionHistory;
+window.savedRange = savedRange;
+window.dbSaveTimer = dbSaveTimer;
+window.aiLastSelection = aiLastSelection;
+window.recentBadgeTimer = recentBadgeTimer;
+window.commentsList = commentsList;
+window.commentCount = commentCount;
+window.usersList = usersList;
+window.userCount = userCount;
+window.navAvatars = navAvatars;
+window.myAvatarEl = myAvatarEl;
+window.recentBadge = recentBadge;
+window.toastEl = toastEl;
+window.historyPanel = historyPanel;
+window.historyOverlay = historyOverlay;
+window.historyList = historyList;
+window.commentModal = commentModal;
+window.commentText = commentText;
+window.cursorLabels = cursorLabels;
+window.docTitleInput = docTitleInput;
+window.roleBadge = roleBadge;
+window.saveVersionModal = saveVersionModal;
+window.versionNameInput = versionNameInput;
+window.shareModal = shareModal;
+window.shareLink = shareLink;
+window.permsList = permsList;
+window.showToast = showToast;
+window.syncState = syncState;
+window.showLoadingOverlay = showLoadingOverlay;
+window.hideLoadingOverlay = hideLoadingOverlay;
+window.applyRoleUI = applyRoleUI;
+window.debounceDbSave = debounceDbSave;
+window.renderUserList = renderUserList;
+window.connectMetaWs = connectMetaWs;
+window.metaSend = metaSend;
+// ------------------------------
+
+
 // ── Init ────────────────────────────────────────────────────────────────
 function showLoadingOverlay(msg) {
   let ov = document.getElementById('init-loading-overlay');
@@ -192,8 +243,8 @@ showLoadingOverlay('Connecting…');
     showSessionError('Your profile could not be loaded.');
     return;
   }
-  myId = profile.id;
-  myName = profile.username;
+  myId = profile.id; window.myId = myId;
+  myName = profile.username; window.myName = myName;
 
   const params = new URLSearchParams(window.location.search);
   docId = params.get('doc');
@@ -206,7 +257,7 @@ showLoadingOverlay('Connecting…');
   if (docErr || !doc) { window.location.href = '/dashboard.html'; return; }
 
   if (doc.owner_id === myId) {
-    myRole = 'owner';
+    myRole = 'owner'; window.myRole = myRole;
   } else {
     let { data: perm } = await sb.from('document_permissions').select('*').eq('doc_id', docId).eq('user_id', myId).single();
     if (!perm && inviteToken) {
@@ -222,7 +273,7 @@ showLoadingOverlay('Connecting…');
       } catch (e) { console.error('Invalid invite token', e); }
     }
     if (!perm) return showForbidden();
-    myRole = perm.role;
+    myRole = perm.role; window.myRole = myRole;
   }
 
   myColor = `hsl(${parseInt(myId.replace(/-/g,''), 16) % 360}, 80%, 45%)`;
@@ -234,7 +285,7 @@ showLoadingOverlay('Connecting…');
   const editorContainer = document.getElementById('editor');
   const isReadOnly = myRole === 'viewer';
 
-  quill = new Quill(editorContainer, {
+  window.quill = quill = new Quill(editorContainer, {
     theme: 'snow',
     modules: {
       toolbar: isReadOnly ? false : '#toolbar',
@@ -272,15 +323,15 @@ quill.getModule('toolbar').addHandler('image', function() {
   });
 
   // ── Initialize Yjs ────────────────────────────────────────────────
-  ydoc = new Y.Doc();
-  ytext = ydoc.getText('quill');
+  window.ydoc = ydoc = new Y.Doc();
+  window.ytext = ytext = ydoc.getText('quill');
 
   // Connect y-websocket provider (binary CRDT sync)
   const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
   const wsUrl = `${wsProtocol}//${window.location.host}`;
   const roomName = `doc-${docId}`;
 
-  wsProvider = new WebsocketProvider(wsUrl, roomName, ydoc);
+  window.wsProvider = wsProvider = new WebsocketProvider(wsUrl, roomName, ydoc);
 
   // Set awareness info (presence/cursors)
   wsProvider.awareness.setLocalStateField('user', {
@@ -794,8 +845,8 @@ function connectMetaWs() {
     let msg;
     try { msg = JSON.parse(event.data); } catch { return; }
     if (msg.type === 'sync-state') {
-      comments = msg.comments;
-      versionHistory = msg.versionHistory;
+      window.comments = comments = msg.comments;
+      window.versionHistory = versionHistory = msg.versionHistory;
       window.renderComments?.();
       window.renderHistory?.();
     }

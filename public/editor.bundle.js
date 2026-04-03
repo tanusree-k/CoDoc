@@ -1845,47 +1845,47 @@ function timeAgo2(iso) {
 // src/comments.js
 function setupComments() {
   window.toggleCommentsSidebar = function() {
-    const sidebar = document.getElementById("comments-sidebar");
+    const sidebar = document.getElementById("window.comments-sidebar");
     if (sidebar) sidebar.classList.toggle("hidden");
   };
   window.startAddComment = function() {
-    if (myRole === "viewer") return;
-    const range = quill?.getSelection();
+    if (window.myRole === "viewer") return;
+    const range = window.quill?.getSelection();
     if (!range || range.length === 0) {
-      showToast("Select some text first to add a comment.");
+      window.showToast("Select some text first to add a comment.");
       return;
     }
-    savedRange = range;
+    window.savedRange = range;
     commentText.value = "";
     commentModal.classList.remove("hidden");
     setTimeout(() => commentText.focus(), 50);
   };
   window.cancelComment = function() {
     commentModal.classList.add("hidden");
-    savedRange = null;
+    window.savedRange = null;
   };
   window.submitComment = function() {
     const text2 = commentText.value.trim();
     if (!text2) return;
     let selectedText = "";
-    if (savedRange && quill) {
+    if (window.savedRange && window.quill) {
       selectedText = quill.getText(savedRange.index, savedRange.length);
       quill.formatText(savedRange.index, savedRange.length, "background", "#fef3c7");
     }
     comments.push({
       id: "c" + Date.now(),
-      author: myName,
-      authorColor: myColor,
+      author: window.myName,
+      authorColor: window.myColor,
       text: text2,
       selectedText: selectedText || null,
       timestamp: (/* @__PURE__ */ new Date()).toISOString(),
       resolved: false,
       replies: []
     });
-    syncState();
+    window.syncState();
     window.renderComments?.();
     commentModal.classList.add("hidden");
-    savedRange = null;
+    window.savedRange = null;
   };
   window.renderComments = function() {
     const active = comments.filter((c) => !c.resolved);
@@ -1893,9 +1893,9 @@ function setupComments() {
     commentCount.textContent = active.length;
     if ([...active, ...resolved].length === 0) {
       commentsList.innerHTML = `
-      <div class="no-comments">
+      <div class="no-window.comments">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        <p>No comments yet.<br/>Select text and click Comment.</p>
+        <p>No window.comments yet.<br/>Select text and click Comment.</p>
       </div>`;
       return;
     }
@@ -1904,7 +1904,7 @@ function setupComments() {
       const card = document.createElement("div");
       card.className = "comment-card" + (c.resolved ? " resolved" : "");
       card.id = "comment-card-" + c.id;
-      const canAct = myRole !== "viewer";
+      const canAct = window.myRole !== "viewer";
       card.innerHTML = `
       <div class="comment-author">
         <span class="comment-dot" style="background:${c.authorColor || "#d1d5db"}"></span>
@@ -1938,8 +1938,8 @@ function setupComments() {
     input.value = "";
     const c = comments.find((x) => x.id === commentId);
     if (c) {
-      c.replies.push({ author: myName, authorColor: myColor, text: text2, timestamp: (/* @__PURE__ */ new Date()).toISOString() });
-      syncState();
+      c.replies.push({ author: window.myName, authorColor: window.myColor, text: text2, timestamp: (/* @__PURE__ */ new Date()).toISOString() });
+      window.syncState();
       window.renderComments?.();
     }
   };
@@ -1947,7 +1947,7 @@ function setupComments() {
     const c = comments.find((x) => x.id === commentId);
     if (c) {
       c.resolved = true;
-      syncState();
+      window.syncState();
       window.renderComments?.();
     }
   };
@@ -1956,15 +1956,15 @@ function setupComments() {
 // src/history.js
 function setupHistory() {
   document.getElementById("history-btn")?.addEventListener("click", async () => {
-    if (myRole === "viewer") {
-      showToast("Only editors can view full history.");
+    if (window.myRole === "viewer") {
+      window.showToast("Only editors can view full history.");
       return;
     }
     historyPanel.classList.remove("hidden");
     historyOverlay.classList.remove("hidden");
-    historyList.innerHTML = '<div class="no-comments"><p>Loading history...</p></div>';
+    historyList.innerHTML = '<div class="no-window.comments"><p>Loading history...</p></div>';
     try {
-      const res = await fetch(`/api/history/${myId}?docId=${docId}`);
+      const res = await fetch(`/api/history/${window.myId}?window.docId=${window.docId}`);
       const data = await res.json();
       if (data.versions) {
         renderHistoryGrid(data.versions);
@@ -1972,7 +1972,7 @@ function setupHistory() {
         throw new Error();
       }
     } catch (e) {
-      historyList.innerHTML = '<div class="no-comments"><p>Failed to load history.</p></div>';
+      historyList.innerHTML = '<div class="no-window.comments"><p>Failed to load history.</p></div>';
     }
   });
   window.closeHistory = function() {
@@ -1988,13 +1988,13 @@ function setupHistory() {
       id: "v" + Date.now(),
       name: name || "Unnamed Version",
       content: quill.root.innerHTML,
-      author: myName,
+      author: window.myName,
       timestamp: (/* @__PURE__ */ new Date()).toISOString()
     });
-    syncState();
+    window.syncState();
     window.renderHistory?.();
     saveVersionModal.classList.add("hidden");
-    showToast(`\u{1F4BE} Version "${name || "Unnamed Version"}" saved`);
+    window.showToast(`\u{1F4BE} Version "${name || "Unnamed Version"}" saved`);
   };
   versionNameInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") window.confirmSaveVersion();
@@ -2002,7 +2002,7 @@ function setupHistory() {
   });
   function renderHistoryGrid(apiVersions) {
     if (!apiVersions || apiVersions.length === 0) {
-      historyList.innerHTML = '<div class="no-comments"><p>No saved versions yet.</p></div>';
+      historyList.innerHTML = '<div class="no-window.comments"><p>No saved versions yet.</p></div>';
       return;
     }
     historyList.innerHTML = "";
@@ -2023,8 +2023,8 @@ function setupHistory() {
         if (confirm(`Restore Version v${vNumber}? Current content will be replaced.`)) {
           const delta = quill.clipboard.convert({ html: v2.content });
           quill.setContents(delta);
-          showToast(`\u{1F504} Restored Version v${vNumber}`);
-          debounceDbSave();
+          window.showToast(`\u{1F504} Restored Version v${vNumber}`);
+          window.debounceDbSave();
           window.closeHistory();
         }
       });
@@ -2066,10 +2066,10 @@ function setupAiChat() {
     const includeCtx = document.getElementById("include-doc-ctx")?.checked;
     let prompt2 = text2;
     let selectedTextObj = "";
-    if (quill && aiLastSelection && aiLastSelection.length > 0) {
+    if (window.quill && window.aiLastSelection && aiLastSelection.length > 0) {
       selectedTextObj = quill.getText(aiLastSelection.index, aiLastSelection.length);
     }
-    if (includeCtx && quill) {
+    if (includeCtx && window.quill) {
       prompt2 = `Document Content:
 
 ${quill.getText()}
@@ -2101,11 +2101,11 @@ ${quill.getText()}
       document.getElementById("ai-typing")?.remove();
       if (data.reply || data.action) {
         aiChatMessages.innerHTML += `<div class="chat-bubble-ai"><div class="chat-bubble-content">${escapeHtml(data.reply || "Done.")}</div><div class="chat-time">Now</div></div>`;
-        if (data.action && data.action !== "none" && data.content && quill && myRole !== "viewer") {
+        if (data.action && data.action !== "none" && data.content && window.quill && window.myRole !== "viewer") {
           window.pendingAiAction = {
             action: data.action,
             content: data.content,
-            selection: aiLastSelection ? { ...aiLastSelection } : null
+            selection: window.aiLastSelection ? { ...aiLastSelection } : null
           };
           const actionId = "ai-action-" + Date.now();
           window.pendingAiAction.id = actionId;
@@ -2131,7 +2131,7 @@ ${quill.getText()}
     aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
   };
   window.sendQuickPrompt = function(type) {
-    const selectedText = quill ? quill.getText(quill.getSelection()?.index || 0, quill.getSelection()?.length || 0) : "";
+    const selectedText = window.quill ? quill.getText(quill.getSelection()?.index || 0, quill.getSelection()?.length || 0) : "";
     if (type === "summarize") {
       aiChatInput2.value = selectedText ? 'Summarize:\n\n"' + selectedText + '"' : "Summarize this document.";
     } else if (type === "polish") {
@@ -2155,14 +2155,14 @@ ${quill.getText()}
     aiChatInput2.style.height = Math.min(aiChatInput2.scrollHeight, 120) + "px";
   });
   commentModal.addEventListener("click", (e) => {
-    if (e.target === commentModal) window.cancelComment();
+    if (e.target === window.commentModal) window.cancelComment();
   });
 }
 
 // src/sharing.js
 function setupSharing() {
   window.openShareModal = function() {
-    const canInvite = myRole === "owner" || myRole === "editor";
+    const canInvite = window.myRole === "owner" || window.myRole === "editor";
     const roleGroup = document.querySelector(".share-role-group");
     const genBtn = document.getElementById("generate-link-btn");
     const desc = document.querySelector("#share-modal p");
@@ -2176,14 +2176,14 @@ function setupSharing() {
     document.getElementById("share-modal").classList.add("hidden");
   };
   window.generateShareLink = function() {
-    const canInvite = myRole === "owner" || myRole === "editor";
+    const canInvite = window.myRole === "owner" || window.myRole === "editor";
     let link;
     if (canInvite) {
       const roleOpt = document.querySelector('input[name="share-role"]:checked');
       const role = roleOpt ? roleOpt.value : "viewer";
-      link = window.location.origin + "/editor.html?doc=" + docId + "&invite=" + btoa(role);
+      link = window.location.origin + "/editor.html?doc=" + window.docId + "&invite=" + btoa(role);
     } else {
-      link = window.location.origin + "/editor.html?doc=" + docId;
+      link = window.location.origin + "/editor.html?doc=" + window.docId;
     }
     document.getElementById("share-link-input").value = link;
   };
@@ -2193,7 +2193,7 @@ function setupSharing() {
       linkInput.select();
       document.execCommand("copy");
     });
-    showToast("\u{1F517} Link copied to clipboard!", "#10b981");
+    window.showToast("\u{1F517} Link copied to clipboard!", "#10b981");
   };
   document.querySelectorAll('input[name="share-role"]').forEach((el) => {
     el.addEventListener("change", window.generateShareLink);
@@ -2215,7 +2215,7 @@ function toggleTheme() {
 
 // src/export.js
 function toggleExportMenu() {
-  if (typeof myName !== "undefined" && myName.startsWith("Guest")) {
+  if (typeof window.myName !== "undefined" && myName.startsWith("Guest")) {
     alert("Please sign in to export documents.");
     window.location.href = "/auth.html";
     return;
@@ -2248,10 +2248,10 @@ window.exportDocument = function(format) {
 ${quill.root.innerHTML}
 </body></html>`;
     downloadFile(title + ".html", html, "text/html");
-    showToast("\u{1F4C4} Exported as HTML", "#10b981");
+    window.showToast("\u{1F4C4} Exported as HTML", "#10b981");
   } else if (format === "txt") {
     downloadFile(title + ".txt", quill.getText(), "text/plain");
-    showToast("\u{1F4C4} Exported as TXT", "#10b981");
+    window.showToast("\u{1F4C4} Exported as TXT", "#10b981");
   } else if (format === "pdf") {
     const printW = window.open("", "_blank");
     printW.document.write(`<!DOCTYPE html><html><head><title>${escapeHtml2(title)}</title>
@@ -2263,7 +2263,7 @@ ${quill.root.innerHTML}
       printW.print();
       printW.close();
     }, 400);
-    showToast("\u{1F5A8}\uFE0F Print/PDF dialog opened", "#10b981");
+    window.showToast("\u{1F5A8}\uFE0F Print/PDF dialog opened", "#10b981");
   }
 };
 function downloadFile(filename, content, mimeType) {
@@ -17624,16 +17624,18 @@ var ydoc = null;
 var ytext = null;
 var wsProvider = null;
 var metaWs = null;
-var myId2 = null;
+var myId = null;
 var myName2 = "";
-var myColor2 = "#10b981";
-var myRole2 = "viewer";
-var docId2 = null;
+var myColor = "#10b981";
+var myRole = "viewer";
+var docId = null;
 var users = {};
 var comments2 = [];
 var versionHistory2 = [];
+var savedRange2 = null;
 var dbSaveTimer = null;
 var aiLastSelection2 = null;
+var recentBadgeTimer = null;
 var commentsList2 = document.getElementById("comments-list");
 var commentCount2 = document.getElementById("comment-count");
 var usersList = document.getElementById("users-list");
@@ -17655,6 +17657,53 @@ var versionNameInput2 = document.getElementById("version-name-input");
 var shareModal = document.getElementById("share-modal");
 var shareLink = document.getElementById("share-link-input");
 var permsList = document.getElementById("perms-list");
+window.quill = quill2;
+window.ydoc = ydoc;
+window.ytext = ytext;
+window.wsProvider = wsProvider;
+window.metaWs = metaWs;
+window.myId = myId;
+window.myName = myName2;
+window.myColor = myColor;
+window.myRole = myRole;
+window.docId = docId;
+window.users = users;
+window.comments = comments2;
+window.versionHistory = versionHistory2;
+window.savedRange = savedRange2;
+window.dbSaveTimer = dbSaveTimer;
+window.aiLastSelection = aiLastSelection2;
+window.recentBadgeTimer = recentBadgeTimer;
+window.commentsList = commentsList2;
+window.commentCount = commentCount2;
+window.usersList = usersList;
+window.userCount = userCount;
+window.navAvatars = navAvatars;
+window.myAvatarEl = myAvatarEl;
+window.recentBadge = recentBadge;
+window.toastEl = toastEl;
+window.historyPanel = historyPanel2;
+window.historyOverlay = historyOverlay2;
+window.historyList = historyList2;
+window.commentModal = commentModal2;
+window.commentText = commentText2;
+window.cursorLabels = cursorLabels;
+window.docTitleInput = docTitleInput2;
+window.roleBadge = roleBadge;
+window.saveVersionModal = saveVersionModal2;
+window.versionNameInput = versionNameInput2;
+window.shareModal = shareModal;
+window.shareLink = shareLink;
+window.permsList = permsList;
+window.showToast = showToast;
+window.syncState = syncState;
+window.showLoadingOverlay = showLoadingOverlay;
+window.hideLoadingOverlay = hideLoadingOverlay;
+window.applyRoleUI = applyRoleUI;
+window.debounceDbSave = debounceDbSave;
+window.renderUserList = renderUserList;
+window.connectMetaWs = connectMetaWs;
+window.metaSend = metaSend;
 function showLoadingOverlay(msg) {
   let ov = document.getElementById("init-loading-overlay");
   if (!ov) {
@@ -17714,7 +17763,7 @@ showLoadingOverlay("Connecting\u2026");
       });
     }, loadFileIntoCropper = function(file) {
       if (file.size > 5 * 1024 * 1024) {
-        showToast2("\u26A0\uFE0F Image must be under 5MB", "#f59e0b");
+        showToast("\u26A0\uFE0F Image must be under 5MB", "#f59e0b");
         return;
       }
       const reader = new FileReader();
@@ -17797,30 +17846,33 @@ showLoadingOverlay("Connecting\u2026");
       showSessionError("Your profile could not be loaded.");
       return;
     }
-    myId2 = profile.id;
+    myId = profile.id;
+    window.myId = myId;
     myName2 = profile.username;
+    window.myName = myName2;
     const params2 = new URLSearchParams(window.location.search);
-    docId2 = params2.get("doc");
-    if (!docId2) {
+    docId = params2.get("doc");
+    if (!docId) {
       window.location.href = "/dashboard.html";
       return;
     }
     const inviteToken = params2.get("invite");
     showLoadingOverlay("Loading document\u2026");
-    const { data: doc2, error: docErr } = await sb.from("documents").select("*").eq("id", docId2).single();
+    const { data: doc2, error: docErr } = await sb.from("documents").select("*").eq("id", docId).single();
     if (docErr || !doc2) {
       window.location.href = "/dashboard.html";
       return;
     }
-    if (doc2.owner_id === myId2) {
-      myRole2 = "owner";
+    if (doc2.owner_id === myId) {
+      myRole = "owner";
+      window.myRole = myRole;
     } else {
-      let { data: perm } = await sb.from("document_permissions").select("*").eq("doc_id", docId2).eq("user_id", myId2).single();
+      let { data: perm } = await sb.from("document_permissions").select("*").eq("doc_id", docId).eq("user_id", myId).single();
       if (!perm && inviteToken) {
         try {
           const decodedRole = atob(inviteToken);
           if (["editor", "commenter", "viewer"].includes(decodedRole)) {
-            await sb.from("document_permissions").insert({ doc_id: docId2, user_id: myId2, role: decodedRole });
+            await sb.from("document_permissions").insert({ doc_id: docId, user_id: myId, role: decodedRole });
             perm = { role: decodedRole };
             const url = new URL(window.location.href);
             url.searchParams.delete("invite");
@@ -17831,13 +17883,14 @@ showLoadingOverlay("Connecting\u2026");
         }
       }
       if (!perm) return showForbidden();
-      myRole2 = perm.role;
+      myRole = perm.role;
+      window.myRole = myRole;
     }
-    myColor2 = `hsl(${parseInt(myId2.replace(/-/g, ""), 16) % 360}, 80%, 45%)`;
-    applyRoleUI(myRole2);
+    myColor = `hsl(${parseInt(myId.replace(/-/g, ""), 16) % 360}, 80%, 45%)`;
+    applyRoleUI(myRole);
     const editorContainer = document.getElementById("editor");
-    const isReadOnly = myRole2 === "viewer";
-    quill2 = new Quill(editorContainer, {
+    const isReadOnly = myRole === "viewer";
+    window.quill = quill2 = new Quill(editorContainer, {
       theme: "snow",
       modules: {
         toolbar: isReadOnly ? false : "#toolbar",
@@ -17868,17 +17921,17 @@ showLoadingOverlay("Connecting\u2026");
       });
       return delta;
     });
-    ydoc = new Doc();
-    ytext = ydoc.getText("quill");
+    window.ydoc = ydoc = new Doc();
+    window.ytext = ytext = ydoc.getText("quill");
     const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     const wsUrl = `${wsProtocol}//${window.location.host}`;
-    const roomName = `doc-${docId2}`;
-    wsProvider = new WebsocketProvider(wsUrl, roomName, ydoc);
+    const roomName = `doc-${docId}`;
+    window.wsProvider = wsProvider = new WebsocketProvider(wsUrl, roomName, ydoc);
     wsProvider.awareness.setLocalStateField("user", {
-      id: myId2,
+      id: myId,
       name: myName2,
-      color: myColor2,
-      role: myRole2
+      color: myColor,
+      role: myRole
     });
     const binding = new QuillBinding(ytext, quill2, wsProvider.awareness);
     const cursors = quill2.getModule("cursors");
@@ -17964,12 +18017,12 @@ showLoadingOverlay("Connecting\u2026");
       if (statusEl) {
         statusEl.innerHTML = `<span style="display:inline-block; margin-right:4px; font-weight:bold; font-size:16px;">\u2022</span> Saving...`;
       }
-      debounceDbSave2();
+      debounceDbSave();
     });
     quill2.on("selection-change", (range) => {
       if (range) aiLastSelection2 = range;
     });
-    applyRoleUI(myRole2);
+    applyRoleUI(myRole);
     docTitleInput2.value = doc2.title;
     document.title = `${doc2.title} \u2013 CoDoc`;
     window.renderComments?.();
@@ -18077,7 +18130,7 @@ showLoadingOverlay("Connecting\u2026");
     window._imgTab = "upload";
     let cropperInstance = null;
     window.openImageModal = function() {
-      if (myRole2 === "viewer") return;
+      if (myRole === "viewer") return;
       window._imgInsertIndex = quill2.getSelection()?.index ?? quill2.getLength();
       document.getElementById("img-drop-zone").classList.remove("hidden");
       document.getElementById("img-drop-zone").style.borderColor = "";
@@ -18115,7 +18168,7 @@ showLoadingOverlay("Connecting\u2026");
       const idx = window._imgInsertIndex ?? quill2.getLength();
       if (window._imgTab === "upload") {
         if (!cropperInstance) {
-          showToast2("Please select and crop an image first.");
+          showToast("Please select and crop an image first.");
           return;
         }
         const croppedCanvas = cropperInstance.getCroppedCanvas({
@@ -18123,7 +18176,7 @@ showLoadingOverlay("Connecting\u2026");
           maxHeight: 1600
         });
         if (!croppedCanvas) {
-          showToast2("Error cropping image.");
+          showToast("Error cropping image.");
           return;
         }
         const finalBase64 = croppedCanvas.toDataURL("image/jpeg", 0.85);
@@ -18132,15 +18185,15 @@ showLoadingOverlay("Connecting\u2026");
       } else {
         const url = document.getElementById("image-url-input").value.trim();
         if (!url) {
-          showToast2("Please enter an image URL.");
+          showToast("Please enter an image URL.");
           return;
         }
         quill2.insertEmbed(idx, "image", url, "user");
         quill2.setSelection(idx + 1);
       }
       window.closeImageModal();
-      showToast2("\u{1F5BC}\uFE0F Image inserted!", "#10b981");
-      debounceDbSave2();
+      showToast("\u{1F5BC}\uFE0F Image inserted!", "#10b981");
+      debounceDbSave();
     };
     document.getElementById("image-modal").addEventListener("click", (e) => {
       if (e.target === document.getElementById("image-modal")) window.closeImageModal();
@@ -18195,7 +18248,7 @@ showLoadingOverlay("Connecting\u2026");
           quill2.deleteText(oldIndex, 1, "user");
           quill2.insertEmbed(insertIndex, "image", currentUrl, "user");
           quill2.setSelection(insertIndex + 1);
-          debounceDbSave2();
+          debounceDbSave();
         }
       } else if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
         const file = e.dataTransfer.files[0];
@@ -18228,7 +18281,7 @@ function connectMetaWs() {
   const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
   metaWs = new WebSocket(`${protocol}//${window.location.host}`);
   metaWs.addEventListener("open", () => {
-    metaSend({ type: "meta-join", docId: docId2, userId: myId2, userName: myName2, userColor: myColor2, userRole: myRole2 });
+    metaSend({ type: "meta-join", docId, userId: myId, userName: myName2, userColor: myColor, userRole: myRole });
   });
   metaWs.addEventListener("message", (event) => {
     if (typeof event.data !== "string") return;
@@ -18239,8 +18292,8 @@ function connectMetaWs() {
       return;
     }
     if (msg.type === "sync-state") {
-      comments2 = msg.comments;
-      versionHistory2 = msg.versionHistory;
+      window.comments = comments2 = msg.comments;
+      window.versionHistory = versionHistory2 = msg.versionHistory;
       window.renderComments?.();
       window.renderHistory?.();
     }
@@ -18254,13 +18307,17 @@ function metaSend(obj) {
     metaWs.send(JSON.stringify(obj));
   }
 }
+function syncState() {
+  metaSend({ type: "sync-state", comments: comments2, versionHistory: versionHistory2 });
+  debounceDbSave();
+}
 async function saveToHistoryApi(content) {
-  if (!myId2 || !docId2 || myRole2 === "viewer") return;
+  if (!myId || !docId || myRole === "viewer") return;
   try {
     const res = await fetch("/api/save-history", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: myId2, documentId: docId2, content })
+      body: JSON.stringify({ userId: myId, documentId: docId, content })
     });
     const data = await res.json();
     if (data.success && data.version) {
@@ -18275,8 +18332,8 @@ async function saveToHistoryApi(content) {
     console.error("Auto-save history failed", e);
   }
 }
-function debounceDbSave2() {
-  if (myRole2 === "viewer") return;
+function debounceDbSave() {
+  if (myRole === "viewer") return;
   clearTimeout(dbSaveTimer);
   dbSaveTimer = setTimeout(async () => {
     const sb = getSupabase();
@@ -18286,7 +18343,7 @@ function debounceDbSave2() {
         content: currentContent,
         comments: comments2,
         versions: versionHistory2
-      }).eq("id", docId2).then(() => {
+      }).eq("id", docId).then(() => {
         const statusEl = document.getElementById("autosave-status");
         if (statusEl) statusEl.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Autosaved`;
       });
@@ -18295,10 +18352,10 @@ function debounceDbSave2() {
   }, 2e3);
 }
 window.addEventListener("beforeunload", () => {
-  if (myRole2 === "viewer" || !quill2) return;
+  if (myRole === "viewer" || !quill2) return;
   const content = quill2.root.innerHTML;
   if (!content) return;
-  const data = new Blob([JSON.stringify({ userId: myId2, documentId: docId2, content })], { type: "application/json" });
+  const data = new Blob([JSON.stringify({ userId: myId, documentId: docId, content })], { type: "application/json" });
   navigator.sendBeacon("/api/save-history", data);
 });
 function applyRoleUI(role) {
@@ -18317,23 +18374,23 @@ function applyRoleUI(role) {
 }
 docTitleInput2.addEventListener("change", async () => {
   const sb = getSupabase();
-  if ((myRole2 === "owner" || myRole2 === "editor") && sb) {
+  if ((myRole === "owner" || myRole === "editor") && sb) {
     const newTitle = docTitleInput2.value.trim() || "Untitled";
     docTitleInput2.value = newTitle;
     document.title = `${newTitle} \u2013 CoDoc`;
-    await sb.from("documents").update({ title: newTitle }).eq("id", docId2);
-    showToast2("\u{1F4DD} Title updated");
+    await sb.from("documents").update({ title: newTitle }).eq("id", docId);
+    showToast("\u{1F4DD} Title updated");
   }
 });
 document.getElementById("save-version-btn")?.addEventListener("click", () => {
-  if (myRole2 !== "owner" && myRole2 !== "editor") return;
+  if (myRole !== "owner" && myRole !== "editor") return;
   versionNameInput2.value = "";
   saveVersionModal2.classList.remove("hidden");
   setTimeout(() => versionNameInput2.focus(), 50);
 });
 function setupMyAvatar() {
   if (!myAvatarEl) return;
-  myAvatarEl.style.background = myColor2;
+  myAvatarEl.style.background = myColor;
   myAvatarEl.textContent = myName2.charAt(0).toUpperCase();
   myAvatarEl.title = `${myName2} (You)`;
 }
@@ -18342,7 +18399,7 @@ function renderUserList() {
   userCount.textContent = userArr.length;
   navAvatars.innerHTML = "";
   userArr.slice(0, 5).forEach((u) => {
-    if (u.id === myId2) return;
+    if (u.id === myId) return;
     const av = document.createElement("div");
     av.className = "avatar";
     av.style.background = u.color;
@@ -18358,14 +18415,14 @@ function renderUserList() {
         <span class="user-pulse" style="background:${u.color}"></span>
         <span class="user-name-item">${escapeHtml2(u.name)}</span>
         <span class="doc-role-badge ${badgeClass}">${(u.role || "viewer").toUpperCase()}</span>
-        ${u.id === myId2 ? '<span class="user-you">You</span>' : ""}
+        ${u.id === myId ? '<span class="user-you">You</span>' : ""}
       </div>`;
   });
 }
 async function loadPermissions() {
   try {
     const sb = getSupabase();
-    const { data: perms } = await sb.from("document_permissions").select("*, profiles:user_id(username)").eq("doc_id", docId2);
+    const { data: perms } = await sb.from("document_permissions").select("*, profiles:user_id(username)").eq("doc_id", docId);
     if (!perms) return;
     renderPermissions(perms.map((p) => ({ userId: p.user_id, role: p.role, username: p.profiles?.username })));
   } catch {
@@ -18393,18 +18450,18 @@ function renderPermissions(perms) {
     item.querySelector(".perm-select").addEventListener("change", async function() {
       const sb = getSupabase();
       if (this.value === "remove") {
-        await sb.from("document_permissions").delete().eq("doc_id", docId2).eq("user_id", this.dataset.uid);
+        await sb.from("document_permissions").delete().eq("doc_id", docId).eq("user_id", this.dataset.uid);
       } else {
-        await sb.from("document_permissions").update({ role: this.value }).eq("doc_id", docId2).eq("user_id", this.dataset.uid);
+        await sb.from("document_permissions").update({ role: this.value }).eq("doc_id", docId).eq("user_id", this.dataset.uid);
       }
-      showToast2("Permission updated");
+      showToast("Permission updated");
       loadPermissions();
     });
     permsList.appendChild(item);
   });
 }
 var toastTimer = null;
-function showToast2(message, color = null) {
+function showToast(message, color = null) {
   toastEl.textContent = message;
   toastEl.className = "toast" + (color ? " has-color" : "");
   if (color) toastEl.style.borderLeftColor = color;
@@ -18423,7 +18480,7 @@ if (SpeechRecognition && dictationBtn) {
   recognition.onstart = () => {
     isDictating = true;
     dictationBtn.style.color = "#ef4444";
-    showToast2('\u{1F3A4} Listening... (Say "new line", "comma", "period")');
+    showToast('\u{1F3A4} Listening... (Say "new line", "comma", "period")');
   };
   recognition.onresult = (event) => {
     if (!quill2) return;
@@ -18447,8 +18504,8 @@ if (SpeechRecognition && dictationBtn) {
   };
   dictationBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    if (myRole2 === "viewer") {
-      showToast2("You do not have permission to edit.");
+    if (myRole === "viewer") {
+      showToast("You do not have permission to edit.");
       return;
     }
     if (isDictating) recognition.stop();
@@ -18504,7 +18561,7 @@ window.confirmAiAction = function(id2) {
   }
   document.getElementById(id2).innerHTML = `<div class="chat-bubble-content" style="font-size:12px; color:var(--emerald);">\u2713 Change applied successfully.</div>`;
   window.pendingAiAction = null;
-  debounceDbSave2();
+  debounceDbSave();
 };
 window.cancelAiAction = function(id2) {
   if (!window.pendingAiAction || window.pendingAiAction.id !== id2) return;

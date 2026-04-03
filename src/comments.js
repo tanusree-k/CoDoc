@@ -5,57 +5,57 @@ export function setupComments() {
   // Attach all window functions
   // ── Comments ────────────────────────────────────────────────────────────
 window.toggleCommentsSidebar = function() {
-  const sidebar = document.getElementById('comments-sidebar');
+  const sidebar = document.getElementById('window.comments-sidebar');
   if (sidebar) sidebar.classList.toggle('hidden');
 };
 
 window.startAddComment = function() {
-  if (myRole === 'viewer') return;
-  const range = quill?.getSelection();
-  if (!range || range.length === 0) { showToast('Select some text first to add a comment.'); return; }
-  savedRange = range;
+  if (window.myRole === 'viewer') return;
+  const range = window.quill?.getSelection();
+  if (!range || range.length === 0) { window.showToast('Select some text first to add a comment.'); return; }
+  window.savedRange = range;
   commentText.value = '';
   commentModal.classList.remove('hidden');
   setTimeout(() => commentText.focus(), 50);
 };
 
-window.cancelComment = function() { commentModal.classList.add('hidden'); savedRange = null; };
+window.cancelComment = function() { commentModal.classList.add('hidden'); window.savedRange = null; };
 
 window.submitComment = function() {
   const text = commentText.value.trim();
   if (!text) return;
   let selectedText = '';
-  if (savedRange && quill) {
+  if (window.savedRange && window.quill) {
     selectedText = quill.getText(savedRange.index, savedRange.length);
     // Highlight the selected text with a background color
     quill.formatText(savedRange.index, savedRange.length, 'background', '#fef3c7');
   }
   comments.push({
     id: 'c' + Date.now(),
-    author: myName,
-    authorColor: myColor,
+    author: window.myName,
+    authorColor: window.myColor,
     text,
     selectedText: selectedText || null,
     timestamp: new Date().toISOString(),
     resolved: false,
     replies: []
   });
-  syncState();
+  window.syncState();
   window.renderComments?.();
   commentModal.classList.add('hidden');
-  savedRange = null;
+  window.savedRange = null;
 };
 
-window.renderComments = function window.renderComments?.() {
+window.renderComments = function() {
   const active = comments.filter(c => !c.resolved);
   const resolved = comments.filter(c => c.resolved);
   commentCount.textContent = active.length;
 
   if ([...active, ...resolved].length === 0) {
     commentsList.innerHTML = `
-      <div class="no-comments">
+      <div class="no-window.comments">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        <p>No comments yet.<br/>Select text and click Comment.</p>
+        <p>No window.comments yet.<br/>Select text and click Comment.</p>
       </div>`;
     return;
   }
@@ -65,7 +65,7 @@ window.renderComments = function window.renderComments?.() {
     const card = document.createElement('div');
     card.className = 'comment-card' + (c.resolved ? ' resolved' : '');
     card.id = 'comment-card-' + c.id;
-    const canAct = myRole !== 'viewer';
+    const canAct = window.myRole !== 'viewer';
     card.innerHTML = `
       <div class="comment-author">
         <span class="comment-dot" style="background:${c.authorColor || '#d1d5db'}"></span>
@@ -100,8 +100,8 @@ window.sendReply = function(commentId) {
   input.value = '';
   const c = comments.find(x => x.id === commentId);
   if (c) {
-    c.replies.push({ author: myName, authorColor: myColor, text, timestamp: new Date().toISOString() });
-    syncState();
+    c.replies.push({ author: window.myName, authorColor: window.myColor, text, timestamp: new Date().toISOString() });
+    window.syncState();
     window.renderComments?.();
   }
 };
@@ -110,7 +110,7 @@ window.resolveComment = function(commentId) {
   const c = comments.find(x => x.id === commentId);
   if (c) {
     c.resolved = true;
-    syncState();
+    window.syncState();
     window.renderComments?.();
   }
 };

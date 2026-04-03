@@ -2,7 +2,7 @@
 export function setupSharing() {
   // ── Share ───────────────────────────────────────────────────────────────
 window.openShareModal = function() {
-  const canInvite = myRole === 'owner' || myRole === 'editor';
+  const canInvite = window.myRole === 'owner' || window.myRole === 'editor';
   const roleGroup = document.querySelector('.share-role-group');
   const genBtn = document.getElementById('generate-link-btn');
   const desc = document.querySelector('#share-modal p');
@@ -16,21 +16,21 @@ window.openShareModal = function() {
 };
 window.closeShareModal = function() { document.getElementById('share-modal').classList.add('hidden'); };
 window.generateShareLink = function() {
-  const canInvite = myRole === 'owner' || myRole === 'editor';
+  const canInvite = window.myRole === 'owner' || window.myRole === 'editor';
   let link;
   if (canInvite) {
     const roleOpt = document.querySelector('input[name="share-role"]:checked');
     const role = roleOpt ? roleOpt.value : 'viewer';
-    link = window.location.origin + '/editor.html?doc=' + docId + '&invite=' + btoa(role);
+    link = window.location.origin + '/editor.html?doc=' + window.docId + '&invite=' + btoa(role);
   } else {
-    link = window.location.origin + '/editor.html?doc=' + docId;
+    link = window.location.origin + '/editor.html?doc=' + window.docId;
   }
   document.getElementById('share-link-input').value = link;
 };
 window.copyShareLink = function() {
   const linkInput = document.getElementById('share-link-input');
   navigator.clipboard.writeText(linkInput.value).catch(() => { linkInput.select(); document.execCommand('copy'); });
-  showToast('🔗 Link copied to clipboard!', '#10b981');
+  window.showToast('🔗 Link copied to clipboard!', '#10b981');
 };
 
 document.querySelectorAll('input[name="share-role"]').forEach(el => {

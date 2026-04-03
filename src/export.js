@@ -1,7 +1,7 @@
 import { escapeHtml } from './utils.js';
 // ── Export ───────────────────────────────────────────────────────────────
 export function toggleExportMenu() {
-  if (typeof myName !== 'undefined' && myName.startsWith('Guest')) {
+  if (typeof window.myName !== 'undefined' && myName.startsWith('Guest')) {
     alert('Please sign in to export documents.');
     window.location.href = '/auth.html';
     return;
@@ -29,17 +29,17 @@ window.exportDocument = function(format) {
   if (format === 'html') {
     const html = `<!DOCTYPE html>\n<html lang="en">\n<head><meta charset="UTF-8"><title>${escapeHtml(title)}</title>\n<style>body{font-family:Georgia,'Times New Roman',serif;max-width:780px;margin:40px auto;padding:0 24px;line-height:1.75;color:#111827;}</style>\n</head>\n<body>\n<h1>${escapeHtml(title)}</h1>\n${quill.root.innerHTML}\n</body></html>`;
     downloadFile(title + '.html', html, 'text/html');
-    showToast('📄 Exported as HTML', '#10b981');
+    window.showToast('📄 Exported as HTML', '#10b981');
   } else if (format === 'txt') {
     downloadFile(title + '.txt', quill.getText(), 'text/plain');
-    showToast('📄 Exported as TXT', '#10b981');
+    window.showToast('📄 Exported as TXT', '#10b981');
   } else if (format === 'pdf') {
     const printW = window.open('', '_blank');
     printW.document.write(`<!DOCTYPE html><html><head><title>${escapeHtml(title)}</title>\n<style>body{font-family:Georgia,'Times New Roman',serif;max-width:780px;margin:40px auto;padding:0 24px;line-height:1.75;color:#111827;}@media print{body{margin:0;padding:20px;}}</style>\n</head><body><h1>${escapeHtml(title)}</h1>${quill.root.innerHTML}</body></html>`);
     printW.document.close();
     printW.focus();
     setTimeout(() => { printW.print(); printW.close(); }, 400);
-    showToast('🖨️ Print/PDF dialog opened', '#10b981');
+    window.showToast('🖨️ Print/PDF dialog opened', '#10b981');
   }
 };
 

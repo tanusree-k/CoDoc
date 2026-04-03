@@ -34,11 +34,11 @@ window.sendChatMessage = async function() {
   let prompt = text;
   
   let selectedTextObj = '';
-  if (quill && aiLastSelection && aiLastSelection.length > 0) {
+  if (window.quill && window.aiLastSelection && aiLastSelection.length > 0) {
     selectedTextObj = quill.getText(aiLastSelection.index, aiLastSelection.length);
   }
 
-  if (includeCtx && quill) {
+  if (includeCtx && window.quill) {
     prompt = `Document Content:\n\n${quill.getText()}\n\n---\n\n`;
     if (selectedTextObj) {
       prompt += `User's Currently Selected Text:\n"${selectedTextObj}"\n\n---\n\n`;
@@ -63,11 +63,11 @@ window.sendChatMessage = async function() {
     if (data.reply || data.action) {
       aiChatMessages.innerHTML += `<div class="chat-bubble-ai"><div class="chat-bubble-content">${escapeHtml(data.reply || "Done.")}</div><div class="chat-time">Now</div></div>`;
       
-      if (data.action && data.action !== 'none' && data.content && quill && myRole !== 'viewer') {
+      if (data.action && data.action !== 'none' && data.content && window.quill && window.myRole !== 'viewer') {
         window.pendingAiAction = {
           action: data.action,
           content: data.content,
-          selection: aiLastSelection ? { ...aiLastSelection } : null
+          selection: window.aiLastSelection ? { ...aiLastSelection } : null
         };
         const actionId = 'ai-action-' + Date.now();
         window.pendingAiAction.id = actionId;
@@ -95,7 +95,7 @@ window.sendChatMessage = async function() {
 };
 
 window.sendQuickPrompt = function(type) {
-  const selectedText = quill ? quill.getText(quill.getSelection()?.index || 0, quill.getSelection()?.length || 0) : '';
+  const selectedText = window.quill ? quill.getText(quill.getSelection()?.index || 0, quill.getSelection()?.length || 0) : '';
   if (type === 'summarize') {
     aiChatInput.value = selectedText ? 'Summarize:\n\n"' + selectedText + '"' : 'Summarize this document.';
   } else if (type === 'polish') {
@@ -122,7 +122,7 @@ aiChatInput?.addEventListener('input', () => {
   aiChatInput.style.height = Math.min(aiChatInput.scrollHeight, 120) + 'px';
 });
 
-commentModal.addEventListener('click', e => { if (e.target === commentModal) window.cancelComment(); });
+commentModal.addEventListener('click', e => { if (e.target === window.commentModal) window.cancelComment(); });
 
 
 }
