@@ -1883,11 +1883,11 @@ function setupComments() {
       replies: []
     });
     syncState();
-    renderComments();
+    window.renderComments?.();
     commentModal.classList.add("hidden");
     savedRange = null;
   };
-  window.renderComments = function renderComments2() {
+  window.renderComments = function() {
     const active = comments.filter((c) => !c.resolved);
     const resolved = comments.filter((c) => c.resolved);
     commentCount.textContent = active.length;
@@ -1940,7 +1940,7 @@ function setupComments() {
     if (c) {
       c.replies.push({ author: myName, authorColor: myColor, text: text2, timestamp: (/* @__PURE__ */ new Date()).toISOString() });
       syncState();
-      renderComments();
+      window.renderComments?.();
     }
   };
   window.resolveComment = function(commentId) {
@@ -1948,7 +1948,7 @@ function setupComments() {
     if (c) {
       c.resolved = true;
       syncState();
-      renderComments();
+      window.renderComments?.();
     }
   };
 }
@@ -1992,7 +1992,7 @@ function setupHistory() {
       timestamp: (/* @__PURE__ */ new Date()).toISOString()
     });
     syncState();
-    renderHistory();
+    window.renderHistory?.();
     saveVersionModal.classList.add("hidden");
     showToast(`\u{1F4BE} Version "${name || "Unnamed Version"}" saved`);
   };
@@ -2031,7 +2031,7 @@ function setupHistory() {
       historyList.appendChild(item);
     });
   }
-  window.renderHistory = function renderHistory2() {
+  window.renderHistory = function() {
   };
 }
 
@@ -17972,8 +17972,8 @@ showLoadingOverlay("Connecting\u2026");
     applyRoleUI(myRole2);
     docTitleInput2.value = doc2.title;
     document.title = `${doc2.title} \u2013 CoDoc`;
-    renderComments();
-    renderHistory();
+    window.renderComments?.();
+    window.renderHistory?.();
     const fontContainer = document.getElementById("custom-font-container");
     if (fontContainer) {
       fontContainer.innerHTML = `
@@ -18241,8 +18241,8 @@ function connectMetaWs() {
     if (msg.type === "sync-state") {
       comments2 = msg.comments;
       versionHistory2 = msg.versionHistory;
-      renderComments();
-      renderHistory();
+      window.renderComments?.();
+      window.renderHistory?.();
     }
   });
   metaWs.addEventListener("close", () => {
