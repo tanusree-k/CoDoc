@@ -7,9 +7,9 @@ document.getElementById('history-btn')?.addEventListener('click', async () => {
     window.showToast('Only editors can view full history.');
     return;
   }
-  historyPanel.classList.remove('hidden');
-  historyOverlay.classList.remove('hidden');
-  historyList.innerHTML = '<div class="no-window.comments"><p>Loading history...</p></div>';
+  window.historyPanel.classList.remove('hidden');
+  window.historyOverlay.classList.remove('hidden');
+  window.historyList.innerHTML = '<div class="no-window.comments"><p>Loading history...</p></div>';
   try {
     const res = await fetch(`/api/history/${window.myId}?window.docId=${window.docId}`);
     const data = await res.json();
@@ -19,42 +19,42 @@ document.getElementById('history-btn')?.addEventListener('click', async () => {
       throw new Error();
     }
   } catch (e) {
-    historyList.innerHTML = '<div class="no-window.comments"><p>Failed to load history.</p></div>';
+    window.historyList.innerHTML = '<div class="no-window.comments"><p>Failed to load history.</p></div>';
   }
 });
 
 window.closeHistory = function() {
-  historyPanel.classList.add('hidden');
-  historyOverlay.classList.add('hidden');
+  window.historyPanel.classList.add('hidden');
+  window.historyOverlay.classList.add('hidden');
 };
 
-window.cancelSaveVersion = function() { saveVersionModal.classList.add('hidden'); };
+window.cancelSaveVersion = function() { window.saveVersionModal.classList.add('hidden'); };
 window.confirmSaveVersion = function() {
-  const name = versionNameInput.value.trim();
-  versionHistory.unshift({
+  const name = window.versionNameInput.value.trim();
+  window.versionHistory.unshift({
     id: 'v' + Date.now(),
     name: name || 'Unnamed Version',
-    content: quill.root.innerHTML,
+    content: window.quill.root.innerHTML,
     author: window.myName,
     timestamp: new Date().toISOString()
   });
   window.syncState();
   window.renderHistory?.();
-  saveVersionModal.classList.add('hidden');
+  window.saveVersionModal.classList.add('hidden');
   window.showToast(`💾 Version "${name || 'Unnamed Version'}" saved`);
 };
 
-versionNameInput.addEventListener('keydown', e => {
+window.versionNameInput.addEventListener('keydown', e => {
   if (e.key === 'Enter') window.confirmSaveVersion();
   if (e.key === 'Escape') window.cancelSaveVersion();
 });
 
 function renderHistoryGrid(apiVersions) {
   if (!apiVersions || apiVersions.length === 0) {
-    historyList.innerHTML = '<div class="no-window.comments"><p>No saved versions yet.</p></div>';
+    window.historyList.innerHTML = '<div class="no-window.comments"><p>No saved versions yet.</p></div>';
     return;
   }
-  historyList.innerHTML = '';
+  window.historyList.innerHTML = '';
   const total = apiVersions.length;
   apiVersions.forEach((v, index) => {
     const vNumber = total - index;
@@ -70,14 +70,14 @@ function renderHistoryGrid(apiVersions) {
     item.querySelector('.restore-btn').addEventListener('click', (e) => {
       e.stopPropagation();
       if (confirm(`Restore Version v${vNumber}? Current content will be replaced.`)) {
-        const delta = quill.clipboard.convert({ html: v.content });
-        quill.setContents(delta);
+        const delta = window.quill.clipboard.convert({ html: v.content });
+        window.quill.setContents(delta);
         window.showToast(`🔄 Restored Version v${vNumber}`);
         window.debounceDbSave(); // trigger a save
         window.closeHistory();
       }
     });
-    historyList.appendChild(item);
+    window.historyList.appendChild(item);
   });
 }
 

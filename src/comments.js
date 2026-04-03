@@ -14,23 +14,23 @@ window.startAddComment = function() {
   const range = window.quill?.getSelection();
   if (!range || range.length === 0) { window.showToast('Select some text first to add a comment.'); return; }
   window.savedRange = range;
-  commentText.value = '';
-  commentModal.classList.remove('hidden');
-  setTimeout(() => commentText.focus(), 50);
+  window.commentText.value = '';
+  window.commentModal.classList.remove('hidden');
+  setTimeout(() => window.commentText.focus(), 50);
 };
 
-window.cancelComment = function() { commentModal.classList.add('hidden'); window.savedRange = null; };
+window.cancelComment = function() { window.commentModal.classList.add('hidden'); window.savedRange = null; };
 
 window.submitComment = function() {
-  const text = commentText.value.trim();
+  const text = window.commentText.value.trim();
   if (!text) return;
   let selectedText = '';
   if (window.savedRange && window.quill) {
-    selectedText = quill.getText(savedRange.index, savedRange.length);
+    selectedText = window.quill.getText(window.savedRange.index, window.savedRange.length);
     // Highlight the selected text with a background color
-    quill.formatText(savedRange.index, savedRange.length, 'background', '#fef3c7');
+    window.quill.formatText(window.savedRange.index, window.savedRange.length, 'background', '#fef3c7');
   }
-  comments.push({
+  window.comments.push({
     id: 'c' + Date.now(),
     author: window.myName,
     authorColor: window.myColor,
@@ -42,17 +42,17 @@ window.submitComment = function() {
   });
   window.syncState();
   window.renderComments?.();
-  commentModal.classList.add('hidden');
+  window.commentModal.classList.add('hidden');
   window.savedRange = null;
 };
 
 window.renderComments = function() {
-  const active = comments.filter(c => !c.resolved);
-  const resolved = comments.filter(c => c.resolved);
-  commentCount.textContent = active.length;
+  const active = window.comments.filter(c => !c.resolved);
+  const resolved = window.comments.filter(c => c.resolved);
+  window.commentCount.textContent = active.length;
 
   if ([...active, ...resolved].length === 0) {
-    commentsList.innerHTML = `
+    window.commentsList.innerHTML = `
       <div class="no-window.comments">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <p>No window.comments yet.<br/>Select text and click Comment.</p>
@@ -60,7 +60,7 @@ window.renderComments = function() {
     return;
   }
 
-  commentsList.innerHTML = '';
+  window.commentsList.innerHTML = '';
   [...active, ...resolved].forEach(c => {
     const card = document.createElement('div');
     card.className = 'comment-card' + (c.resolved ? ' resolved' : '');
@@ -88,7 +88,7 @@ window.renderComments = function() {
         <button class="comment-action-btn" onclick="resolveComment('${c.id}')">✓ Resolve</button>
       </div>` : !c.resolved ? '' : '<div class="comment-actions"><span class="comment-action-btn">✓ Resolved</span></div>'}
     `;
-    commentsList.appendChild(card);
+    window.commentsList.appendChild(card);
   });
 }
 
@@ -98,7 +98,7 @@ window.sendReply = function(commentId) {
   const text = input.value.trim();
   if (!text) return;
   input.value = '';
-  const c = comments.find(x => x.id === commentId);
+  const c = window.comments.find(x => x.id === commentId);
   if (c) {
     c.replies.push({ author: window.myName, authorColor: window.myColor, text, timestamp: new Date().toISOString() });
     window.syncState();
@@ -107,7 +107,7 @@ window.sendReply = function(commentId) {
 };
 
 window.resolveComment = function(commentId) {
-  const c = comments.find(x => x.id === commentId);
+  const c = window.comments.find(x => x.id === commentId);
   if (c) {
     c.resolved = true;
     window.syncState();

@@ -1856,23 +1856,23 @@ function setupComments() {
       return;
     }
     window.savedRange = range;
-    commentText.value = "";
-    commentModal.classList.remove("hidden");
-    setTimeout(() => commentText.focus(), 50);
+    window.commentText.value = "";
+    window.commentModal.classList.remove("hidden");
+    setTimeout(() => window.commentText.focus(), 50);
   };
   window.cancelComment = function() {
-    commentModal.classList.add("hidden");
+    window.commentModal.classList.add("hidden");
     window.savedRange = null;
   };
   window.submitComment = function() {
-    const text2 = commentText.value.trim();
+    const text2 = window.commentText.value.trim();
     if (!text2) return;
     let selectedText = "";
     if (window.savedRange && window.quill) {
-      selectedText = quill.getText(savedRange.index, savedRange.length);
-      quill.formatText(savedRange.index, savedRange.length, "background", "#fef3c7");
+      selectedText = window.quill.getText(window.savedRange.index, window.savedRange.length);
+      window.quill.formatText(window.savedRange.index, window.savedRange.length, "background", "#fef3c7");
     }
-    comments.push({
+    window.comments.push({
       id: "c" + Date.now(),
       author: window.myName,
       authorColor: window.myColor,
@@ -1884,22 +1884,22 @@ function setupComments() {
     });
     window.syncState();
     window.renderComments?.();
-    commentModal.classList.add("hidden");
+    window.commentModal.classList.add("hidden");
     window.savedRange = null;
   };
   window.renderComments = function() {
-    const active = comments.filter((c) => !c.resolved);
-    const resolved = comments.filter((c) => c.resolved);
-    commentCount.textContent = active.length;
+    const active = window.comments.filter((c) => !c.resolved);
+    const resolved = window.comments.filter((c) => c.resolved);
+    window.commentCount.textContent = active.length;
     if ([...active, ...resolved].length === 0) {
-      commentsList.innerHTML = `
+      window.commentsList.innerHTML = `
       <div class="no-window.comments">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         <p>No window.comments yet.<br/>Select text and click Comment.</p>
       </div>`;
       return;
     }
-    commentsList.innerHTML = "";
+    window.commentsList.innerHTML = "";
     [...active, ...resolved].forEach((c) => {
       const card = document.createElement("div");
       card.className = "comment-card" + (c.resolved ? " resolved" : "");
@@ -1927,7 +1927,7 @@ function setupComments() {
         <button class="comment-action-btn" onclick="resolveComment('${c.id}')">\u2713 Resolve</button>
       </div>` : !c.resolved ? "" : '<div class="comment-actions"><span class="comment-action-btn">\u2713 Resolved</span></div>'}
     `;
-      commentsList.appendChild(card);
+      window.commentsList.appendChild(card);
     });
   };
   window.sendReply = function(commentId) {
@@ -1936,7 +1936,7 @@ function setupComments() {
     const text2 = input.value.trim();
     if (!text2) return;
     input.value = "";
-    const c = comments.find((x) => x.id === commentId);
+    const c = window.comments.find((x) => x.id === commentId);
     if (c) {
       c.replies.push({ author: window.myName, authorColor: window.myColor, text: text2, timestamp: (/* @__PURE__ */ new Date()).toISOString() });
       window.syncState();
@@ -1944,7 +1944,7 @@ function setupComments() {
     }
   };
   window.resolveComment = function(commentId) {
-    const c = comments.find((x) => x.id === commentId);
+    const c = window.comments.find((x) => x.id === commentId);
     if (c) {
       c.resolved = true;
       window.syncState();
@@ -1960,9 +1960,9 @@ function setupHistory() {
       window.showToast("Only editors can view full history.");
       return;
     }
-    historyPanel.classList.remove("hidden");
-    historyOverlay.classList.remove("hidden");
-    historyList.innerHTML = '<div class="no-window.comments"><p>Loading history...</p></div>';
+    window.historyPanel.classList.remove("hidden");
+    window.historyOverlay.classList.remove("hidden");
+    window.historyList.innerHTML = '<div class="no-window.comments"><p>Loading history...</p></div>';
     try {
       const res = await fetch(`/api/history/${window.myId}?window.docId=${window.docId}`);
       const data = await res.json();
@@ -1972,40 +1972,40 @@ function setupHistory() {
         throw new Error();
       }
     } catch (e) {
-      historyList.innerHTML = '<div class="no-window.comments"><p>Failed to load history.</p></div>';
+      window.historyList.innerHTML = '<div class="no-window.comments"><p>Failed to load history.</p></div>';
     }
   });
   window.closeHistory = function() {
-    historyPanel.classList.add("hidden");
-    historyOverlay.classList.add("hidden");
+    window.historyPanel.classList.add("hidden");
+    window.historyOverlay.classList.add("hidden");
   };
   window.cancelSaveVersion = function() {
-    saveVersionModal.classList.add("hidden");
+    window.saveVersionModal.classList.add("hidden");
   };
   window.confirmSaveVersion = function() {
-    const name = versionNameInput.value.trim();
-    versionHistory.unshift({
+    const name = window.versionNameInput.value.trim();
+    window.versionHistory.unshift({
       id: "v" + Date.now(),
       name: name || "Unnamed Version",
-      content: quill.root.innerHTML,
+      content: window.quill.root.innerHTML,
       author: window.myName,
       timestamp: (/* @__PURE__ */ new Date()).toISOString()
     });
     window.syncState();
     window.renderHistory?.();
-    saveVersionModal.classList.add("hidden");
+    window.saveVersionModal.classList.add("hidden");
     window.showToast(`\u{1F4BE} Version "${name || "Unnamed Version"}" saved`);
   };
-  versionNameInput.addEventListener("keydown", (e) => {
+  window.versionNameInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") window.confirmSaveVersion();
     if (e.key === "Escape") window.cancelSaveVersion();
   });
   function renderHistoryGrid(apiVersions) {
     if (!apiVersions || apiVersions.length === 0) {
-      historyList.innerHTML = '<div class="no-window.comments"><p>No saved versions yet.</p></div>';
+      window.historyList.innerHTML = '<div class="no-window.comments"><p>No saved versions yet.</p></div>';
       return;
     }
-    historyList.innerHTML = "";
+    window.historyList.innerHTML = "";
     const total = apiVersions.length;
     apiVersions.forEach((v2, index) => {
       const vNumber = total - index;
@@ -2021,14 +2021,14 @@ function setupHistory() {
       item.querySelector(".restore-btn").addEventListener("click", (e) => {
         e.stopPropagation();
         if (confirm(`Restore Version v${vNumber}? Current content will be replaced.`)) {
-          const delta = quill.clipboard.convert({ html: v2.content });
-          quill.setContents(delta);
+          const delta = window.quill.clipboard.convert({ html: v2.content });
+          window.quill.setContents(delta);
           window.showToast(`\u{1F504} Restored Version v${vNumber}`);
           window.debounceDbSave();
           window.closeHistory();
         }
       });
-      historyList.appendChild(item);
+      window.historyList.appendChild(item);
     });
   }
   window.renderHistory = function() {
@@ -2066,13 +2066,13 @@ function setupAiChat() {
     const includeCtx = document.getElementById("include-doc-ctx")?.checked;
     let prompt2 = text2;
     let selectedTextObj = "";
-    if (window.quill && window.aiLastSelection && aiLastSelection.length > 0) {
-      selectedTextObj = quill.getText(aiLastSelection.index, aiLastSelection.length);
+    if (window.quill && window.aiLastSelection && window.aiLastSelection.length > 0) {
+      selectedTextObj = window.quill.getText(window.aiLastSelection.index, window.aiLastSelection.length);
     }
     if (includeCtx && window.quill) {
       prompt2 = `Document Content:
 
-${quill.getText()}
+${window.quill.getText()}
 
 ---
 
@@ -2131,7 +2131,7 @@ ${quill.getText()}
     aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
   };
   window.sendQuickPrompt = function(type) {
-    const selectedText = window.quill ? quill.getText(quill.getSelection()?.index || 0, quill.getSelection()?.length || 0) : "";
+    const selectedText = window.quill ? window.quill.getText(window.quill.getSelection()?.index || 0, window.quill.getSelection()?.length || 0) : "";
     if (type === "summarize") {
       aiChatInput2.value = selectedText ? 'Summarize:\n\n"' + selectedText + '"' : "Summarize this document.";
     } else if (type === "polish") {
@@ -2154,7 +2154,7 @@ ${quill.getText()}
     aiChatInput2.style.height = "auto";
     aiChatInput2.style.height = Math.min(aiChatInput2.scrollHeight, 120) + "px";
   });
-  commentModal.addEventListener("click", (e) => {
+  window.commentModal.addEventListener("click", (e) => {
     if (e.target === window.commentModal) window.cancelComment();
   });
 }
@@ -2215,7 +2215,7 @@ function toggleTheme() {
 
 // src/export.js
 function toggleExportMenu() {
-  if (typeof window.myName !== "undefined" && myName.startsWith("Guest")) {
+  if (typeof window.myName !== "undefined" && window.myName.startsWith("Guest")) {
     alert("Please sign in to export documents.");
     window.location.href = "/auth.html";
     return;
@@ -2236,7 +2236,7 @@ function toggleExportMenu() {
 }
 window.exportDocument = function(format) {
   document.getElementById("export-dropdown").classList.add("hidden");
-  const title = docTitleInput.value.trim() || "Untitled Document";
+  const title = window.docTitleInput.value.trim() || "Untitled Document";
   if (format === "html") {
     const html = `<!DOCTYPE html>
 <html lang="en">
@@ -2245,18 +2245,18 @@ window.exportDocument = function(format) {
 </head>
 <body>
 <h1>${escapeHtml2(title)}</h1>
-${quill.root.innerHTML}
+${window.quill.root.innerHTML}
 </body></html>`;
     downloadFile(title + ".html", html, "text/html");
     window.showToast("\u{1F4C4} Exported as HTML", "#10b981");
   } else if (format === "txt") {
-    downloadFile(title + ".txt", quill.getText(), "text/plain");
+    downloadFile(title + ".txt", window.quill.getText(), "text/plain");
     window.showToast("\u{1F4C4} Exported as TXT", "#10b981");
   } else if (format === "pdf") {
     const printW = window.open("", "_blank");
     printW.document.write(`<!DOCTYPE html><html><head><title>${escapeHtml2(title)}</title>
 <style>body{font-family:Georgia,'Times New Roman',serif;max-width:780px;margin:40px auto;padding:0 24px;line-height:1.75;color:#111827;}@media print{body{margin:0;padding:20px;}}</style>
-</head><body><h1>${escapeHtml2(title)}</h1>${quill.root.innerHTML}</body></html>`);
+</head><body><h1>${escapeHtml2(title)}</h1>${window.quill.root.innerHTML}</body></html>`);
     printW.document.close();
     printW.focus();
     setTimeout(() => {
@@ -11608,15 +11608,15 @@ var QuillBinding = class {
    * @param {any} quill
    * @param {Awareness} [awareness]
    */
-  constructor(type, quill3, awareness) {
+  constructor(type, quill2, awareness) {
     const doc2 = (
       /** @type {Y.Doc} */
       type.doc
     );
     this.type = type;
     this.doc = doc2;
-    this.quill = quill3;
-    const quillCursors = quill3.getModule("cursors") || null;
+    this.quill = quill2;
+    const quillCursors = quill2.getModule("cursors") || null;
     this.quillCursors = quillCursors;
     this._negatedUsedFormats = {};
     this.awareness = awareness;
@@ -11647,7 +11647,7 @@ var QuillBinding = class {
             delta.push(d);
           }
         }
-        quill3.updateContents(delta, this);
+        quill2.updateContents(delta, this);
       }
     };
     type.observe(this._typeObserver);
@@ -11670,7 +11670,7 @@ var QuillBinding = class {
         }
       }
       if (awareness && quillCursors) {
-        const sel = quill3.getSelection();
+        const sel = quill2.getSelection();
         const aw = (
           /** @type {any} */
           awareness.getLocalState()
@@ -11698,8 +11698,8 @@ var QuillBinding = class {
         });
       }
     };
-    quill3.on("editor-change", this._quillObserver);
-    quill3.setContents(type.toDelta(), this);
+    quill2.on("editor-change", this._quillObserver);
+    quill2.setContents(type.toDelta(), this);
     if (quillCursors !== null && awareness) {
       awareness.getStates().forEach((aw, clientId) => {
         updateCursor(quillCursors, aw, clientId, doc2, type);
@@ -17619,79 +17619,79 @@ function getSupabase() {
   }
   return null;
 }
-var quill2 = null;
+var quill = null;
 var ydoc = null;
 var ytext = null;
 var wsProvider = null;
 var metaWs = null;
 var myId = null;
-var myName2 = "";
+var myName = "";
 var myColor = "#10b981";
 var myRole = "viewer";
 var docId = null;
 var users = {};
-var comments2 = [];
-var versionHistory2 = [];
-var savedRange2 = null;
+var comments = [];
+var versionHistory = [];
+var savedRange = null;
 var dbSaveTimer = null;
 var aiLastSelection2 = null;
 var recentBadgeTimer = null;
-var commentsList2 = document.getElementById("comments-list");
-var commentCount2 = document.getElementById("comment-count");
+var commentsList = document.getElementById("comments-list");
+var commentCount = document.getElementById("comment-count");
 var usersList = document.getElementById("users-list");
 var userCount = document.getElementById("user-count");
 var navAvatars = document.getElementById("nav-user-avatars");
 var myAvatarEl = document.getElementById("my-avatar");
 var recentBadge = document.getElementById("recent-change-badge");
 var toastEl = document.getElementById("toast");
-var historyPanel2 = document.getElementById("history-panel");
-var historyOverlay2 = document.getElementById("history-overlay");
-var historyList2 = document.getElementById("history-list");
-var commentModal2 = document.getElementById("comment-modal");
-var commentText2 = document.getElementById("comment-text");
+var historyPanel = document.getElementById("history-panel");
+var historyOverlay = document.getElementById("history-overlay");
+var historyList = document.getElementById("history-list");
+var commentModal = document.getElementById("comment-modal");
+var commentText = document.getElementById("comment-text");
 var cursorLabels = document.getElementById("cursor-labels");
-var docTitleInput2 = document.getElementById("doc-title");
+var docTitleInput = document.getElementById("doc-title");
 var roleBadge = document.getElementById("role-badge");
-var saveVersionModal2 = document.getElementById("save-version-modal");
-var versionNameInput2 = document.getElementById("version-name-input");
+var saveVersionModal = document.getElementById("save-version-modal");
+var versionNameInput = document.getElementById("version-name-input");
 var shareModal = document.getElementById("share-modal");
 var shareLink = document.getElementById("share-link-input");
 var permsList = document.getElementById("perms-list");
-window.quill = quill2;
+window.quill = quill;
 window.ydoc = ydoc;
 window.ytext = ytext;
 window.wsProvider = wsProvider;
 window.metaWs = metaWs;
 window.myId = myId;
-window.myName = myName2;
+window.myName = myName;
 window.myColor = myColor;
 window.myRole = myRole;
 window.docId = docId;
 window.users = users;
-window.comments = comments2;
-window.versionHistory = versionHistory2;
-window.savedRange = savedRange2;
+window.comments = comments;
+window.versionHistory = versionHistory;
+window.savedRange = savedRange;
 window.dbSaveTimer = dbSaveTimer;
 window.aiLastSelection = aiLastSelection2;
 window.recentBadgeTimer = recentBadgeTimer;
-window.commentsList = commentsList2;
-window.commentCount = commentCount2;
+window.commentsList = commentsList;
+window.commentCount = commentCount;
 window.usersList = usersList;
 window.userCount = userCount;
 window.navAvatars = navAvatars;
 window.myAvatarEl = myAvatarEl;
 window.recentBadge = recentBadge;
 window.toastEl = toastEl;
-window.historyPanel = historyPanel2;
-window.historyOverlay = historyOverlay2;
-window.historyList = historyList2;
-window.commentModal = commentModal2;
-window.commentText = commentText2;
+window.historyPanel = historyPanel;
+window.historyOverlay = historyOverlay;
+window.historyList = historyList;
+window.commentModal = commentModal;
+window.commentText = commentText;
 window.cursorLabels = cursorLabels;
-window.docTitleInput = docTitleInput2;
+window.docTitleInput = docTitleInput;
 window.roleBadge = roleBadge;
-window.saveVersionModal = saveVersionModal2;
-window.versionNameInput = versionNameInput2;
+window.saveVersionModal = saveVersionModal;
+window.versionNameInput = versionNameInput;
 window.shareModal = shareModal;
 window.shareLink = shareLink;
 window.permsList = permsList;
@@ -17704,41 +17704,88 @@ window.debounceDbSave = debounceDbSave;
 window.renderUserList = renderUserList;
 window.connectMetaWs = connectMetaWs;
 window.metaSend = metaSend;
-window.quill = quill2;
+window.quill = quill;
 window.ydoc = ydoc;
 window.ytext = ytext;
 window.wsProvider = wsProvider;
 window.metaWs = metaWs;
 window.myId = myId;
-window.myName = myName2;
+window.myName = myName;
 window.myColor = myColor;
 window.myRole = myRole;
 window.docId = docId;
 window.users = users;
-window.comments = comments2;
-window.versionHistory = versionHistory2;
-window.savedRange = savedRange2;
+window.comments = comments;
+window.versionHistory = versionHistory;
+window.savedRange = savedRange;
 window.dbSaveTimer = dbSaveTimer;
 window.aiLastSelection = aiLastSelection2;
 window.recentBadgeTimer = recentBadgeTimer;
-window.commentsList = commentsList2;
-window.commentCount = commentCount2;
+window.commentsList = commentsList;
+window.commentCount = commentCount;
 window.usersList = usersList;
 window.userCount = userCount;
 window.navAvatars = navAvatars;
 window.myAvatarEl = myAvatarEl;
 window.recentBadge = recentBadge;
 window.toastEl = toastEl;
-window.historyPanel = historyPanel2;
-window.historyOverlay = historyOverlay2;
-window.historyList = historyList2;
-window.commentModal = commentModal2;
-window.commentText = commentText2;
+window.historyPanel = historyPanel;
+window.historyOverlay = historyOverlay;
+window.historyList = historyList;
+window.commentModal = commentModal;
+window.commentText = commentText;
 window.cursorLabels = cursorLabels;
-window.docTitleInput = docTitleInput2;
+window.docTitleInput = docTitleInput;
 window.roleBadge = roleBadge;
-window.saveVersionModal = saveVersionModal2;
-window.versionNameInput = versionNameInput2;
+window.saveVersionModal = saveVersionModal;
+window.versionNameInput = versionNameInput;
+window.shareModal = shareModal;
+window.shareLink = shareLink;
+window.permsList = permsList;
+window.showToast = showToast;
+window.syncState = syncState;
+window.showLoadingOverlay = showLoadingOverlay;
+window.hideLoadingOverlay = hideLoadingOverlay;
+window.applyRoleUI = applyRoleUI;
+window.debounceDbSave = debounceDbSave;
+window.renderUserList = renderUserList;
+window.connectMetaWs = connectMetaWs;
+window.metaSend = metaSend;
+window.quill = quill;
+window.ydoc = ydoc;
+window.ytext = ytext;
+window.wsProvider = wsProvider;
+window.metaWs = metaWs;
+window.myId = myId;
+window.myName = myName;
+window.myColor = myColor;
+window.myRole = myRole;
+window.docId = docId;
+window.users = users;
+window.comments = comments;
+window.versionHistory = versionHistory;
+window.savedRange = savedRange;
+window.dbSaveTimer = dbSaveTimer;
+window.aiLastSelection = aiLastSelection2;
+window.recentBadgeTimer = recentBadgeTimer;
+window.commentsList = commentsList;
+window.commentCount = commentCount;
+window.usersList = usersList;
+window.userCount = userCount;
+window.navAvatars = navAvatars;
+window.myAvatarEl = myAvatarEl;
+window.recentBadge = recentBadge;
+window.toastEl = toastEl;
+window.historyPanel = historyPanel;
+window.historyOverlay = historyOverlay;
+window.historyList = historyList;
+window.commentModal = commentModal;
+window.commentText = commentText;
+window.cursorLabels = cursorLabels;
+window.docTitleInput = docTitleInput;
+window.roleBadge = roleBadge;
+window.saveVersionModal = saveVersionModal;
+window.versionNameInput = versionNameInput;
 window.shareModal = shareModal;
 window.shareLink = shareLink;
 window.permsList = permsList;
@@ -17792,7 +17839,7 @@ showLoadingOverlay("Connecting\u2026");
   try {
     let applyHighlighting = function() {
       if (!window.hljs) return;
-      quill2.root.querySelectorAll(".ql-code-block").forEach((block) => {
+      quill.root.querySelectorAll(".ql-code-block").forEach((block) => {
         const lang = block.getAttribute("data-lang") || "plaintext";
         if (lang === "plaintext" || !hljs.getLanguage(lang)) {
           block.removeAttribute("data-highlighted");
@@ -17896,9 +17943,11 @@ showLoadingOverlay("Connecting\u2026");
     myId = profile.id;
     window.myId = myId;
     window.myId = myId;
-    myName2 = profile.username;
-    window.myName = myName2;
-    window.myName = myName2;
+    window.myId = myId;
+    myName = profile.username;
+    window.myName = myName;
+    window.myName = myName;
+    window.myName = myName;
     const params2 = new URLSearchParams(window.location.search);
     docId = params2.get("doc");
     if (!docId) {
@@ -17914,6 +17963,7 @@ showLoadingOverlay("Connecting\u2026");
     }
     if (doc2.owner_id === myId) {
       myRole = "owner";
+      window.myRole = myRole;
       window.myRole = myRole;
       window.myRole = myRole;
     } else {
@@ -17936,12 +17986,13 @@ showLoadingOverlay("Connecting\u2026");
       myRole = perm.role;
       window.myRole = myRole;
       window.myRole = myRole;
+      window.myRole = myRole;
     }
     myColor = `hsl(${parseInt(myId.replace(/-/g, ""), 16) % 360}, 80%, 45%)`;
     applyRoleUI(myRole);
     const editorContainer = document.getElementById("editor");
     const isReadOnly = myRole === "viewer";
-    window.quill = window.quill = quill2 = new Quill(editorContainer, {
+    window.quill = window.quill = window.quill = quill = new Quill(editorContainer, {
       theme: "snow",
       modules: {
         toolbar: isReadOnly ? false : "#toolbar",
@@ -17957,13 +18008,13 @@ showLoadingOverlay("Connecting\u2026");
       placeholder: "Start typing your collaborative document here\u2026",
       readOnly: isReadOnly
     });
-    window._quill = quill2;
-    quill2.getModule("toolbar").addHandler("image", function() {
+    window._quill = quill;
+    quill.getModule("toolbar").addHandler("image", function() {
       if (window.openImageModal) {
         window.openImageModal();
       }
     });
-    quill2.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+    quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
       delta.ops.forEach((op) => {
         if (op.attributes) {
           delete op.attributes.color;
@@ -17972,21 +18023,21 @@ showLoadingOverlay("Connecting\u2026");
       });
       return delta;
     });
-    window.ydoc = window.ydoc = ydoc = new Doc();
-    window.ytext = window.ytext = ytext = ydoc.getText("quill");
+    window.ydoc = window.ydoc = window.ydoc = ydoc = new Doc();
+    window.ytext = window.ytext = window.ytext = ytext = ydoc.getText("quill");
     const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     const wsUrl = `${wsProtocol}//${window.location.host}`;
     const roomName = `doc-${docId}`;
-    window.wsProvider = window.wsProvider = wsProvider = new WebsocketProvider(wsUrl, roomName, ydoc);
+    window.wsProvider = window.wsProvider = window.wsProvider = wsProvider = new WebsocketProvider(wsUrl, roomName, ydoc);
     wsProvider.awareness.setLocalStateField("user", {
       id: myId,
-      name: myName2,
+      name: myName,
       color: myColor,
       role: myRole
     });
-    const binding = new QuillBinding(ytext, quill2, wsProvider.awareness);
-    const cursors = quill2.getModule("cursors");
-    quill2.on("selection-change", (range) => {
+    const binding = new QuillBinding(ytext, quill, wsProvider.awareness);
+    const cursors = quill.getModule("cursors");
+    quill.on("selection-change", (range) => {
       if (range) {
         wsProvider.awareness.setLocalStateField("cursor", {
           anchor: createRelativePositionFromTypeIndex(ytext, range.index),
@@ -17998,7 +18049,7 @@ showLoadingOverlay("Connecting\u2026");
       if (synced && ytext.length === 0 && doc2.content) {
         const tempDiv = document.createElement("div");
         tempDiv.innerHTML = doc2.content;
-        const delta = quill2.clipboard.convert({ html: doc2.content });
+        const delta = quill.clipboard.convert({ html: doc2.content });
         ytext.applyDelta(delta.ops.map((op) => {
           if (typeof op.insert === "string") return op;
           return op;
@@ -18060,21 +18111,21 @@ showLoadingOverlay("Connecting\u2026");
       }
       renderUserList();
     });
-    comments2 = doc2.comments || [];
-    versionHistory2 = doc2.versions || [];
+    comments = doc2.comments || [];
+    versionHistory = doc2.versions || [];
     connectMetaWs();
-    quill2.on("text-change", () => {
+    quill.on("text-change", () => {
       const statusEl = document.getElementById("autosave-status");
       if (statusEl) {
         statusEl.innerHTML = `<span style="display:inline-block; margin-right:4px; font-weight:bold; font-size:16px;">\u2022</span> Saving...`;
       }
       debounceDbSave();
     });
-    quill2.on("selection-change", (range) => {
+    quill.on("selection-change", (range) => {
       if (range) aiLastSelection2 = range;
     });
     applyRoleUI(myRole);
-    docTitleInput2.value = doc2.title;
+    docTitleInput.value = doc2.title;
     document.title = `${doc2.title} \u2013 CoDoc`;
     window.renderComments?.();
     window.renderHistory?.();
@@ -18118,20 +18169,20 @@ showLoadingOverlay("Connecting\u2026");
     if (customFontSelect) {
       customFontSelect.addEventListener("change", () => {
         const val = customFontSelect.value;
-        quill2.format("font", val || false);
-        quill2.focus();
+        quill.format("font", val || false);
+        quill.focus();
       });
     }
     if (customSizeSelect) {
       customSizeSelect.addEventListener("change", () => {
         const val = customSizeSelect.value;
-        quill2.format("size", val || false);
-        quill2.focus();
+        quill.format("size", val || false);
+        quill.focus();
       });
     }
-    quill2.on("selection-change", () => {
-      if (!quill2.getSelection()) return;
-      const formats = quill2.getFormat();
+    quill.on("selection-change", () => {
+      if (!quill.getSelection()) return;
+      const formats = quill.getFormat();
       if (customFontSelect) {
         customFontSelect.value = formats.font || "";
       }
@@ -18142,11 +18193,11 @@ showLoadingOverlay("Connecting\u2026");
     setupMyAvatar();
     hideLoadingOverlay();
     const codeLangSelect = document.getElementById("code-lang-select");
-    quill2.on("selection-change", () => {
+    quill.on("selection-change", () => {
       if (!codeLangSelect) return;
-      const range = quill2.getSelection();
+      const range = quill.getSelection();
       if (!range) return;
-      const [block] = quill2.scroll.descendant(
+      const [block] = quill.scroll.descendant(
         (blot) => blot.statics && blot.statics.blotName === "code-block",
         range.index
       );
@@ -18160,10 +18211,10 @@ showLoadingOverlay("Connecting\u2026");
     });
     if (codeLangSelect) {
       codeLangSelect.addEventListener("change", () => {
-        const range = quill2.getSelection();
+        const range = quill.getSelection();
         if (!range) return;
-        quill2.format("code-block", true);
-        const codeBlocks = quill2.root.querySelectorAll(".ql-code-block");
+        quill.format("code-block", true);
+        const codeBlocks = quill.root.querySelectorAll(".ql-code-block");
         codeBlocks.forEach((bl) => {
           const blot = Quill.find(bl);
           if (blot) bl.setAttribute("data-lang", codeLangSelect.value);
@@ -18172,7 +18223,7 @@ showLoadingOverlay("Connecting\u2026");
       });
     }
     let hlTimer = null;
-    quill2.on("text-change", () => {
+    quill.on("text-change", () => {
       clearTimeout(hlTimer);
       hlTimer = setTimeout(applyHighlighting, 400);
     });
@@ -18182,7 +18233,7 @@ showLoadingOverlay("Connecting\u2026");
     let cropperInstance = null;
     window.openImageModal = function() {
       if (myRole === "viewer") return;
-      window._imgInsertIndex = quill2.getSelection()?.index ?? quill2.getLength();
+      window._imgInsertIndex = quill.getSelection()?.index ?? quill.getLength();
       document.getElementById("img-drop-zone").classList.remove("hidden");
       document.getElementById("img-drop-zone").style.borderColor = "";
       document.getElementById("img-drop-label").textContent = "Click to choose or drag & drop an image";
@@ -18216,7 +18267,7 @@ showLoadingOverlay("Connecting\u2026");
       loadFileIntoCropper(file);
     };
     window.confirmInsertImage = function() {
-      const idx = window._imgInsertIndex ?? quill2.getLength();
+      const idx = window._imgInsertIndex ?? quill.getLength();
       if (window._imgTab === "upload") {
         if (!cropperInstance) {
           showToast("Please select and crop an image first.");
@@ -18231,16 +18282,16 @@ showLoadingOverlay("Connecting\u2026");
           return;
         }
         const finalBase64 = croppedCanvas.toDataURL("image/jpeg", 0.85);
-        quill2.insertEmbed(idx, "image", finalBase64, "user");
-        quill2.setSelection(idx + 1);
+        quill.insertEmbed(idx, "image", finalBase64, "user");
+        quill.setSelection(idx + 1);
       } else {
         const url = document.getElementById("image-url-input").value.trim();
         if (!url) {
           showToast("Please enter an image URL.");
           return;
         }
-        quill2.insertEmbed(idx, "image", url, "user");
-        quill2.setSelection(idx + 1);
+        quill.insertEmbed(idx, "image", url, "user");
+        quill.setSelection(idx + 1);
       }
       window.closeImageModal();
       showToast("\u{1F5BC}\uFE0F Image inserted!", "#10b981");
@@ -18268,45 +18319,45 @@ showLoadingOverlay("Connecting\u2026");
     }
     let draggedImageIndex = null;
     let draggedImageUrl = null;
-    quill2.root.addEventListener("dragstart", (e) => {
+    quill.root.addEventListener("dragstart", (e) => {
       if (e.target.tagName === "IMG") {
         const blot = Quill.find(e.target);
         if (blot) {
-          draggedImageIndex = quill2.getIndex(blot);
+          draggedImageIndex = quill.getIndex(blot);
           draggedImageUrl = e.target.src;
           e.dataTransfer.setData("text/plain", "");
         }
       }
     });
-    quill2.root.addEventListener("dragover", (e) => {
+    quill.root.addEventListener("dragover", (e) => {
       if (draggedImageIndex !== null || e.dataTransfer.types && e.dataTransfer.types.includes("Files")) {
         e.preventDefault();
       }
     });
-    quill2.root.addEventListener("drop", (e) => {
+    quill.root.addEventListener("drop", (e) => {
       if (draggedImageIndex !== null && draggedImageUrl !== null) {
         e.preventDefault();
         const currentUrl = draggedImageUrl;
         const oldIndex = draggedImageIndex;
         draggedImageIndex = null;
         draggedImageUrl = null;
-        let dropIndex = getDropIndex(e, quill2);
+        let dropIndex = getDropIndex(e, quill);
         if (dropIndex !== null && dropIndex !== void 0) {
           let insertIndex = dropIndex;
           if (insertIndex > oldIndex) {
             insertIndex -= 1;
           }
-          quill2.deleteText(oldIndex, 1, "user");
-          quill2.insertEmbed(insertIndex, "image", currentUrl, "user");
-          quill2.setSelection(insertIndex + 1);
+          quill.deleteText(oldIndex, 1, "user");
+          quill.insertEmbed(insertIndex, "image", currentUrl, "user");
+          quill.setSelection(insertIndex + 1);
           debounceDbSave();
         }
       } else if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
         const file = e.dataTransfer.files[0];
         if (file && file.type.startsWith("image/")) {
           e.preventDefault();
-          let dropIndex = getDropIndex(e, quill2);
-          window._imgInsertIndex = dropIndex !== null ? dropIndex : quill2.getLength();
+          let dropIndex = getDropIndex(e, quill);
+          window._imgInsertIndex = dropIndex !== null ? dropIndex : quill.getLength();
           document.getElementById("img-drop-zone").classList.add("hidden");
           document.getElementById("crop-container").classList.add("hidden");
           switchImgTab("upload");
@@ -18332,7 +18383,7 @@ function connectMetaWs() {
   const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
   metaWs = new WebSocket(`${protocol}//${window.location.host}`);
   metaWs.addEventListener("open", () => {
-    metaSend({ type: "meta-join", docId, userId: myId, userName: myName2, userColor: myColor, userRole: myRole });
+    metaSend({ type: "meta-join", docId, userId: myId, userName: myName, userColor: myColor, userRole: myRole });
   });
   metaWs.addEventListener("message", (event) => {
     if (typeof event.data !== "string") return;
@@ -18343,8 +18394,8 @@ function connectMetaWs() {
       return;
     }
     if (msg.type === "sync-state") {
-      window.comments = window.comments = comments2 = msg.comments;
-      window.versionHistory = window.versionHistory = versionHistory2 = msg.versionHistory;
+      window.comments = window.comments = window.comments = comments = msg.comments;
+      window.versionHistory = window.versionHistory = window.versionHistory = versionHistory = msg.versionHistory;
       window.renderComments?.();
       window.renderHistory?.();
     }
@@ -18359,7 +18410,7 @@ function metaSend(obj) {
   }
 }
 function syncState() {
-  metaSend({ type: "sync-state", comments: comments2, versionHistory: versionHistory2 });
+  metaSend({ type: "sync-state", comments, versionHistory });
   debounceDbSave();
 }
 async function saveToHistoryApi(content) {
@@ -18388,12 +18439,12 @@ function debounceDbSave() {
   clearTimeout(dbSaveTimer);
   dbSaveTimer = setTimeout(async () => {
     const sb = getSupabase();
-    const currentContent = quill2 ? quill2.root.innerHTML : "";
-    if (sb && quill2) {
+    const currentContent = quill ? quill.root.innerHTML : "";
+    if (sb && quill) {
       sb.from("documents").update({
         content: currentContent,
-        comments: comments2,
-        versions: versionHistory2
+        comments,
+        versions: versionHistory
       }).eq("id", docId).then(() => {
         const statusEl = document.getElementById("autosave-status");
         if (statusEl) statusEl.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Autosaved`;
@@ -18403,8 +18454,8 @@ function debounceDbSave() {
   }, 2e3);
 }
 window.addEventListener("beforeunload", () => {
-  if (myRole === "viewer" || !quill2) return;
-  const content = quill2.root.innerHTML;
+  if (myRole === "viewer" || !quill) return;
+  const content = quill.root.innerHTML;
   if (!content) return;
   const data = new Blob([JSON.stringify({ userId: myId, documentId: docId, content })], { type: "application/json" });
   navigator.sendBeacon("/api/save-history", data);
@@ -18423,11 +18474,11 @@ function applyRoleUI(role) {
   roleBadge.className = "role-badge-nav role-" + role;
   if (role === "owner") loadPermissions();
 }
-docTitleInput2.addEventListener("change", async () => {
+docTitleInput.addEventListener("change", async () => {
   const sb = getSupabase();
   if ((myRole === "owner" || myRole === "editor") && sb) {
-    const newTitle = docTitleInput2.value.trim() || "Untitled";
-    docTitleInput2.value = newTitle;
+    const newTitle = docTitleInput.value.trim() || "Untitled";
+    docTitleInput.value = newTitle;
     document.title = `${newTitle} \u2013 CoDoc`;
     await sb.from("documents").update({ title: newTitle }).eq("id", docId);
     showToast("\u{1F4DD} Title updated");
@@ -18435,15 +18486,15 @@ docTitleInput2.addEventListener("change", async () => {
 });
 document.getElementById("save-version-btn")?.addEventListener("click", () => {
   if (myRole !== "owner" && myRole !== "editor") return;
-  versionNameInput2.value = "";
-  saveVersionModal2.classList.remove("hidden");
-  setTimeout(() => versionNameInput2.focus(), 50);
+  versionNameInput.value = "";
+  saveVersionModal.classList.remove("hidden");
+  setTimeout(() => versionNameInput.focus(), 50);
 });
 function setupMyAvatar() {
   if (!myAvatarEl) return;
   myAvatarEl.style.background = myColor;
-  myAvatarEl.textContent = myName2.charAt(0).toUpperCase();
-  myAvatarEl.title = `${myName2} (You)`;
+  myAvatarEl.textContent = myName.charAt(0).toUpperCase();
+  myAvatarEl.title = `${myName} (You)`;
 }
 function renderUserList() {
   const userArr = Object.values(users);
@@ -18534,7 +18585,7 @@ if (SpeechRecognition && dictationBtn) {
     showToast('\u{1F3A4} Listening... (Say "new line", "comma", "period")');
   };
   recognition.onresult = (event) => {
-    if (!quill2) return;
+    if (!quill) return;
     const result = event.results[event.results.length - 1];
     let transcript = result[0].transcript.trim();
     const lower = transcript.toLowerCase();
@@ -18543,10 +18594,10 @@ if (SpeechRecognition && dictationBtn) {
     else if (lower === "period" || lower === "full stop") transcript = ".";
     else if (lower === "question mark") transcript = "?";
     else transcript = " " + transcript;
-    const range = quill2.getSelection(true);
+    const range = quill.getSelection(true);
     if (range) {
-      quill2.insertText(range.index, transcript);
-      quill2.setSelection(range.index + transcript.length);
+      quill.insertText(range.index, transcript);
+      quill.setSelection(range.index + transcript.length);
     }
   };
   recognition.onend = () => {
@@ -18600,15 +18651,15 @@ window.confirmAiAction = function(id2) {
   const { action, content, selection } = window.pendingAiAction;
   if (action === "replace") {
     if (selection && selection.length > 0) {
-      quill2.deleteText(selection.index, selection.length);
-      quill2.insertText(selection.index, content);
+      quill.deleteText(selection.index, selection.length);
+      quill.insertText(selection.index, content);
     } else {
-      quill2.setText("");
-      quill2.insertText(0, content);
+      quill.setText("");
+      quill.insertText(0, content);
     }
   } else if (action === "insert") {
-    const idx = selection ? selection.index + selection.length : quill2.getLength();
-    quill2.insertText(idx, content);
+    const idx = selection ? selection.index + selection.length : quill.getLength();
+    quill.insertText(idx, content);
   }
   document.getElementById(id2).innerHTML = `<div class="chat-bubble-content" style="font-size:12px; color:var(--emerald);">\u2713 Change applied successfully.</div>`;
   window.pendingAiAction = null;

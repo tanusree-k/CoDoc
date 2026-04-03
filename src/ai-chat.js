@@ -34,12 +34,12 @@ window.sendChatMessage = async function() {
   let prompt = text;
   
   let selectedTextObj = '';
-  if (window.quill && window.aiLastSelection && aiLastSelection.length > 0) {
-    selectedTextObj = quill.getText(aiLastSelection.index, aiLastSelection.length);
+  if (window.quill && window.aiLastSelection && window.aiLastSelection.length > 0) {
+    selectedTextObj = window.quill.getText(window.aiLastSelection.index, window.aiLastSelection.length);
   }
 
   if (includeCtx && window.quill) {
-    prompt = `Document Content:\n\n${quill.getText()}\n\n---\n\n`;
+    prompt = `Document Content:\n\n${window.quill.getText()}\n\n---\n\n`;
     if (selectedTextObj) {
       prompt += `User's Currently Selected Text:\n"${selectedTextObj}"\n\n---\n\n`;
     }
@@ -95,7 +95,7 @@ window.sendChatMessage = async function() {
 };
 
 window.sendQuickPrompt = function(type) {
-  const selectedText = window.quill ? quill.getText(quill.getSelection()?.index || 0, quill.getSelection()?.length || 0) : '';
+  const selectedText = window.quill ? window.quill.getText(window.quill.getSelection()?.index || 0, window.quill.getSelection()?.length || 0) : '';
   if (type === 'summarize') {
     aiChatInput.value = selectedText ? 'Summarize:\n\n"' + selectedText + '"' : 'Summarize this document.';
   } else if (type === 'polish') {
@@ -122,7 +122,7 @@ aiChatInput?.addEventListener('input', () => {
   aiChatInput.style.height = Math.min(aiChatInput.scrollHeight, 120) + 'px';
 });
 
-commentModal.addEventListener('click', e => { if (e.target === window.commentModal) window.cancelComment(); });
+window.commentModal.addEventListener('click', e => { if (e.target === window.commentModal) window.cancelComment(); });
 
 
 }
