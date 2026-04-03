@@ -10,7 +10,6 @@ const syncProtocol = require('y-protocols/sync');
 const awarenessProtocol = require('y-protocols/awareness');
 const encoding = require('lib0/encoding');
 const decoding = require('lib0/decoding');
-const { LeveldbPersistence } = require('y-leveldb');
 const rateLimit = require('express-rate-limit');
 
 
@@ -268,9 +267,6 @@ app.get('/api/history/:user_id', async (req, res) => {
 });
 
 // ── Yjs Document Store ──────────────────────────────────────────────────
-
-// ── Yjs Document Store ──────────────────────────────────────────────────
-const persistence = new LeveldbPersistence('./yjs-data');
 const docs = new Map();      // roomName -> Y.Doc
 
 const conns = new Map();     // WebSocket -> { room, awarenessIds }
@@ -281,11 +277,6 @@ const messageAwareness = 1;
 function getYDoc(roomName) {
   if (!docs.has(roomName)) {
     const doc = new Y.Doc();
-    
-    // Bind persistence
-    persistence.bindState(roomName, doc).then(() => {
-      console.log(`[Yjs Persistence] Loaded doc: ${roomName}`);
-    });
 
     doc._conns = new Set();
     doc._awareness = new awarenessProtocol.Awareness(doc);
