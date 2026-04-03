@@ -46,7 +46,7 @@ window.submitComment = function() {
   savedRange = null;
 };
 
-function renderComments() {
+window.renderComments = function renderComments() {
   const active = comments.filter(c => !c.resolved);
   const resolved = comments.filter(c => c.resolved);
   commentCount.textContent = active.length;

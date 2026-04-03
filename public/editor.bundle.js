@@ -1883,11 +1883,11 @@ function setupComments() {
       replies: []
     });
     syncState();
-    renderComments2();
+    renderComments();
     commentModal.classList.add("hidden");
     savedRange = null;
   };
-  function renderComments2() {
+  window.renderComments = function renderComments2() {
     const active = comments.filter((c) => !c.resolved);
     const resolved = comments.filter((c) => c.resolved);
     commentCount.textContent = active.length;
@@ -1929,7 +1929,7 @@ function setupComments() {
     `;
       commentsList.appendChild(card);
     });
-  }
+  };
   window.sendReply = function(commentId) {
     const input = document.getElementById("reply-" + commentId);
     if (!input) return;
@@ -1940,7 +1940,7 @@ function setupComments() {
     if (c) {
       c.replies.push({ author: myName, authorColor: myColor, text: text2, timestamp: (/* @__PURE__ */ new Date()).toISOString() });
       syncState();
-      renderComments2();
+      renderComments();
     }
   };
   window.resolveComment = function(commentId) {
@@ -1948,7 +1948,7 @@ function setupComments() {
     if (c) {
       c.resolved = true;
       syncState();
-      renderComments2();
+      renderComments();
     }
   };
 }
@@ -1992,7 +1992,7 @@ function setupHistory() {
       timestamp: (/* @__PURE__ */ new Date()).toISOString()
     });
     syncState();
-    renderHistory2();
+    renderHistory();
     saveVersionModal.classList.add("hidden");
     showToast(`\u{1F4BE} Version "${name || "Unnamed Version"}" saved`);
   };
@@ -2031,8 +2031,8 @@ function setupHistory() {
       historyList.appendChild(item);
     });
   }
-  function renderHistory2() {
-  }
+  window.renderHistory = function renderHistory2() {
+  };
 }
 
 // src/ai-chat.js

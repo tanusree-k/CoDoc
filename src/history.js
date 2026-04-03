@@ -81,7 +81,7 @@ function renderHistoryGrid(apiVersions) {
   });
 }
 
-function renderHistory() {
+window.renderHistory = function renderHistory() {
   // Legacy renderHistory for compat
 }
 
