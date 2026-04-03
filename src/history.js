@@ -39,7 +39,7 @@ window.confirmSaveVersion = function() {
     timestamp: new Date().toISOString()
   });
   syncState();
-  renderHistory();
+  window.renderHistory?.();
   saveVersionModal.classList.add('hidden');
   showToast(`💾 Version "${name || 'Unnamed Version'}" saved`);
 };
@@ -81,7 +81,7 @@ function renderHistoryGrid(apiVersions) {
   });
 }
 
-window.renderHistory = function renderHistory() {
+window.renderHistory = function window.renderHistory?.() {
   // Legacy renderHistory for compat
 }
 

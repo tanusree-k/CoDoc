@@ -412,8 +412,8 @@ quill.getModule('toolbar').addHandler('image', function() {
   applyRoleUI(myRole);
   docTitleInput.value = doc.title;
   document.title = `${doc.title} – CoDoc`;
-  renderComments();
-  renderHistory();
+  window.renderComments?.();
+  window.renderHistory?.();
   // ── Custom Font & Size Select Handlers ─────────────────────────────
   const fontContainer = document.getElementById('custom-font-container');
   if (fontContainer) {
@@ -796,8 +796,8 @@ function connectMetaWs() {
     if (msg.type === 'sync-state') {
       comments = msg.comments;
       versionHistory = msg.versionHistory;
-      renderComments();
-      renderHistory();
+      window.renderComments?.();
+      window.renderHistory?.();
     }
   });
 

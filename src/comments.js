@@ -41,12 +41,12 @@ window.submitComment = function() {
     replies: []
   });
   syncState();
-  renderComments();
+  window.renderComments?.();
   commentModal.classList.add('hidden');
   savedRange = null;
 };
 
-window.renderComments = function renderComments() {
+window.renderComments = function window.renderComments?.() {
   const active = comments.filter(c => !c.resolved);
   const resolved = comments.filter(c => c.resolved);
   commentCount.textContent = active.length;
@@ -102,7 +102,7 @@ window.sendReply = function(commentId) {
   if (c) {
     c.replies.push({ author: myName, authorColor: myColor, text, timestamp: new Date().toISOString() });
     syncState();
-    renderComments();
+    window.renderComments?.();
   }
 };
 
@@ -111,7 +111,7 @@ window.resolveComment = function(commentId) {
   if (c) {
     c.resolved = true;
     syncState();
-    renderComments();
+    window.renderComments?.();
   }
 };
 
