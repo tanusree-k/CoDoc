@@ -17704,6 +17704,53 @@ window.debounceDbSave = debounceDbSave;
 window.renderUserList = renderUserList;
 window.connectMetaWs = connectMetaWs;
 window.metaSend = metaSend;
+window.quill = quill2;
+window.ydoc = ydoc;
+window.ytext = ytext;
+window.wsProvider = wsProvider;
+window.metaWs = metaWs;
+window.myId = myId;
+window.myName = myName2;
+window.myColor = myColor;
+window.myRole = myRole;
+window.docId = docId;
+window.users = users;
+window.comments = comments2;
+window.versionHistory = versionHistory2;
+window.savedRange = savedRange2;
+window.dbSaveTimer = dbSaveTimer;
+window.aiLastSelection = aiLastSelection2;
+window.recentBadgeTimer = recentBadgeTimer;
+window.commentsList = commentsList2;
+window.commentCount = commentCount2;
+window.usersList = usersList;
+window.userCount = userCount;
+window.navAvatars = navAvatars;
+window.myAvatarEl = myAvatarEl;
+window.recentBadge = recentBadge;
+window.toastEl = toastEl;
+window.historyPanel = historyPanel2;
+window.historyOverlay = historyOverlay2;
+window.historyList = historyList2;
+window.commentModal = commentModal2;
+window.commentText = commentText2;
+window.cursorLabels = cursorLabels;
+window.docTitleInput = docTitleInput2;
+window.roleBadge = roleBadge;
+window.saveVersionModal = saveVersionModal2;
+window.versionNameInput = versionNameInput2;
+window.shareModal = shareModal;
+window.shareLink = shareLink;
+window.permsList = permsList;
+window.showToast = showToast;
+window.syncState = syncState;
+window.showLoadingOverlay = showLoadingOverlay;
+window.hideLoadingOverlay = hideLoadingOverlay;
+window.applyRoleUI = applyRoleUI;
+window.debounceDbSave = debounceDbSave;
+window.renderUserList = renderUserList;
+window.connectMetaWs = connectMetaWs;
+window.metaSend = metaSend;
 function showLoadingOverlay(msg) {
   let ov = document.getElementById("init-loading-overlay");
   if (!ov) {
@@ -17848,7 +17895,9 @@ showLoadingOverlay("Connecting\u2026");
     }
     myId = profile.id;
     window.myId = myId;
+    window.myId = myId;
     myName2 = profile.username;
+    window.myName = myName2;
     window.myName = myName2;
     const params2 = new URLSearchParams(window.location.search);
     docId = params2.get("doc");
@@ -17865,6 +17914,7 @@ showLoadingOverlay("Connecting\u2026");
     }
     if (doc2.owner_id === myId) {
       myRole = "owner";
+      window.myRole = myRole;
       window.myRole = myRole;
     } else {
       let { data: perm } = await sb.from("document_permissions").select("*").eq("doc_id", docId).eq("user_id", myId).single();
@@ -17885,12 +17935,13 @@ showLoadingOverlay("Connecting\u2026");
       if (!perm) return showForbidden();
       myRole = perm.role;
       window.myRole = myRole;
+      window.myRole = myRole;
     }
     myColor = `hsl(${parseInt(myId.replace(/-/g, ""), 16) % 360}, 80%, 45%)`;
     applyRoleUI(myRole);
     const editorContainer = document.getElementById("editor");
     const isReadOnly = myRole === "viewer";
-    window.quill = quill2 = new Quill(editorContainer, {
+    window.quill = window.quill = quill2 = new Quill(editorContainer, {
       theme: "snow",
       modules: {
         toolbar: isReadOnly ? false : "#toolbar",
@@ -17921,12 +17972,12 @@ showLoadingOverlay("Connecting\u2026");
       });
       return delta;
     });
-    window.ydoc = ydoc = new Doc();
-    window.ytext = ytext = ydoc.getText("quill");
+    window.ydoc = window.ydoc = ydoc = new Doc();
+    window.ytext = window.ytext = ytext = ydoc.getText("quill");
     const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
     const wsUrl = `${wsProtocol}//${window.location.host}`;
     const roomName = `doc-${docId}`;
-    window.wsProvider = wsProvider = new WebsocketProvider(wsUrl, roomName, ydoc);
+    window.wsProvider = window.wsProvider = wsProvider = new WebsocketProvider(wsUrl, roomName, ydoc);
     wsProvider.awareness.setLocalStateField("user", {
       id: myId,
       name: myName2,
@@ -18292,8 +18343,8 @@ function connectMetaWs() {
       return;
     }
     if (msg.type === "sync-state") {
-      window.comments = comments2 = msg.comments;
-      window.versionHistory = versionHistory2 = msg.versionHistory;
+      window.comments = window.comments = comments2 = msg.comments;
+      window.versionHistory = window.versionHistory = versionHistory2 = msg.versionHistory;
       window.renderComments?.();
       window.renderHistory?.();
     }
