@@ -23,11 +23,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 let ai = null;
 if (process.env.GEMINI_API_KEY) {
   ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  console.log('[AI] Gemini configured (key length:', process.env.GEMINI_API_KEY.length + ')');
+} else {
+  console.warn('[AI] GEMINI_API_KEY not set');
 }
 
 let groq = null;
 if (process.env.GROQ_API_KEY) {
   groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+  console.log('[AI] Groq configured (key length:', process.env.GROQ_API_KEY.length + ')');
+} else {
+  console.warn('[AI] GROQ_API_KEY not set — will use Gemini only');
 }
 
 // Supabase admin client (service role — bypasses RLS)
@@ -138,23 +144,33 @@ Rules:
       } catch (groqErr) {
         console.error('[AI] Groq failed, falling back to Gemini:', groqErr.message);
         if (ai) {
-          const result = await ai.models.generateContent({
-            model: 'gemini-2.0-flash',
-            contents: [{ role: 'user', parts: [{ text: systemInstruction + '\n\n' + text }] }]
-          });
-          rawText = result.text;
-          console.log('[AI] Used Gemini Fallback');
+          try {
+            const result = await ai.models.generateContent({
+              model: 'gemini-2.0-flash',
+              contents: [{ role: 'user', parts: [{ text: systemInstruction + '\n\n' + text }] }]
+            });
+            rawText = result.text;
+            console.log('[AI] Used Gemini Fallback');
+          } catch (geminiErr) {
+            console.error('[AI] Gemini fallback also failed:', geminiErr.message);
+            return res.status(503).json({ error: 'AI service is temporarily unavailable. Both providers failed. Please try again in a minute.' });
+          }
         } else {
-          throw groqErr;
+          return res.status(503).json({ error: 'AI service (Groq) failed and no fallback is configured. Please check server environment variables.' });
         }
       }
     } else if (ai) {
-      const result = await ai.models.generateContent({
-        model: 'gemini-2.0-flash',
-        contents: [{ role: 'user', parts: [{ text: systemInstruction + '\n\n' + text }] }]
-      });
-      rawText = result.text;
-      console.log('[AI] Used Gemini');
+      try {
+        const result = await ai.models.generateContent({
+          model: 'gemini-2.0-flash',
+          contents: [{ role: 'user', parts: [{ text: systemInstruction + '\n\n' + text }] }]
+        });
+        rawText = result.text;
+        console.log('[AI] Used Gemini');
+      } catch (geminiErr) {
+        console.error('[AI] Gemini failed:', geminiErr.message);
+        return res.status(503).json({ error: 'AI service (Gemini) is temporarily unavailable. Please try again later.' });
+      }
     }
 
     // Defensive parsing: Strip markdown if the AI ignored instructions
@@ -181,7 +197,7 @@ Rules:
     console.log('[AI] Success – result:', aiRes);
   } catch (err) {
     console.error('[AI] Endpoint Error:', err);
-    res.status(500).json({ error: 'Failed to generate AI content. ' + (err.message || '') });
+    res.status(500).json({ error: 'AI processing error. Please try again.' });
   }
 });
 
