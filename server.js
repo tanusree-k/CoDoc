@@ -139,7 +139,7 @@ Rules:
         console.error('[AI] Groq failed, falling back to Gemini:', groqErr.message);
         if (ai) {
           const result = await ai.models.generateContent({
-            model: 'gemini-1.5-flash',
+            model: 'gemini-2.0-flash',
             contents: [{ role: 'user', parts: [{ text: systemInstruction + '\n\n' + text }] }]
           });
           rawText = result.text;
@@ -150,7 +150,7 @@ Rules:
       }
     } else if (ai) {
       const result = await ai.models.generateContent({
-        model: 'gemini-1.5-flash',
+        model: 'gemini-2.0-flash',
         contents: [{ role: 'user', parts: [{ text: systemInstruction + '\n\n' + text }] }]
       });
       rawText = result.text;
@@ -257,12 +257,13 @@ app.get('/api/history/:user_id', async (req, res) => {
 
     if (error) {
       if (error.code === '22P02') return res.json({ versions: [] }); // Invalid UUID syntax, return empty
-      throw error;
+      console.error('[Supabase] History fetch error:', error);
+      return res.status(500).json({ error: error.message || 'Database error occurred' });
     }
     res.json({ versions });
   } catch (err) {
-    console.error('History Fetch Error:', err);
-    res.status(500).json({ error: 'Failed to fetch history' });
+    console.error('[Server] History Fetch Catch Error:', err);
+    res.status(500).json({ error: 'Failed to fetch history: ' + (err.message || err) });
   }
 });
 

@@ -12,14 +12,19 @@ document.getElementById('history-btn')?.addEventListener('click', async () => {
   window.historyList.innerHTML = '<div class="no-comments"><p>Loading history...</p></div>';
   try {
     const res = await fetch(`/api/history/${window.myId}?docId=${window.docId}`);
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(errText || 'Network error');
+    }
     const data = await res.json();
-    if (data.versions) {
+    if (data && data.versions) {
       renderHistoryGrid(data.versions);
     } else {
-      throw new Error();
+      throw new Error('Invalid response format');
     }
   } catch (e) {
-    window.historyList.innerHTML = '<div class="no-comments"><p>Failed to load history.</p></div>';
+    console.error('[History] Fetch failed:', e);
+    window.historyList.innerHTML = `<div class="no-comments" style="color:#ef4444;"><p>Failed to load history:<br/>${e.message}</p></div>`;
   }
 });
 
