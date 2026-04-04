@@ -18087,7 +18087,7 @@ showLoadingOverlay("Connecting\u2026");
       color: myColor,
       role: myRole
     });
-    const binding = new QuillBinding(ytext, quill);
+    const binding = new QuillBinding(ytext, quill, wsProvider.awareness);
     const cursors = quill.getModule("cursors");
     quill.on("selection-change", (range) => {
       if (range) {
@@ -18129,42 +18129,7 @@ showLoadingOverlay("Connecting\u2026");
             role: state.user.role || "viewer"
           };
         }
-        if (clientId === myClientId) return;
-        if (!state.user) return;
-        if (state.user.id === myId) {
-          if (cursors) cursors.removeCursor(String(clientId));
-          return;
-        }
-        const cursorId = String(clientId);
-        const userName = state.user.name || "Anonymous";
-        const userColor = state.user.color || "#94a3b8";
-        if (cursors) {
-          try {
-            cursors.createCursor(cursorId, userName, userColor);
-          } catch (e) {
-            cursors.removeCursor(cursorId);
-            cursors.createCursor(cursorId, userName, userColor);
-          }
-          if (state.cursor) {
-            try {
-              const anchor = createAbsolutePositionFromRelativePosition(state.cursor.anchor, ydoc);
-              const head = createAbsolutePositionFromRelativePosition(state.cursor.head, ydoc);
-              if (anchor && head) {
-                cursors.moveCursor(cursorId, {
-                  index: anchor.index,
-                  length: head.index - anchor.index
-                });
-              }
-            } catch (e) {
-            }
-          }
-        }
       });
-      if (cursors) {
-        removed.forEach((clientId) => {
-          cursors.removeCursor(String(clientId));
-        });
-      }
       renderUserList();
     });
     comments = doc2.comments || [];

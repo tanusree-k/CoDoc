@@ -347,11 +347,8 @@ quill.getModule('toolbar').addHandler('image', function() {
     role: myRole
   });
 
-  // Bind Yjs to Quill without passing awareness. This prevents y-quill from rendering duplicate cursors
-  // and allows our manual cursor logic loop below to tightly control filtering of ghost cursors.
-  const binding = new QuillBinding(ytext, quill);
-
-  // Get reference to the cursors module
+  // Bind Yjs to Quill natively utilizing built-in CRDT cursor sync
+  const binding = new QuillBinding(ytext, quill, wsProvider.awareness);
   const cursors = quill.getModule('cursors');
 
   // Broadcast local cursor/selection changes to other users
@@ -406,53 +403,9 @@ quill.getModule('toolbar').addHandler('image', function() {
         };
       }
 
-      // Skip our own cursor (by WS client connection ID)
-      if (clientId === myClientId) return;
-      if (!state.user) return;
-      
-      // Also completely skip ANY ghost/duplicate cursors belonging to our own UUID!
-      // This ensures we only see OTHER editors' cursors, not our own.
-      if (state.user.id === myId) {
-        if (cursors) cursors.removeCursor(String(clientId));
-        return;
-      }
-
-      const cursorId = String(clientId);
-      const userName = state.user.name || 'Anonymous';
-      const userColor = state.user.color || '#94a3b8';
-
-      // Create or update the cursor for this remote user
-      if (cursors) {
-        try {
-          cursors.createCursor(cursorId, userName, userColor);
-        } catch (e) {
-          // cursor already exists — update it
-          cursors.removeCursor(cursorId);
-          cursors.createCursor(cursorId, userName, userColor);
-        }
-
-        // Move cursor to their position if we have it
-        if (state.cursor) {
-          try {
-            const anchor = Y.createAbsolutePositionFromRelativePosition(state.cursor.anchor, ydoc);
-            const head = Y.createAbsolutePositionFromRelativePosition(state.cursor.head, ydoc);
-            if (anchor && head) {
-              cursors.moveCursor(cursorId, {
-                index: anchor.index,
-                length: head.index - anchor.index
-              });
-            }
-          } catch (e) { /* position not resolvable yet */ }
-        }
-      }
+      // We no longer manually track or render cursors.
+      // QuillBinding(y-quill) natively computes CRDT ranges matching Quill's exact delta geometry.
     });
-
-    // Remove cursors for clients that have left
-    if (cursors) {
-      removed.forEach(clientId => {
-        cursors.removeCursor(String(clientId));
-      });
-    }
 
     renderUserList();
   });
