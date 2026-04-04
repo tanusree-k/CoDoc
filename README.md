@@ -173,6 +173,13 @@ src/
 
 Row-Level Security (RLS) policies are applied to all tables to enforce user-level data isolation.
 
+### Infrastructure & Tools
+
+| Technology | Role |
+|---|---|
+| Render | Cloud deployment platform hosting the Node.js / WebSocket relay server |
+| Antigravity | Advanced agentic IDE used for autonomous pair-programming and architecture design |
+
 ---
 
 ## AI Integrations
