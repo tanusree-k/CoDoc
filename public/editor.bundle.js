@@ -18085,80 +18085,59 @@ showLoadingOverlay("Connecting\u2026");
       color: myColor,
       role: myRole
     });
-    const binding = new QuillBinding(ytext, quill, wsProvider.awareness);
+    const binding = new QuillBinding(ytext, quill);
     const cursors = quill.getModule("cursors");
-    if (binding._quillObserver) {
-      quill.off("editor-change", binding._quillObserver);
-      let _pendingCursorUpdate = null;
-      const _safeQuillObserver = (eventType, delta, state, origin) => {
-        if (delta && delta.ops) {
-          const ops = delta.ops;
-          ops.forEach((op) => {
-            if (op.attributes !== void 0) {
-              for (const key in op.attributes) {
-                if (binding._negatedUsedFormats[key] === void 0) {
-                  binding._negatedUsedFormats[key] = false;
-                }
-              }
-            }
-          });
-          if (origin !== binding) {
-            binding.doc.transact(() => {
-              binding.type.applyDelta(ops);
-            }, binding);
-          }
+    quill.on("selection-change", (range, oldRange, source) => {
+      if (source === "user") {
+        if (range === null) {
+          wsProvider.awareness.setLocalStateField("cursor", null);
+        } else {
+          const anchor = createRelativePositionFromTypeIndex(ytext, range.index);
+          const head = createRelativePositionFromTypeIndex(ytext, range.index + range.length);
+          wsProvider.awareness.setLocalStateField("cursor", { anchor, head });
         }
-        if (wsProvider.awareness && cursors) {
-          const isRemoteOp = origin === binding;
-          if (!isRemoteOp) {
-            const sel = quill.getSelection();
-            const aw = wsProvider.awareness.getLocalState();
-            if (sel === null) {
-              if (eventType === "selection-change") {
-                if (aw !== null) {
-                  wsProvider.awareness.setLocalStateField("cursor", null);
-                }
-              }
-            } else {
-              const anchor = createRelativePositionFromTypeIndex(ytext, sel.index);
-              const head = createRelativePositionFromTypeIndex(ytext, sel.index + sel.length);
-              if (!aw || !aw.cursor || !compareRelativePositions(anchor, aw.cursor.anchor) || !compareRelativePositions(head, aw.cursor.head)) {
-                wsProvider.awareness.setLocalStateField("cursor", { anchor, head });
-              }
+      }
+    });
+    const renderRemoteCursors = () => {
+      if (!cursors || !wsProvider.awareness) return;
+      const states = wsProvider.awareness.getStates();
+      states.forEach((aw, clientId) => {
+        if (clientId === wsProvider.awareness.clientID) return;
+        if (aw && aw.cursor) {
+          const user2 = aw.user || {};
+          const safeId = clientId.toString();
+          cursors.createCursor(safeId, user2.name || "Anonymous", user2.color || "#ffa500");
+          try {
+            const anchorAbs = createAbsolutePositionFromRelativePosition(
+              createRelativePositionFromJSON(aw.cursor.anchor),
+              ydoc
+            );
+            const headAbs = createAbsolutePositionFromRelativePosition(
+              createRelativePositionFromJSON(aw.cursor.head),
+              ydoc
+            );
+            if (anchorAbs && headAbs && anchorAbs.type === ytext) {
+              cursors.moveCursor(safeId, {
+                index: anchorAbs.index,
+                length: headAbs.index - anchorAbs.index
+              });
             }
+          } catch (e) {
           }
-          if (_pendingCursorUpdate) cancelAnimationFrame(_pendingCursorUpdate);
-          _pendingCursorUpdate = requestAnimationFrame(() => {
-            _pendingCursorUpdate = null;
-            wsProvider.awareness.getStates().forEach((aw, clientId) => {
-              if (clientId === wsProvider.awareness.clientID) return;
-              try {
-                if (aw && aw.cursor) {
-                  const user2 = aw.user || {};
-                  cursors.createCursor(clientId.toString(), user2.name || "User", user2.color || "#ffa500");
-                  const anchor = createAbsolutePositionFromRelativePosition(
-                    createRelativePositionFromJSON(aw.cursor.anchor),
-                    binding.doc
-                  );
-                  const head = createAbsolutePositionFromRelativePosition(
-                    createRelativePositionFromJSON(aw.cursor.head),
-                    binding.doc
-                  );
-                  if (anchor && head && anchor.type === ytext) {
-                    cursors.moveCursor(clientId.toString(), { index: anchor.index, length: head.index - anchor.index });
-                  }
-                } else {
-                  cursors.removeCursor(clientId.toString());
-                }
-              } catch (e) {
-              }
-            });
-          });
+        } else {
+          cursors.removeCursor(clientId.toString());
         }
-      };
-      binding._quillObserver = _safeQuillObserver;
-      quill.on("editor-change", _safeQuillObserver);
-    }
+      });
+    };
+    wsProvider.awareness.on("change", renderRemoteCursors);
+    let _cursorRenderTimer = null;
+    quill.on("text-change", () => {
+      if (_cursorRenderTimer) cancelAnimationFrame(_cursorRenderTimer);
+      _cursorRenderTimer = requestAnimationFrame(() => {
+        _cursorRenderTimer = null;
+        renderRemoteCursors();
+      });
+    });
     wsProvider.on("sync", (synced) => {
       if (synced && ytext.length === 0 && doc2.content) {
         const tempDiv = document.createElement("div");

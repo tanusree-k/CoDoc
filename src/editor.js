@@ -363,95 +363,79 @@ quill.getModule('toolbar').addHandler('image', function() {
     role: myRole
   });
 
-  // Bind Yjs to Quill natively utilizing built-in CRDT cursor sync
-  const binding = new QuillBinding(ytext, quill, wsProvider.awareness);
+  // Bind Yjs to Quill natively for TEXT sync only
+  // We omit awareness here so y-quill doesn't run its broken cursor logic
+  const binding = new QuillBinding(ytext, quill);
   const cursors = quill.getModule('cursors');
 
-  // ── Patch y-quill _quillObserver to fix cursor collapse cascade ────────
-  // Bug: y-quill's editor-change handler fires on remote text-change events.
-  // At that instant quill.getSelection() returns null (editor not focused by
-  // the remote op), so the binding wrongly nulls out the LOCAL user's cursor
-  // awareness field — collapsing it everywhere and triggering a cascade that
-  // collapses ALL other users' cursors too.
-  // Fix: skip nulling awareness cursor when the event origin is the binding
-  // itself (i.e. a remote Yjs update), and debounce re-renders.
-  if (binding._quillObserver) {
-    quill.off('editor-change', binding._quillObserver);
-    let _pendingCursorUpdate = null;
-    const _safeQuillObserver = (eventType, delta, state, origin) => {
-      // Sync text changes to Yjs (unchanged from original)
-      if (delta && delta.ops) {
-        const ops = delta.ops;
-        ops.forEach(op => {
-          if (op.attributes !== undefined) {
-            for (const key in op.attributes) {
-              if (binding._negatedUsedFormats[key] === undefined) {
-                binding._negatedUsedFormats[key] = false;
-              }
-            }
-          }
-        });
-        if (origin !== binding) {
-          binding.doc.transact(() => {
-            binding.type.applyDelta(ops);
-          }, binding);
-        }
+  // ── Custom robust cursor sync for Quill 2.x ────────────────────────────
+  // Broadcast local cursor selection to Yjs awareness
+  quill.on('selection-change', (range, oldRange, source) => {
+    // Only broadcast if the user actually changed the selection
+    if (source === 'user') {
+      if (range === null) {
+        // Editor lost focus
+        wsProvider.awareness.setLocalStateField('cursor', null);
+      } else {
+        // Convert integer indices to Yjs relative positions
+        const anchor = Y.createRelativePositionFromTypeIndex(ytext, range.index);
+        const head = Y.createRelativePositionFromTypeIndex(ytext, range.index + range.length);
+        wsProvider.awareness.setLocalStateField('cursor', { anchor, head });
       }
-      // Only update cursor awareness & remote cursors when origin is user
-      // action (not a remote Yjs update flooding in from the network).
-      if (wsProvider.awareness && cursors) {
-        const isRemoteOp = (origin === binding);
-        if (!isRemoteOp) {
-          // User caused this change — update own cursor awareness immediately
-          const sel = quill.getSelection();
-          const aw = wsProvider.awareness.getLocalState();
-          if (sel === null) {
-            // Only null-out cursor if quill truly reports no selection AND
-            // the event is a direct user selection-change (not a side-effect)
-            if (eventType === 'selection-change') {
-              if (aw !== null) {
-                wsProvider.awareness.setLocalStateField('cursor', null);
-              }
-            }
-          } else {
-            const anchor = Y.createRelativePositionFromTypeIndex(ytext, sel.index);
-            const head = Y.createRelativePositionFromTypeIndex(ytext, sel.index + sel.length);
-            if (!aw || !aw.cursor ||
-                !Y.compareRelativePositions(anchor, aw.cursor.anchor) ||
-                !Y.compareRelativePositions(head, aw.cursor.head)) {
-              wsProvider.awareness.setLocalStateField('cursor', { anchor, head });
-            }
+    }
+  });
+
+  // Render remote cursors whenever awareness updates or text shifts
+  const renderRemoteCursors = () => {
+    if (!cursors || !wsProvider.awareness) return;
+    const states = wsProvider.awareness.getStates();
+    states.forEach((aw, clientId) => {
+      if (clientId === wsProvider.awareness.clientID) return; // Skip our own cursor
+
+      if (aw && aw.cursor) {
+        const user = aw.user || {};
+        const safeId = clientId.toString();
+        // Create cursor if missing
+        cursors.createCursor(safeId, user.name || 'Anonymous', user.color || '#ffa500');
+        
+        // Translate Yjs relative positions back to Quill absolute indices
+        try {
+          const anchorAbs = Y.createAbsolutePositionFromRelativePosition(
+            Y.createRelativePositionFromJSON(aw.cursor.anchor), ydoc
+          );
+          const headAbs = Y.createAbsolutePositionFromRelativePosition(
+            Y.createRelativePositionFromJSON(aw.cursor.head), ydoc
+          );
+          
+          if (anchorAbs && headAbs && anchorAbs.type === ytext) {
+            cursors.moveCursor(safeId, { 
+              index: anchorAbs.index, 
+              length: headAbs.index - anchorAbs.index 
+            });
           }
+        } catch (e) {
+          // ignore mapping errors during rapid sync
         }
-        // Debounce remote cursor re-renders to avoid flooding the DOM
-        if (_pendingCursorUpdate) cancelAnimationFrame(_pendingCursorUpdate);
-        _pendingCursorUpdate = requestAnimationFrame(() => {
-          _pendingCursorUpdate = null;
-          wsProvider.awareness.getStates().forEach((aw, clientId) => {
-            if (clientId === wsProvider.awareness.clientID) return;
-            try {
-              if (aw && aw.cursor) {
-                const user = aw.user || {};
-                cursors.createCursor(clientId.toString(), user.name || 'User', user.color || '#ffa500');
-                const anchor = Y.createAbsolutePositionFromRelativePosition(
-                  Y.createRelativePositionFromJSON(aw.cursor.anchor), binding.doc);
-                const head = Y.createAbsolutePositionFromRelativePosition(
-                  Y.createRelativePositionFromJSON(aw.cursor.head), binding.doc);
-                if (anchor && head && anchor.type === ytext) {
-                  cursors.moveCursor(clientId.toString(), { index: anchor.index, length: head.index - anchor.index });
-                }
-              } else {
-                cursors.removeCursor(clientId.toString());
-              }
-            } catch(e) {}
-          });
-        });
+      } else {
+        cursors.removeCursor(clientId.toString());
       }
-    };
-    binding._quillObserver = _safeQuillObserver;
-    quill.on('editor-change', _safeQuillObserver);
-  }
-  // ── End patch ──────────────────────────────────────────────────────────
+    });
+  };
+
+  // Listen to remote changes
+  wsProvider.awareness.on('change', renderRemoteCursors);
+  
+  // Also re-render cursors on text changes to adjust to new absolute coordinates
+  // (Debounced to avoid performance hits during rapid typing)
+  let _cursorRenderTimer = null;
+  quill.on('text-change', () => {
+    if (_cursorRenderTimer) cancelAnimationFrame(_cursorRenderTimer);
+    _cursorRenderTimer = requestAnimationFrame(() => {
+      _cursorRenderTimer = null;
+      renderRemoteCursors();
+    });
+  });
+  // ── End custom cursor sync ─────────────────────────────────────────────
 
   // ── Seed initial content from Supabase (first time only) ──────────
   // If the Yjs doc is empty and the Supabase doc has content, seed it
