@@ -179,6 +179,7 @@ Row-Level Security (RLS) policies are applied to all tables to enforce user-leve
 |---|---|
 | Render | Cloud deployment platform hosting the Node.js / WebSocket relay server |
 | Antigravity | Advanced agentic IDE used for autonomous pair-programming and architecture design |
+| Claude / Gemini 3.1 Pro | Primary LLM backends utilized during development for code generation and refactoring |
 
 ---
 
