@@ -54,6 +54,20 @@ if (SERVICE_KEY) {
   console.warn('[Supabase] SUPABASE_SERVICE_ROLE_KEY not set — guest profile creation will fail.');
 }
 
+// Health check — shows which services are configured (no secrets exposed)
+app.get('/api/health', (req, res) => {
+  res.json({
+    groq: !!groq,
+    gemini: !!ai,
+    supabase: !!supabaseAdmin,
+    env: {
+      GROQ_API_KEY: process.env.GROQ_API_KEY ? `set (${process.env.GROQ_API_KEY.length} chars)` : 'MISSING',
+      GEMINI_API_KEY: process.env.GEMINI_API_KEY ? `set (${process.env.GEMINI_API_KEY.length} chars)` : 'MISSING',
+      SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ? `set (${process.env.SUPABASE_SERVICE_ROLE_KEY.length} chars)` : 'MISSING',
+    }
+  });
+});
+
 // Redirect root
 app.get('/', (req, res) => res.redirect('/auth.html'));
 
