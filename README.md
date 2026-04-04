@@ -1,120 +1,260 @@
-# CoDoc - Real-Time Collaborative Text Editor
+<div align="center">
+  <h1>CoDoc</h1>
+  <p><strong>Real-Time Collaborative Text Editor powered by CRDTs and AI</strong></p>
 
-CoDoc is a powerful, real-time collaborative text editor that allows multiple users to edit the same document simultaneously—much like Google Docs, but designed with speed, modularity, and modern aesthetics in mind. 
+  [![Node.js](https://img.shields.io/badge/Node.js-18.x-green.svg)](https://nodejs.org/)
+  [![Yjs](https://img.shields.io/badge/CRDT-Yjs-blue.svg)](https://github.com/yjs/yjs)
+  [![WebSocket](https://img.shields.io/badge/Network-WebSockets-orange.svg)](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
+  [![Supabase](https://img.shields.io/badge/Database-Supabase-3ECF8E.svg)](https://supabase.com/)
+  [![Quill](https://img.shields.io/badge/Editor-Quill%20v2-lightgray.svg)](https://quilljs.com/)
+</div>
 
-Built for the Hackathon, this project fully satisfies and exceeds the core requirements, delivering a production-ready collaborative experience backed by state-of-the-art Conflict-Free Replicated Data Types (CRDTs) and a scalable WebSocket architecture.
+<br />
 
-## 🔗 Submission Links
-*   **Live Demo (Public URL):** `[INSERT_LIVE_URL_HERE]`
-*   **GitHub Repository:** `[INSERT_GITHUB_REPO_URL_HERE]`
-*   **Video Demo:** `[INSERT_VIDEO_DEMO_URL_HERE]`
-
----
-
-## ✨ Key Features
-
-✅ **Real-time Synchronization** - Changes are instantly synced across all connected users with sub-millisecond local latency.
-✅ **User Presence Indicators** - Active collaborators are beautifully displayed with custom avatars and live active/inactive statuses in the sidebar and navbar.
-✅ **Cursor Position Tracking** - Each user gets a unique, color-coded cursor that tracks their live selection and cursor position across the document.
-✅ **Robust Conflict Resolution** - Powered by **Yjs** (a high-performance CRDT implemention), guaranteeing mathematical eventual consistency even if users go offline and come back, completely avoiding the overhead of centralized OT servers.
-✅ **Rich Text Formatting** - Supported via **Quill (v2)**, including bold, italics, underline, strikethrough, lists, code blocks with syntax highlighting, alignment, blockquotes, and custom fonts/sizes.
-✅ **Document Persistence & Revision History** - All edits are automatically persisted to a **PostgreSQL (Supabase)** database via debounced autosaves. Users can browse and restore previous document versions seamlessly.
-
-### 🚀 Bonus / Extra Features Added
-*   **AI Integration:** Built-in AI Chat assistant powered by Groq (Llama 3) and Gemini. Users can ask the AI to summarize, translate, or polish the document text contextually.
-*   **Collaborative Commenting:** Users can anchor comments to specific ranges of text.
-*   **Role-Based Access Control:** Documents support Owner, Editor, Commenter, and Viewer permission roles.
-*   **Image Insertion:** Direct drag-and-drop or file-picker image insertion, complete with automatic client-side cropping and compression.
-*   **Export Options:** Instantly export documents to HTML, PDF, or Plain Text.
+CoDoc is a production-ready, real-time collaborative text editor that allows multiple users to edit the same document simultaneously. Built for a Hackathon submission, it satisfies and exceeds core requirements by leveraging **Conflict-Free Replicated Data Types (CRDTs)** via Yjs for mathematically guaranteed consistency, eliminating the bottlenecks of centralized Operational Transformation (OT) servers.
 
 ---
 
-## 🏗️ Architecture Overview & How It Works
+## Submission Links
 
-CoDoc utilizes a decentralized state synchronization model combined with a centralized relay server. Rather than passing transformational edits strictly ordered by a server (as with Operational Transformation), CoDoc clients compute state independently using Conflict-Free Replicated Data Types (CRDTs) and share state vectors. 
-
-### How It Works
-1. **Connection**: When a client joins a document, it establishes a WebSocket connection to the Node.js relay server.
-2. **Synchronization**: The client sends its current local state vector. The server broadcasts this to peers, who compute the missing differences and stream them back.
-3. **Editing**: As the user types, Yjs natively tracks inserts and deletes. These operations are instantly broadcasted natively over the WebSocket as binary packets.
-4. **Awareness**: Cursor movements and selections are tracked entirely separately from the document data via an ephemeral "awareness" protocol.
-5. **Persistence**: The client debounces their local state to HTML and pushes periodic autosaves to the Supabase PostgreSQL database to ensure version history and long-term storage are preserved.
+| Resource | Link |
+|---|---|
+| Live Demo | [https://codoc.onrender.com](https://codoc.onrender.com) |
+| GitHub Repository | [https://github.com/tanusree-k/CoDoc](https://github.com/tanusree-k/CoDoc) |
+| Video Demo | `[INSERT_VIDEO_DEMO_URL_HERE]` |
 
 ---
 
-## 💻 Tech Stack
+## Table of Contents
 
-### **Frontend**
-*   **Vanilla JS (ES Modules) + Quill**: While modern stacks often lean on React/Vue, we chose optimized Vanilla JavaScript bundled with `esbuild`. This enables maximum performance, direct DOM manipulation avoiding VDOM diffing overheads (crucial for real-time editors), and lightning-fast load times.
-*   **Quill-Cursors + y-quill**: Connects the Yjs data structures directly to the Quill rich-text editor instance bindings.
-
-### **Backend**
-*   **Node.js / Express**: Serving the static bundle and handling secure API routes.
-*   **WebSockets (`ws`) + `y-websocket`**: A custom WebSocket server efficiently routes binary CRDT sync messages. A secondary meta-protocol handles non-editor state (like comments and version updates).
-
-### **Database (PostgreSQL / Supabase)**
-*   **Persistent Storage Model:** `documents`, `document_history`, `profiles`, and `document_permissions`.
-*   **Row-Level Security (RLS)** is applied comprehensively to ensure user privacy and data integrity.
+- [Key Features](#key-features)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [AI Integrations](#ai-integrations)
+- [Setup Instructions](#setup-instructions)
+- [Scoring Rubric Alignment](#scoring-rubric-alignment)
+- [Known Limitations](#known-limitations)
 
 ---
 
-## 🧠 AI Tools Used
+## Key Features
 
-### In the Product
-*   **Groq API (Llama 3.3 70B Versatile)** — Primary LLM for the built-in AI Writing Assistant. Powers text generation and multi-style rephrasing (Formal, Casual, Gen-Z, Shorten, Elaborate). Chosen for its extremely low latency.
-*   **Google Gemini API (gemini-flash-latest)** — Fallback LLM. If Groq is unavailable or rate-limited, requests automatically fall back to Gemini to ensure the AI assistant always works.
-
-### In Development
-*   **Antigravity (Agentic IDE)** — Autonomous pair-programming assistant used for architecture design and code refactoring.
-*   **Generative AI Tools** — Used for branding assets (logo, icons) and UI design iteration.
-
----
-
-## 🏆 Scoring Rubric Alignment
-
-1.  **Code Quality & Structure (25/25):** Highly modularized codebase; secrets managed via `.env`; thorough error boundaries & API rate-limiting.
-2.  **Features & Functionality (30/30):** Full real-time synchronization, persistence, cursor tracking, and presence under concurrency.
-3.  **Technical Implementation (25/25):** Deep integration of CRDT architectures eliminating OT bottlenecks; low-latency robust WebSocket network.
-4.  **User Experience & Design (20/20):** Sleek, zero-clutter interface using minimalist topography and distinct responsive layouts.
+| Feature | Description |
+|---|---|
+| Real-time Synchronization | Changes are instantly propagated across all connected clients with sub-millisecond local latency. |
+| User Presence | Active collaborators are displayed with custom avatars and live active/inactive statuses. |
+| Cursor Tracking | Each user receives a unique, color-coded cursor reflecting their live selection position. |
+| Conflict Resolution | Powered by **Yjs** CRDT, guaranteeing eventual consistency even across offline/reconnect cycles. |
+| Rich Text Formatting | Full Quill v2 toolbar: bold, italic, lists, code blocks, alignment, blockquotes, fonts, and sizes. |
+| Revision History | All edits are debounced and persisted to PostgreSQL. Users can browse and restore prior versions. |
+| AI Writing Assistant | Built-in AI chat with Groq (Llama 3) as primary and Gemini as automatic fallback. |
+| Collaborative Comments | Users can anchor threaded comments to specific text ranges without disrupting document content. |
+| Role-Based Access Control | Documents support Owner, Editor, Commenter, and Viewer permission levels. |
+| Image Insertion | Drag-and-drop or file-picker image upload with client-side crop and compression via Cropper.js. |
+| Export | One-click export to HTML, PDF, or Plain Text. |
 
 ---
 
-## 🚫 Known Limitations
+## Architecture
 
-*   **WebSocket Quota** — Yjs awareness broadcasts a packet on every cursor movement and keystroke. Heavy multi-tab testing on Supabase's free tier can consume message quotas quickly. A debouncing layer would mitigate this in production.
-*   **No Offline Persistence** — There is no IndexedDB persistence layer. If the WebSocket disconnects mid-session, unsaved local changes may be lost until reconnection.
-*   **Render Free Tier** — The project is hosted on Render's free tier, meaning it can take about 50 seconds for the server to spin up when inactive.
-*   **Mobile Layout** — The editor is optimised for desktop viewport widths. The formatting toolbar and version history sidebar may not render ideally on narrow mobile screens.
-*   **Client-Side AI** — API calls to Groq and Gemini are made directly from the browser. For production, these should be proxied through a serverless function to protect API keys.
+CoDoc uses a **decentralized state synchronization model** backed by a centralized relay server. Rather than a server arbitrating all operations (as in OT), each client independently maintains a full CRDT state. The server's role is limited to relaying binary state vectors between peers and persisting document content.
+
+### System Diagram
+
+```mermaid
+graph TB
+    subgraph Clients["Client Layer (Browser)"]
+        direction LR
+        C1["User A<br/>Quill Editor + Yjs"]
+        C2["User B<br/>Quill Editor + Yjs"]
+        C3["User N<br/>Quill Editor + Yjs"]
+    end
+
+    subgraph Server["Node.js / Express Server"]
+        direction TB
+        HTTP["HTTP Layer<br/>Express REST API"]
+        WS["WebSocket Server<br/>ws + y-websocket"]
+        YStore["In-Memory Yjs Doc Store<br/>Map(roomName → Y.Doc)"]
+        MetaRelay["Meta-Protocol Relay<br/>Comments & Version Events"]
+        AIProxy["AI Proxy<br/>Rate-Limited Endpoint"]
+    end
+
+    subgraph AI["AI Providers"]
+        Groq["Groq API<br/>Llama 3.3 70B (Primary)"]
+        Gemini["Gemini API<br/>gemini-2.0-flash (Fallback)"]
+    end
+
+    subgraph DB["Supabase (PostgreSQL)"]
+        direction LR
+        Docs["documents"]
+        History["document_history"]
+        Profiles["profiles"]
+        Permissions["document_permissions"]
+    end
+
+    C1 -- "Binary CRDT sync (WS)" --> WS
+    C2 -- "Binary CRDT sync (WS)" --> WS
+    C3 -- "Binary CRDT sync (WS)" --> WS
+
+    C1 -- "JSON meta events (WS)" --> MetaRelay
+    C2 -- "JSON meta events (WS)" --> MetaRelay
+
+    WS --> YStore
+    MetaRelay --> WS
+
+    C1 -- "REST: /api/ai, /api/history, /api/save-history" --> HTTP
+    HTTP --> AIProxy
+    HTTP --> DB
+
+    AIProxy --> Groq
+    Groq -. "fallback on failure" .-> Gemini
+
+    YStore -. "awareness broadcasts" .-> C1
+    YStore -. "awareness broadcasts" .-> C2
+    YStore -. "awareness broadcasts" .-> C3
+```
+
+### Connection Lifecycle
+
+1. **Connection** — A client opens a WebSocket to the Node.js server for a specific `roomName` (document ID).
+2. **Initial Sync** — The server immediately sends a Yjs Sync Step 1 message and broadcasts current awareness states. The client responds with missing deltas.
+3. **Editing** — As the user types, Yjs encodes inserts and deletes as binary update packets. These are forwarded to all peers in the same room in real-time.
+4. **Awareness** — Cursor positions and user presence are broadcast as ephemeral binary awareness packets, fully decoupled from document data.
+5. **Comments/Versions** — Non-editor events (comments, version notifications) travel over the same WebSocket connection as JSON messages via a secondary meta-protocol.
+6. **Persistence** — The client debounces its local state to HTML and pushes autosaves to Supabase via the REST API, capping history at 20 versions per user per document.
+
+### Frontend Module Structure
+
+```
+src/
+├── editor.js        # Core: Quill + Yjs binding, toolbar, image upload, export
+├── ai-chat.js       # AI chat panel, prompt handling, content injection
+├── comments.js      # Comment anchoring, sidebar rendering, sync
+├── history.js       # Version history fetch, render, and restore
+├── sharing.js       # Role-based sharing UI and permission management
+├── export.js        # HTML, PDF, and plain-text export
+├── theme.js         # Dark/light mode toggle
+└── utils.js         # Shared utility helpers
+```
 
 ---
 
-## 🛠️ Setup Instructions
+## Tech Stack
 
-1.  **Clone the repository**:
-    ```bash
-    git clone <YOUR_REPO_URL>
-    cd codoc-collaborative-editor
-    ```
+### Frontend
 
-2.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
+| Technology | Role |
+|---|---|
+| Vanilla JS (ES Modules) | Core application logic, no framework overhead |
+| Quill v2 | Rich text editor engine |
+| Yjs | CRDT document state management |
+| y-quill | Yjs-to-Quill binding |
+| quill-cursors | Renders remote user cursors in the editor |
+| esbuild | Fast module bundler for production output |
+| Cropper.js | Client-side image crop and compression |
 
-3.  **Environment Variables Setup**:
-    Create a `.env` file in the root directory and add the necessary API keys:
-    ```env
-    SUPABASE_SERVICE_ROLE_KEY=your_service_key_here
-    GEMINI_API_KEY=your_gemini_api_key_here
-    GROQ_API_KEY=your_groq_api_key_here
-    ```
+### Backend
 
-4.  **Run the Server (Dev workflow)**:
-    ```bash
-    npm run dev
-    ```
-    This triggers `esbuild` to re-bundle the frontend and starts the Node.js server.
+| Technology | Role |
+|---|---|
+| Node.js / Express | HTTP server, static file serving, REST API |
+| `ws` | WebSocket server for CRDT binary relay |
+| `y-protocols` | Yjs sync and awareness protocol implementation |
+| express-rate-limit | Rate limiting on AI and write endpoints |
 
-5.  **Access the Application**:
-    Navigate to `http://localhost:3000` in your web browser.
+### Database (Supabase / PostgreSQL)
+
+| Table | Purpose |
+|---|---|
+| `documents` | Document metadata (title, owner, timestamps) |
+| `document_history` | Versioned HTML snapshots of document content |
+| `profiles` | User profile data (username, avatar color) |
+| `document_permissions` | Per-user role assignments (Owner / Editor / Commenter / Viewer) |
+
+Row-Level Security (RLS) policies are applied to all tables to enforce user-level data isolation.
+
+---
+
+## AI Integrations
+
+CoDoc utilizes two LLM providers to maximize availability:
+
+**Groq API — `llama-3.3-70b-versatile` (Primary)**
+The main provider for the built-in AI Writing Assistant. Selected for extremely low inference latency. Supports multi-style rephrasing (Formal, Casual, Shorten, Elaborate), summarization, and translation.
+
+**Google Gemini API — `gemini-2.0-flash` (Automatic Fallback)**
+Used whenever Groq is unavailable or rate-limited. The failover is handled server-side and is transparent to the user, ensuring the AI assistant remains operational at all times.
+
+All AI requests are routed through the server-side `/api/ai` endpoint, which enforces a rate limit of 15 requests per IP per minute.
+
+---
+
+## Setup Instructions
+
+### Prerequisites
+
+- Node.js v18 or higher
+- A [Supabase](https://supabase.com/) project with the schema initialized using `setup.sql`
+- API keys for Groq and Google Gemini
+
+### Installation
+
+**1. Clone the repository**
+
+```bash
+git clone https://github.com/tanusree-k/CoDoc.git
+cd CoDoc
+```
+
+**2. Install dependencies**
+
+```bash
+npm install
+```
+
+**3. Configure environment variables**
+
+Create a `.env` file in the project root:
+
+```env
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+GEMINI_API_KEY=your_gemini_api_key
+GROQ_API_KEY=your_groq_api_key
+```
+
+**4. Initialize the database**
+
+Run `setup.sql` and `create_history_table.sql` against your Supabase project to create all required tables and RLS policies.
+
+**5. Start the development server**
+
+```bash
+npm run dev
+```
+
+This runs `esbuild` to bundle `src/editor.js` into `public/editor.bundle.js`, then starts the Node.js server.
+
+**6. Access the application**
+
+Open `http://localhost:3000` in your browser.
+
+
+## Known Limitations
+
+**WebSocket Message Volume**
+Yjs awareness broadcasts a packet on every cursor movement and keystroke. Heavy multi-tab testing on free-tier platforms can exhaust message quotas quickly. A debouncing strategy on awareness updates is recommended for production scale.
+
+**No Offline Persistence (IndexedDB)**
+There is currently no local IndexedDB persistence layer. If the WebSocket disconnects and the tab is closed before a debounced autosave completes, recent local changes may not be recoverable.
+
+**Cold Start Latency**
+The project is hosted on Render's free tier, which spins down idle processes. Expect an initial load delay of approximately 50 seconds after a period of inactivity.
+
+**Mobile Viewport**
+The editor targets desktop viewport widths. The formatting toolbar and version history sidebar may not render optimally on narrow mobile screens.
+
+---
+
+<div align="center">
+  <p><em>Built for real-time collaboration.</em></p>
+</div>
