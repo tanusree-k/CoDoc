@@ -18052,7 +18052,7 @@ showLoadingOverlay("Connecting\u2026");
           hideDelayMs: 5e3,
           hideSpeedMs: 300,
           selectionChangeSource: null,
-          transformOnTextChange: true
+          transformOnTextChange: false
         }
       },
       placeholder: "Start typing your collaborative document here\u2026",

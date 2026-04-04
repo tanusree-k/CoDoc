@@ -19,7 +19,7 @@ CoDoc is a production-ready, real-time collaborative text editor that allows mul
 
 | Resource | Link |
 |---|---|
-| Live Demo | [https://codoc.onrender.com](https://codoc.onrender.com) |
+| Live Demo | [https://codoc-g086.onrender.com](https://codoc-g086.onrender.com) |
 | GitHub Repository | [https://github.com/tanusree-k/CoDoc](https://github.com/tanusree-k/CoDoc) |
 | Video Demo | `[INSERT_VIDEO_DEMO_URL_HERE]` |
 

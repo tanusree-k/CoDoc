@@ -317,7 +317,7 @@ showLoadingOverlay('Connecting…');
         hideDelayMs: 5000,
         hideSpeedMs: 300,
         selectionChangeSource: null,
-        transformOnTextChange: true
+        transformOnTextChange: false
       }
     },
     placeholder: 'Start typing your collaborative document here…',
