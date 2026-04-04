@@ -18087,7 +18087,7 @@ showLoadingOverlay("Connecting\u2026");
       color: myColor,
       role: myRole
     });
-    const binding = new QuillBinding(ytext, quill, wsProvider.awareness);
+    const binding = new QuillBinding(ytext, quill);
     const cursors = quill.getModule("cursors");
     quill.on("selection-change", (range) => {
       if (range) {
@@ -18131,6 +18131,10 @@ showLoadingOverlay("Connecting\u2026");
         }
         if (clientId === myClientId) return;
         if (!state.user) return;
+        if (state.user.id === myId) {
+          if (cursors) cursors.removeCursor(String(clientId));
+          return;
+        }
         const cursorId = String(clientId);
         const userName = state.user.name || "Anonymous";
         const userColor = state.user.color || "#94a3b8";

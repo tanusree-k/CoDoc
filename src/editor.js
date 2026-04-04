@@ -347,8 +347,9 @@ quill.getModule('toolbar').addHandler('image', function() {
     role: myRole
   });
 
-  // Bind Yjs to Quill
-  const binding = new QuillBinding(ytext, quill, wsProvider.awareness);
+  // Bind Yjs to Quill without passing awareness. This prevents y-quill from rendering duplicate cursors
+  // and allows our manual cursor logic loop below to tightly control filtering of ghost cursors.
+  const binding = new QuillBinding(ytext, quill);
 
   // Get reference to the cursors module
   const cursors = quill.getModule('cursors');
@@ -405,9 +406,16 @@ quill.getModule('toolbar').addHandler('image', function() {
         };
       }
 
-      // Skip our own cursor
+      // Skip our own cursor (by WS client connection ID)
       if (clientId === myClientId) return;
       if (!state.user) return;
+      
+      // Also completely skip ANY ghost/duplicate cursors belonging to our own UUID!
+      // This ensures we only see OTHER editors' cursors, not our own.
+      if (state.user.id === myId) {
+        if (cursors) cursors.removeCursor(String(clientId));
+        return;
+      }
 
       const cursorId = String(clientId);
       const userName = state.user.name || 'Anonymous';
