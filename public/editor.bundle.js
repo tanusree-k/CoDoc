@@ -14456,7 +14456,7 @@ var QuillBinding = class {
         const ops = delta.ops;
         ops.forEach((op) => {
           if (op.attributes !== void 0) {
-            for (let key in op.attributes) {
+            for (const key in op.attributes) {
               if (this._negatedUsedFormats[key] === void 0) {
                 this._negatedUsedFormats[key] = false;
               }
