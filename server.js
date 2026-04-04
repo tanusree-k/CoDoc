@@ -159,13 +159,22 @@ Rules:
 
     // Defensive parsing: Strip markdown if the AI ignored instructions
     let cleanJson = rawText.trim();
-    if (cleanJson.startsWith('```')) {
-      cleanJson = cleanJson.replace(/^```json\s*|```\s*$/g, '');
+    const firstBrace = cleanJson.indexOf('{');
+    const lastBrace = cleanJson.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+      cleanJson = cleanJson.substring(firstBrace, lastBrace + 1);
+    }
+    
+    const aiRes = JSON.parse(cleanJson);
+    
+    // Fallback response keys in case the LLM uses different keys for conversational chat
+    let replyText = aiRes.reply || aiRes.response || aiRes.message || aiRes.text || aiRes.answer || "";
+    if (!replyText && !aiRes.action && !aiRes.content) {
+      replyText = Object.values(aiRes).find(v => typeof v === 'string') || "I couldn't generate a proper response.";
     }
 
-    const aiRes = JSON.parse(cleanJson);
     res.json({
-      reply: aiRes.reply || "",
+      reply: replyText,
       action: aiRes.action || "none",
       content: aiRes.content || ""
     });
@@ -246,7 +255,10 @@ app.get('/api/history/:user_id', async (req, res) => {
 
     const { data: versions, error } = await query;
 
-    if (error) throw error;
+    if (error) {
+      if (error.code === '22P02') return res.json({ versions: [] }); // Invalid UUID syntax, return empty
+      throw error;
+    }
     res.json({ versions });
   } catch (err) {
     console.error('History Fetch Error:', err);
