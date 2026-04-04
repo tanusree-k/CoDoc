@@ -18087,6 +18087,78 @@ showLoadingOverlay("Connecting\u2026");
     });
     const binding = new QuillBinding(ytext, quill, wsProvider.awareness);
     const cursors = quill.getModule("cursors");
+    if (binding._quillObserver) {
+      quill.off("editor-change", binding._quillObserver);
+      let _pendingCursorUpdate = null;
+      const _safeQuillObserver = (eventType, delta, state, origin) => {
+        if (delta && delta.ops) {
+          const ops = delta.ops;
+          ops.forEach((op) => {
+            if (op.attributes !== void 0) {
+              for (const key in op.attributes) {
+                if (binding._negatedUsedFormats[key] === void 0) {
+                  binding._negatedUsedFormats[key] = false;
+                }
+              }
+            }
+          });
+          if (origin !== binding) {
+            binding.doc.transact(() => {
+              binding.type.applyDelta(ops);
+            }, binding);
+          }
+        }
+        if (wsProvider.awareness && cursors) {
+          const isRemoteOp = origin === binding;
+          if (!isRemoteOp) {
+            const sel = quill.getSelection();
+            const aw = wsProvider.awareness.getLocalState();
+            if (sel === null) {
+              if (eventType === "selection-change") {
+                if (aw !== null) {
+                  wsProvider.awareness.setLocalStateField("cursor", null);
+                }
+              }
+            } else {
+              const anchor = createRelativePositionFromTypeIndex(ytext, sel.index);
+              const head = createRelativePositionFromTypeIndex(ytext, sel.index + sel.length);
+              if (!aw || !aw.cursor || !compareRelativePositions(anchor, aw.cursor.anchor) || !compareRelativePositions(head, aw.cursor.head)) {
+                wsProvider.awareness.setLocalStateField("cursor", { anchor, head });
+              }
+            }
+          }
+          if (_pendingCursorUpdate) cancelAnimationFrame(_pendingCursorUpdate);
+          _pendingCursorUpdate = requestAnimationFrame(() => {
+            _pendingCursorUpdate = null;
+            wsProvider.awareness.getStates().forEach((aw, clientId) => {
+              if (clientId === wsProvider.awareness.clientID) return;
+              try {
+                if (aw && aw.cursor) {
+                  const user2 = aw.user || {};
+                  cursors.createCursor(clientId.toString(), user2.name || "User", user2.color || "#ffa500");
+                  const anchor = createAbsolutePositionFromRelativePosition(
+                    createRelativePositionFromJSON(aw.cursor.anchor),
+                    binding.doc
+                  );
+                  const head = createAbsolutePositionFromRelativePosition(
+                    createRelativePositionFromJSON(aw.cursor.head),
+                    binding.doc
+                  );
+                  if (anchor && head && anchor.type === ytext) {
+                    cursors.moveCursor(clientId.toString(), { index: anchor.index, length: head.index - anchor.index });
+                  }
+                } else {
+                  cursors.removeCursor(clientId.toString());
+                }
+              } catch (e) {
+              }
+            });
+          });
+        }
+      };
+      binding._quillObserver = _safeQuillObserver;
+      quill.on("editor-change", _safeQuillObserver);
+    }
     wsProvider.on("sync", (synced) => {
       if (synced && ytext.length === 0 && doc2.content) {
         const tempDiv = document.createElement("div");
