@@ -18052,7 +18052,8 @@ showLoadingOverlay("Connecting\u2026");
           hideDelayMs: 1e4,
           hideSpeedMs: 500,
           selectionChangeSource: "user",
-          transformOnTextChange: true
+          transformOnTextChange: false
+          // Disable internal OT sync to rely fully on Yjs CRDT accuracy
         }
       },
       placeholder: "Start typing your collaborative document here\u2026",
@@ -18087,14 +18088,29 @@ showLoadingOverlay("Connecting\u2026");
     });
     const binding = new QuillBinding(ytext, quill);
     const cursors = quill.getModule("cursors");
+    let _lastCursorBroadcast = 0;
+    let _cursorBroadcastTimer = null;
+    const broadcastCursor = (range) => {
+      if (range === null) {
+        wsProvider.awareness.setLocalStateField("cursor", null);
+      } else {
+        const anchor = createRelativePositionFromTypeIndex(ytext, range.index);
+        const head = createRelativePositionFromTypeIndex(ytext, range.index + range.length);
+        wsProvider.awareness.setLocalStateField("cursor", { anchor, head });
+      }
+    };
     quill.on("selection-change", (range, oldRange, source) => {
       if (source === "user") {
-        if (range === null) {
-          wsProvider.awareness.setLocalStateField("cursor", null);
+        const now = Date.now();
+        if (now - _lastCursorBroadcast > 100) {
+          broadcastCursor(range);
+          _lastCursorBroadcast = now;
         } else {
-          const anchor = createRelativePositionFromTypeIndex(ytext, range.index);
-          const head = createRelativePositionFromTypeIndex(ytext, range.index + range.length);
-          wsProvider.awareness.setLocalStateField("cursor", { anchor, head });
+          clearTimeout(_cursorBroadcastTimer);
+          _cursorBroadcastTimer = setTimeout(() => {
+            broadcastCursor(range);
+            _lastCursorBroadcast = Date.now();
+          }, 100);
         }
       }
     });
@@ -18106,7 +18122,7 @@ showLoadingOverlay("Connecting\u2026");
         if (aw && aw.cursor) {
           const user2 = aw.user || {};
           const safeId = clientId.toString();
-          cursors.createCursor(safeId, user2.name || "Anonymous", user2.color || "#ffa500");
+          cursors.createCursor(safeId, user2.name || "Anonymous", user2.color || "#94a3b8");
           try {
             const anchorAbs = createAbsolutePositionFromRelativePosition(
               createRelativePositionFromJSON(aw.cursor.anchor),
@@ -18130,14 +18146,7 @@ showLoadingOverlay("Connecting\u2026");
       });
     };
     wsProvider.awareness.on("change", renderRemoteCursors);
-    let _cursorRenderTimer = null;
-    quill.on("text-change", () => {
-      if (_cursorRenderTimer) cancelAnimationFrame(_cursorRenderTimer);
-      _cursorRenderTimer = requestAnimationFrame(() => {
-        _cursorRenderTimer = null;
-        renderRemoteCursors();
-      });
-    });
+    quill.on("text-change", renderRemoteCursors);
     wsProvider.on("sync", (synced) => {
       if (synced && ytext.length === 0 && doc2.content) {
         const tempDiv = document.createElement("div");

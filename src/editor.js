@@ -317,7 +317,7 @@ showLoadingOverlay('Connecting…');
         hideDelayMs: 10000,
         hideSpeedMs: 500,
         selectionChangeSource: 'user',
-        transformOnTextChange: true
+        transformOnTextChange: false // Disable internal OT sync to rely fully on Yjs CRDT accuracy
       }
     },
     placeholder: 'Start typing your collaborative document here…',
@@ -369,18 +369,33 @@ quill.getModule('toolbar').addHandler('image', function() {
   const cursors = quill.getModule('cursors');
 
   // ── Custom robust cursor sync for Quill 2.x ────────────────────────────
-  // Broadcast local cursor selection to Yjs awareness
+  // Broadcast local cursor selection to Yjs awareness (with 100ms throttle to reduce excessive updates)
+  let _lastCursorBroadcast = 0;
+  let _cursorBroadcastTimer = null;
+
+  const broadcastCursor = (range) => {
+    if (range === null) {
+      wsProvider.awareness.setLocalStateField('cursor', null);
+    } else {
+      const anchor = Y.createRelativePositionFromTypeIndex(ytext, range.index);
+      const head = Y.createRelativePositionFromTypeIndex(ytext, range.index + range.length);
+      wsProvider.awareness.setLocalStateField('cursor', { anchor, head });
+    }
+  };
+
   quill.on('selection-change', (range, oldRange, source) => {
     // Only broadcast if the user actually changed the selection
     if (source === 'user') {
-      if (range === null) {
-        // Editor lost focus
-        wsProvider.awareness.setLocalStateField('cursor', null);
+      const now = Date.now();
+      if (now - _lastCursorBroadcast > 100) {
+        broadcastCursor(range);
+        _lastCursorBroadcast = now;
       } else {
-        // Convert integer indices to Yjs relative positions
-        const anchor = Y.createRelativePositionFromTypeIndex(ytext, range.index);
-        const head = Y.createRelativePositionFromTypeIndex(ytext, range.index + range.length);
-        wsProvider.awareness.setLocalStateField('cursor', { anchor, head });
+        clearTimeout(_cursorBroadcastTimer);
+        _cursorBroadcastTimer = setTimeout(() => {
+          broadcastCursor(range);
+          _lastCursorBroadcast = Date.now();
+        }, 100);
       }
     }
   });
@@ -395,10 +410,11 @@ quill.getModule('toolbar').addHandler('image', function() {
       if (aw && aw.cursor) {
         const user = aw.user || {};
         const safeId = clientId.toString();
-        // Create cursor if missing
-        cursors.createCursor(safeId, user.name || 'Anonymous', user.color || '#ffa500');
+        // Create cursor if missing (this isolates cursors uniquely by their clientId)
+        cursors.createCursor(safeId, user.name || 'Anonymous', user.color || '#94a3b8');
         
         // Translate Yjs relative positions back to Quill absolute indices
+        // This ensures cursors are safely rendered independent of simultaneous ops
         try {
           const anchorAbs = Y.createAbsolutePositionFromRelativePosition(
             Y.createRelativePositionFromJSON(aw.cursor.anchor), ydoc
@@ -425,16 +441,10 @@ quill.getModule('toolbar').addHandler('image', function() {
   // Listen to remote changes
   wsProvider.awareness.on('change', renderRemoteCursors);
   
-  // Also re-render cursors on text changes to adjust to new absolute coordinates
-  // (Debounced to avoid performance hits during rapid typing)
-  let _cursorRenderTimer = null;
-  quill.on('text-change', () => {
-    if (_cursorRenderTimer) cancelAnimationFrame(_cursorRenderTimer);
-    _cursorRenderTimer = requestAnimationFrame(() => {
-      _cursorRenderTimer = null;
-      renderRemoteCursors();
-    });
-  });
+  // Recalculate and re-render remote cursors immediately on text changes.
+  // We disabled transformOnTextChange, so we MUST do this synchronously,
+  // otherwise remote cursors will drift or flicker when text shifts before them.
+  quill.on('text-change', renderRemoteCursors);
   // ── End custom cursor sync ─────────────────────────────────────────────
 
   // ── Seed initial content from Supabase (first time only) ──────────
