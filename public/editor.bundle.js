@@ -18049,10 +18049,10 @@ showLoadingOverlay("Connecting\u2026");
         history: { userOnly: true },
         blotFormatter: {},
         cursors: {
-          hideDelayMs: 5e3,
-          hideSpeedMs: 300,
-          selectionChangeSource: null,
-          transformOnTextChange: false
+          hideDelayMs: 1e4,
+          hideSpeedMs: 500,
+          selectionChangeSource: "user",
+          transformOnTextChange: true
         }
       },
       placeholder: "Start typing your collaborative document here\u2026",

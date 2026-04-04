@@ -429,8 +429,14 @@ wss.on('connection', (conn, req) => {
           // Track which awareness client IDs belong to this connection
           const connMeta = conns.get(conn);
           if (connMeta) {
-            const decoded = awarenessProtocol.decodeAwarenessUpdate(update);
-            decoded.forEach(u => connMeta.awarenessIds.add(u));
+            const updDecoder = decoding.createDecoder(update);
+            const len = decoding.readVarUint(updDecoder);
+            for (let i = 0; i < len; i++) {
+              const clientID = decoding.readVarUint(updDecoder);
+              decoding.readVarUint(updDecoder); // clock
+              decoding.readVarString(updDecoder); // state
+              connMeta.awarenessIds.add(clientID);
+            }
           }
           break;
         }
