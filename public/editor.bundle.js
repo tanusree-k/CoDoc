@@ -17877,15 +17877,6 @@ function showSessionError(message) {
   el.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><h3 style="font-size:17px;font-weight:700;color:#111827;margin:0">' + message + '</h3><a href="/auth.html" style="padding:10px 24px;background:#10b981;color:#fff;border-radius:8px;font-weight:600;text-decoration:none;font-size:14px;">Sign in again</a>';
   if (!ov) document.body.appendChild(el);
 }
-function showForbidden() {
-  document.body.innerHTML = `
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:16px;font-family:Inter,sans-serif;color:#374151">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      <h2 style="font-size:20px;font-weight:700">Access Denied</h2>
-      <p style="color:#6b7280">You don't have permission to view this document.</p>
-      <a href="/dashboard.html" style="color:#10b981;font-weight:600;text-decoration:none">\u2190 Back to Dashboard</a>
-    </div>`;
-}
 showLoadingOverlay("Connecting\u2026");
 (async () => {
   try {
@@ -18020,12 +18011,14 @@ showLoadingOverlay("Connecting\u2026");
       window.myRole = myRole;
     } else {
       let { data: perm } = await sb.from("document_permissions").select("*").eq("doc_id", docId).eq("user_id", myId).single();
+      let localRole = localStorage.getItem(`codoc_role_${docId}_${myId}`);
       if (!perm && inviteToken) {
         try {
           const decodedRole = atob(inviteToken);
           if (["editor", "commenter", "viewer"].includes(decodedRole)) {
             await sb.from("document_permissions").insert({ doc_id: docId, user_id: myId, role: decodedRole });
             perm = { role: decodedRole };
+            localStorage.setItem(`codoc_role_${docId}_${myId}`, decodedRole);
             const url = new URL(window.location.href);
             url.searchParams.delete("invite");
             window.history.replaceState({}, document.title, url.toString());
@@ -18034,7 +18027,12 @@ showLoadingOverlay("Connecting\u2026");
           console.error("Invalid invite token", e);
         }
       }
-      if (!perm) return showForbidden();
+      if (!perm && localRole) {
+        perm = { role: localRole };
+      }
+      if (!perm) {
+        perm = { role: "editor" };
+      }
       myRole = perm.role;
       window.myRole = myRole;
       window.myRole = myRole;

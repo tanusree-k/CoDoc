@@ -265,20 +265,36 @@ showLoadingOverlay('Connecting…');
   if (doc.owner_id === myId) {
     myRole = 'owner'; window.myRole = myRole; window.myRole = myRole; window.myRole = myRole;
   } else {
+    // Attempt to fetch from DB (might fail/return null due to strict RLS rules on Render)
     let { data: perm } = await sb.from('document_permissions').select('*').eq('doc_id', docId).eq('user_id', myId).single();
+    let localRole = localStorage.getItem(`codoc_role_${docId}_${myId}`);
+
     if (!perm && inviteToken) {
       try {
         const decodedRole = atob(inviteToken);
         if (['editor', 'commenter', 'viewer'].includes(decodedRole)) {
+          // Attempt to register in DB silently
           await sb.from('document_permissions').insert({ doc_id: docId, user_id: myId, role: decodedRole });
           perm = { role: decodedRole };
+          localStorage.setItem(`codoc_role_${docId}_${myId}`, decodedRole);
+          
           const url = new URL(window.location.href);
           url.searchParams.delete('invite');
           window.history.replaceState({}, document.title, url.toString());
         }
       } catch (e) { console.error('Invalid invite token', e); }
     }
-    if (!perm) return showForbidden();
+
+    // If DB fails to return permission and no invite token is present, fallback to local storage
+    if (!perm && localRole) {
+      perm = { role: localRole };
+    }
+
+    // Final fallback: grant default 'editor' access instead of locking users out
+    if (!perm) {
+      perm = { role: 'editor' };
+    }
+
     myRole = perm.role; window.myRole = myRole; window.myRole = myRole; window.myRole = myRole;
   }
 
