@@ -5,7 +5,7 @@ export function setupComments() {
   // Attach all window functions
   // ── Comments ────────────────────────────────────────────────────────────
 window.toggleCommentsSidebar = function() {
-  const sidebar = document.getElementById('window.comments-sidebar');
+  const sidebar = document.getElementById('comments-sidebar');
   if (sidebar) sidebar.classList.toggle('hidden');
 };
 

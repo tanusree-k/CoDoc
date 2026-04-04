@@ -113,147 +113,51 @@ const shareModal     = document.getElementById('share-modal');
 const shareLink      = document.getElementById('share-link-input');
 const permsList      = document.getElementById('perms-list');
 
-// --- Expose State to Window ---
-window.quill = quill;
-window.ydoc = ydoc;
-window.ytext = ytext;
-window.wsProvider = wsProvider;
-window.metaWs = metaWs;
-window.myId = myId;
-window.myName = myName;
-window.myColor = myColor;
-window.myRole = myRole;
-window.docId = docId;
-window.users = users;
-window.comments = comments;
-window.versionHistory = versionHistory;
-window.savedRange = savedRange;
-window.dbSaveTimer = dbSaveTimer;
-window.aiLastSelection = aiLastSelection;
-window.recentBadgeTimer = recentBadgeTimer;
-window.commentsList = commentsList;
-window.commentCount = commentCount;
-window.usersList = usersList;
-window.userCount = userCount;
-window.navAvatars = navAvatars;
-window.myAvatarEl = myAvatarEl;
-window.recentBadge = recentBadge;
-window.toastEl = toastEl;
-window.historyPanel = historyPanel;
+// --- Expose State for Global Access ---
+function syncGlobals() {
+  window.quill = quill;
+  window.ydoc = ydoc;
+  window.ytext = ytext;
+  window.wsProvider = wsProvider;
+  window.metaWs = metaWs;
+  window.myId = myId;
+  window.myName = myName;
+  window.myColor = myColor;
+  window.myRole = myRole;
+  window.docId = docId;
+  window.users = users;
+  window.comments = comments;
+  window.versionHistory = versionHistory;
+  window.savedRange = savedRange;
+  window.dbSaveTimer = dbSaveTimer;
+  window.aiLastSelection = aiLastSelection;
+  window.recentBadgeTimer = recentBadgeTimer;
+}
+window.syncGlobals = syncGlobals;
+
+// Core UI references and helper functions needed globally
+window.commentsList   = commentsList;
+window.commentCount   = commentCount;
+window.usersList      = usersList;
+window.userCount      = userCount;
+window.navAvatars     = navAvatars;
+window.myAvatarEl     = myAvatarEl;
+window.recentBadge    = recentBadge;
+window.toastEl        = toastEl;
+window.historyPanel   = historyPanel;
 window.historyOverlay = historyOverlay;
-window.historyList = historyList;
-window.commentModal = commentModal;
-window.commentText = commentText;
-window.cursorLabels = cursorLabels;
-window.docTitleInput = docTitleInput;
-window.roleBadge = roleBadge;
+window.historyList    = historyList;
+window.commentModal   = commentModal;
+window.commentText    = commentText;
+window.cursorLabels   = cursorLabels;
+window.docTitleInput  = docTitleInput;
+window.roleBadge      = roleBadge;
 window.saveVersionModal = saveVersionModal;
 window.versionNameInput = versionNameInput;
-window.shareModal = shareModal;
-window.shareLink = shareLink;
-window.permsList = permsList;
-window.showToast = showToast;
-window.syncState = syncState;
-window.showLoadingOverlay = showLoadingOverlay;
-window.hideLoadingOverlay = hideLoadingOverlay;
-window.applyRoleUI = applyRoleUI;
-window.debounceDbSave = debounceDbSave;
-window.renderUserList = renderUserList;
-window.connectMetaWs = connectMetaWs;
-window.metaSend = metaSend;
-// ------------------------------
+window.shareModal     = shareModal;
+window.shareLink      = shareLink;
+window.permsList      = permsList;
 
-
-// --- Expose State to Window ---
-window.quill = quill;
-window.ydoc = ydoc;
-window.ytext = ytext;
-window.wsProvider = wsProvider;
-window.metaWs = metaWs;
-window.myId = myId;
-window.myName = myName;
-window.myColor = myColor;
-window.myRole = myRole;
-window.docId = docId;
-window.users = users;
-window.comments = comments;
-window.versionHistory = versionHistory;
-window.savedRange = savedRange;
-window.dbSaveTimer = dbSaveTimer;
-window.aiLastSelection = aiLastSelection;
-window.recentBadgeTimer = recentBadgeTimer;
-window.commentsList = commentsList;
-window.commentCount = commentCount;
-window.usersList = usersList;
-window.userCount = userCount;
-window.navAvatars = navAvatars;
-window.myAvatarEl = myAvatarEl;
-window.recentBadge = recentBadge;
-window.toastEl = toastEl;
-window.historyPanel = historyPanel;
-window.historyOverlay = historyOverlay;
-window.historyList = historyList;
-window.commentModal = commentModal;
-window.commentText = commentText;
-window.cursorLabels = cursorLabels;
-window.docTitleInput = docTitleInput;
-window.roleBadge = roleBadge;
-window.saveVersionModal = saveVersionModal;
-window.versionNameInput = versionNameInput;
-window.shareModal = shareModal;
-window.shareLink = shareLink;
-window.permsList = permsList;
-window.showToast = showToast;
-window.syncState = syncState;
-window.showLoadingOverlay = showLoadingOverlay;
-window.hideLoadingOverlay = hideLoadingOverlay;
-window.applyRoleUI = applyRoleUI;
-window.debounceDbSave = debounceDbSave;
-window.renderUserList = renderUserList;
-window.connectMetaWs = connectMetaWs;
-window.metaSend = metaSend;
-// ------------------------------
-
-
-// --- Expose State to Window ---
-window.quill = quill;
-window.ydoc = ydoc;
-window.ytext = ytext;
-window.wsProvider = wsProvider;
-window.metaWs = metaWs;
-window.myId = myId;
-window.myName = myName;
-window.myColor = myColor;
-window.myRole = myRole;
-window.docId = docId;
-window.users = users;
-window.comments = comments;
-window.versionHistory = versionHistory;
-window.savedRange = savedRange;
-window.dbSaveTimer = dbSaveTimer;
-window.aiLastSelection = aiLastSelection;
-window.recentBadgeTimer = recentBadgeTimer;
-window.commentsList = commentsList;
-window.commentCount = commentCount;
-window.usersList = usersList;
-window.userCount = userCount;
-window.navAvatars = navAvatars;
-window.myAvatarEl = myAvatarEl;
-window.recentBadge = recentBadge;
-window.toastEl = toastEl;
-window.historyPanel = historyPanel;
-window.historyOverlay = historyOverlay;
-window.historyList = historyList;
-window.commentModal = commentModal;
-window.commentText = commentText;
-window.cursorLabels = cursorLabels;
-window.docTitleInput = docTitleInput;
-window.roleBadge = roleBadge;
-window.saveVersionModal = saveVersionModal;
-window.versionNameInput = versionNameInput;
-window.shareModal = shareModal;
-window.shareLink = shareLink;
-window.permsList = permsList;
 window.showToast = showToast;
 window.syncState = syncState;
 window.showLoadingOverlay = showLoadingOverlay;
@@ -918,6 +822,14 @@ quill.getModule('toolbar').addHandler('image', function() {
     return null;
   }
 
+    syncGlobals();
+    
+    // ── Run Modules (Now with full state ready) ──────────────────────
+    setupComments();
+    setupHistory();
+    setupAiChat();
+    setupSharing();
+
   } catch(err) {
     console.error('Editor init error:', err);
     showSessionError('Failed to load: ' + (err.message || 'unknown error'));
@@ -1220,77 +1132,7 @@ if (SpeechRecognition && dictationBtn) {
   dictationBtn.style.display = 'none';
 }
 
-// 2. AI Chat Dictation
-const aiMicBtn = document.getElementById('ai-mic-btn');
-if (SpeechRecognition && aiMicBtn) {
-  let isAiDictating = false;
-  const aiRec = new SpeechRecognition();
-  aiRec.continuous = false;
-  aiRec.interimResults = false;
-  
-  aiRec.onstart = () => {
-    isAiDictating = true;
-    aiMicBtn.style.color = '#ef4444';
-  };
-  
-  aiRec.onresult = (event) => {
-    const speech = event.results[0][0].transcript;
-    const currentVal = aiChatInput.value;
-    aiChatInput.value = currentVal ? currentVal + ' ' + speech : speech;
-    aiChatInput.style.height = 'auto';
-    aiChatInput.style.height = Math.min(aiChatInput.scrollHeight, 120) + 'px';
-  };
-  
-  aiRec.onend = () => {
-    isAiDictating = false;
-    aiMicBtn.style.color = '#9ca3af';
-  };
-  
-  aiMicBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (isAiDictating) aiRec.stop();
-    else aiRec.start();
-  });
-} else if (aiMicBtn) {
-  aiMicBtn.style.display = 'none';
-}
-
-// ── AI Action Confirmation ────────────────────────────────────────────────
-window.pendingAiAction = null;
-
-window.confirmAiAction = function(id) {
-  if (!window.pendingAiAction || window.pendingAiAction.id !== id) return;
-  const { action, content, selection } = window.pendingAiAction;
-  
-  if (action === 'replace') {
-    if (selection && selection.length > 0) {
-      quill.deleteText(selection.index, selection.length);
-      quill.insertText(selection.index, content);
-    } else {
-      quill.setText('');
-      quill.insertText(0, content);
-    }
-  } else if (action === 'insert') {
-    const idx = selection ? selection.index + selection.length : quill.getLength();
-    quill.insertText(idx, content);
-  }
-  
-  document.getElementById(id).innerHTML = `<div class="chat-bubble-content" style="font-size:12px; color:var(--emerald);">✓ Change applied successfully.</div>`;
-  window.pendingAiAction = null;
-  debounceDbSave();
-};
-
-window.cancelAiAction = function(id) {
-  if (!window.pendingAiAction || window.pendingAiAction.id !== id) return;
-  document.getElementById(id).innerHTML = `<div class="chat-bubble-content" style="font-size:12px; color:var(--text-muted);">✗ Change cancelled.</div>`;
-  window.pendingAiAction = null;
-};
-
 
 // --- Extracted to theme.js ---
 
-// --- Run Modules ---
-setupComments();
-setupHistory();
-setupAiChat();
-setupSharing();
+// End of editor entry

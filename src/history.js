@@ -1,5 +1,5 @@
 
-import { escapeHtml } from './utils.js';
+import { escapeHtml, timeAgo } from './utils.js';
 export function setupHistory() {
   // ── Version History ─────────────────────────────────────────────────────
 document.getElementById('history-btn')?.addEventListener('click', async () => {
@@ -11,7 +11,7 @@ document.getElementById('history-btn')?.addEventListener('click', async () => {
   window.historyOverlay.classList.remove('hidden');
   window.historyList.innerHTML = '<div class="no-comments"><p>Loading history...</p></div>';
   try {
-    const res = await fetch(`/api/history/${window.myId}?window.docId=${window.docId}`);
+    const res = await fetch(`/api/history/${window.myId}?docId=${window.docId}`);
     const data = await res.json();
     if (data.versions) {
       renderHistoryGrid(data.versions);

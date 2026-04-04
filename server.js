@@ -16,7 +16,8 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 const server = http.createServer(app);
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 let ai = null;
@@ -128,63 +129,50 @@ Rules:
             { role: "system", content: systemInstruction },
             { role: "user", content: text }
           ],
-          model: "llama-3.3-70b-versatile", // Fast and powerful model suitable for logic
+          model: "llama-3.3-70b-versatile",
           response_format: { type: "json_object" },
-          temperature: 0.7,
+          temperature: 0.5,
         });
         rawText = chatCompletion.choices[0]?.message?.content || "";
         console.log('[AI] Used Groq');
       } catch (groqErr) {
         console.error('[AI] Groq failed, falling back to Gemini:', groqErr.message);
         if (ai) {
-          const response = await ai.models.generateContent({ 
-            model: 'gemini-1.5-flash', 
-            contents: text,
-            config: {
-              systemInstruction,
-              responseMimeType: 'application/json'
-            }
+          const result = await ai.models.generateContent({
+            model: 'gemini-1.5-flash',
+            contents: [{ role: 'user', parts: [{ text: systemInstruction + '\n\n' + text }] }]
           });
-          rawText = response.text.trim();
-          console.log('[AI] Used Gemini (Fallback)');
+          rawText = result.text;
+          console.log('[AI] Used Gemini Fallback');
         } else {
           throw groqErr;
         }
       }
     } else if (ai) {
-      const response = await ai.models.generateContent({ 
-        model: 'gemini-1.5-flash', 
-        contents: text,
-        config: {
-          systemInstruction,
-          responseMimeType: 'application/json'
-        }
+      const result = await ai.models.generateContent({
+        model: 'gemini-1.5-flash',
+        contents: [{ role: 'user', parts: [{ text: systemInstruction + '\n\n' + text }] }]
       });
-      rawText = response.text.trim();
+      rawText = result.text;
       console.log('[AI] Used Gemini');
-    } else {
-      throw new Error('No AI configured');
     }
 
-    rawText = rawText.trim();
-    if (rawText.startsWith('```json')) rawText = rawText.replace(/^```json\n?/, '');
-    if (rawText.startsWith('```')) rawText = rawText.replace(/^```\n?/, '');
-    if (rawText.endsWith('```')) rawText = rawText.replace(/```$/, '');
-    rawText = rawText.trim();
-    
-    let resultJson;
-    try {
-      resultJson = JSON.parse(rawText);
-    } catch (parseError) {
-      console.error('JSON Parse Error:', parseError.message);
-      console.error('Raw Text was:', rawText);
-      throw parseError; // Re-throw to be caught by the outer catch
+    // Defensive parsing: Strip markdown if the AI ignored instructions
+    let cleanJson = rawText.trim();
+    if (cleanJson.startsWith('```')) {
+      cleanJson = cleanJson.replace(/^```json\s*|```\s*$/g, '');
     }
-    
-    res.json(resultJson);
-  } catch (error) {
-    console.error('AI Error:', error);
-    res.status(500).json({ error: 'Failed to generate AI content.', details: error.message });
+
+    const aiRes = JSON.parse(cleanJson);
+    res.json({
+      reply: aiRes.reply || "",
+      action: aiRes.action || "none",
+      content: aiRes.content || ""
+    });
+    console.log('[AI] Success – result:', aiRes);
+  } catch (err) {
+    console.error('[AI] Endpoint Error:', err);
+    res.status(500).json({ error: 'Failed to generate AI content. ' + (err.message || '') });
   }
 });
 
