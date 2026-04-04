@@ -18087,14 +18087,6 @@ showLoadingOverlay("Connecting\u2026");
     });
     const binding = new QuillBinding(ytext, quill, wsProvider.awareness);
     const cursors = quill.getModule("cursors");
-    quill.on("selection-change", (range) => {
-      if (range) {
-        wsProvider.awareness.setLocalStateField("cursor", {
-          anchor: createRelativePositionFromTypeIndex(ytext, range.index),
-          head: createRelativePositionFromTypeIndex(ytext, range.index + range.length)
-        });
-      }
-    });
     wsProvider.on("sync", (synced) => {
       if (synced && ytext.length === 0 && doc2.content) {
         const tempDiv = document.createElement("div");

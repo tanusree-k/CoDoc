@@ -367,15 +367,8 @@ quill.getModule('toolbar').addHandler('image', function() {
   const binding = new QuillBinding(ytext, quill, wsProvider.awareness);
   const cursors = quill.getModule('cursors');
 
-  // Broadcast local cursor/selection changes to other users
-  quill.on('selection-change', (range) => {
-    if (range) {
-      wsProvider.awareness.setLocalStateField('cursor', {
-        anchor: Y.createRelativePositionFromTypeIndex(ytext, range.index),
-        head: Y.createRelativePositionFromTypeIndex(ytext, range.index + range.length)
-      });
-    }
-  });
+  // Cursor sync is handled entirely by QuillBinding + awareness.
+  // Do NOT manually broadcast selection-change — it causes cursor collapse on remote edits.
 
   // ── Seed initial content from Supabase (first time only) ──────────
   // If the Yjs doc is empty and the Supabase doc has content, seed it
