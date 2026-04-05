@@ -340,8 +340,8 @@ showLoadingOverlay('Connecting…');
   });
   window._quill = quill;
 
-// Hook the native Image Toolbar button to our custom Modal
-quill.getModule('toolbar').addHandler('image', function() {
+// Hook the native Image Toolbar button to our custom Modal (only for roles with a toolbar)
+quill.getModule('toolbar')?.addHandler('image', function() {
   if (window.openImageModal) {
     window.openImageModal();
   }

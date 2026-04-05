@@ -18089,7 +18089,7 @@ showLoadingOverlay("Connecting\u2026");
       readOnly: isReadOnly
     });
     window._quill = quill;
-    quill.getModule("toolbar").addHandler("image", function() {
+    quill.getModule("toolbar")?.addHandler("image", function() {
       if (window.openImageModal) {
         window.openImageModal();
       }
