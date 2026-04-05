@@ -258,6 +258,22 @@ showLoadingOverlay('Connecting…');
 
   const inviteToken = params.get('invite');
 
+  // Process invite token first to insert document permissions before fetching document
+  if (inviteToken) {
+    try {
+      const decodedRole = atob(inviteToken);
+      if (['editor', 'commenter', 'viewer'].includes(decodedRole)) {
+        // Attempt to register in DB silently
+        await sb.from('document_permissions').insert({ doc_id: docId, user_id: myId, role: decodedRole }).catch(() => {});
+        localStorage.setItem(`codoc_role_${docId}_${myId}`, decodedRole);
+        
+        const url = new URL(window.location.href);
+        url.searchParams.delete('invite');
+        window.history.replaceState({}, document.title, url.toString());
+      }
+    } catch (e) { console.error('Invalid invite token', e); }
+  }
+
   showLoadingOverlay('Loading document…');
   const { data: doc, error: docErr } = await sb.from('documents').select('*').eq('id', docId).single();
   if (docErr || !doc) { window.location.href = '/dashboard.html'; return; }
@@ -268,22 +284,6 @@ showLoadingOverlay('Connecting…');
     // Attempt to fetch from DB (might fail/return null due to strict RLS rules on Render)
     let { data: perm } = await sb.from('document_permissions').select('*').eq('doc_id', docId).eq('user_id', myId).single();
     let localRole = localStorage.getItem(`codoc_role_${docId}_${myId}`);
-
-    if (!perm && inviteToken) {
-      try {
-        const decodedRole = atob(inviteToken);
-        if (['editor', 'commenter', 'viewer'].includes(decodedRole)) {
-          // Attempt to register in DB silently
-          await sb.from('document_permissions').insert({ doc_id: docId, user_id: myId, role: decodedRole });
-          perm = { role: decodedRole };
-          localStorage.setItem(`codoc_role_${docId}_${myId}`, decodedRole);
-          
-          const url = new URL(window.location.href);
-          url.searchParams.delete('invite');
-          window.history.replaceState({}, document.title, url.toString());
-        }
-      } catch (e) { console.error('Invalid invite token', e); }
-    }
 
     // If DB fails to return permission and no invite token is present, fallback to local storage
     if (!perm && localRole) {

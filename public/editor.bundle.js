@@ -4759,20 +4759,23 @@ function setupHistory() {
       item.innerHTML = `
       <div class="version-name" style="display:flex; justify-content:space-between; align-items:center; width: 100%;">
         <span>Version v${vNumber}</span>
-        <button class="btn-primary-sm restore-btn" style="padding: 4px 10px; font-size: 11px; z-index: 10;">Restore</button>
+        ${window.myRole === "owner" || window.myRole === "editor" ? '<button class="btn-primary-sm restore-btn" style="padding: 4px 10px; font-size: 11px; z-index: 10;">Restore</button>' : ""}
       </div>
       <div class="version-meta">${timeAgo(v2.created_at)}</div>
     `;
-      item.querySelector(".restore-btn").addEventListener("click", (e) => {
-        e.stopPropagation();
-        if (confirm(`Restore Version v${vNumber}? Current content will be replaced.`)) {
-          const delta = window.quill.clipboard.convert({ html: v2.content });
-          window.quill.setContents(delta);
-          window.showToast(`\u{1F504} Restored Version v${vNumber}`);
-          window.debounceDbSave();
-          window.closeHistory();
-        }
-      });
+      const restoreBtn = item.querySelector(".restore-btn");
+      if (restoreBtn) {
+        restoreBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (confirm(`Restore Version v${vNumber}? Current content will be replaced.`)) {
+            const delta = window.quill.clipboard.convert({ html: v2.content });
+            window.quill.setContents(delta);
+            window.showToast(`\u{1F504} Restored Version v${vNumber}`);
+            window.debounceDbSave();
+            window.closeHistory();
+          }
+        });
+      }
       window.historyList.appendChild(item);
     });
   }
@@ -18019,6 +18022,21 @@ showLoadingOverlay("Connecting\u2026");
       return;
     }
     const inviteToken = params2.get("invite");
+    if (inviteToken) {
+      try {
+        const decodedRole = atob(inviteToken);
+        if (["editor", "commenter", "viewer"].includes(decodedRole)) {
+          await sb.from("document_permissions").insert({ doc_id: docId, user_id: myId, role: decodedRole }).catch(() => {
+          });
+          localStorage.setItem(`codoc_role_${docId}_${myId}`, decodedRole);
+          const url = new URL(window.location.href);
+          url.searchParams.delete("invite");
+          window.history.replaceState({}, document.title, url.toString());
+        }
+      } catch (e) {
+        console.error("Invalid invite token", e);
+      }
+    }
     showLoadingOverlay("Loading document\u2026");
     const { data: doc2, error: docErr } = await sb.from("documents").select("*").eq("id", docId).single();
     if (docErr || !doc2) {
@@ -18033,21 +18051,6 @@ showLoadingOverlay("Connecting\u2026");
     } else {
       let { data: perm } = await sb.from("document_permissions").select("*").eq("doc_id", docId).eq("user_id", myId).single();
       let localRole = localStorage.getItem(`codoc_role_${docId}_${myId}`);
-      if (!perm && inviteToken) {
-        try {
-          const decodedRole = atob(inviteToken);
-          if (["editor", "commenter", "viewer"].includes(decodedRole)) {
-            await sb.from("document_permissions").insert({ doc_id: docId, user_id: myId, role: decodedRole });
-            perm = { role: decodedRole };
-            localStorage.setItem(`codoc_role_${docId}_${myId}`, decodedRole);
-            const url = new URL(window.location.href);
-            url.searchParams.delete("invite");
-            window.history.replaceState({}, document.title, url.toString());
-          }
-        } catch (e) {
-          console.error("Invalid invite token", e);
-        }
-      }
       if (!perm && localRole) {
         perm = { role: localRole };
       }

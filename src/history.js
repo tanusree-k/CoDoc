@@ -68,20 +68,23 @@ function renderHistoryGrid(apiVersions) {
     item.innerHTML = `
       <div class="version-name" style="display:flex; justify-content:space-between; align-items:center; width: 100%;">
         <span>Version v${vNumber}</span>
-        <button class="btn-primary-sm restore-btn" style="padding: 4px 10px; font-size: 11px; z-index: 10;">Restore</button>
+        ${(window.myRole === 'owner' || window.myRole === 'editor') ? '<button class="btn-primary-sm restore-btn" style="padding: 4px 10px; font-size: 11px; z-index: 10;">Restore</button>' : ''}
       </div>
       <div class="version-meta">${timeAgo(v.created_at)}</div>
     `;
-    item.querySelector('.restore-btn').addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (confirm(`Restore Version v${vNumber}? Current content will be replaced.`)) {
-        const delta = window.quill.clipboard.convert({ html: v.content });
-        window.quill.setContents(delta);
-        window.showToast(`🔄 Restored Version v${vNumber}`);
-        window.debounceDbSave(); // trigger a save
-        window.closeHistory();
-      }
-    });
+    const restoreBtn = item.querySelector('.restore-btn');
+    if (restoreBtn) {
+      restoreBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (confirm(`Restore Version v${vNumber}? Current content will be replaced.`)) {
+          const delta = window.quill.clipboard.convert({ html: v.content });
+          window.quill.setContents(delta);
+          window.showToast(`🔄 Restored Version v${vNumber}`);
+          window.debounceDbSave(); // trigger a save
+          window.closeHistory();
+        }
+      });
+    }
     window.historyList.appendChild(item);
   });
 }
