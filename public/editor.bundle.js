@@ -18054,6 +18054,15 @@ showLoadingOverlay("Connecting\u2026");
       if (!perm && localRole) {
         perm = { role: localRole };
       }
+      if (!perm && inviteToken) {
+        try {
+          const decodedRole = atob(inviteToken);
+          if (["editor", "commenter", "viewer"].includes(decodedRole)) {
+            perm = { role: decodedRole };
+          }
+        } catch (e) {
+        }
+      }
       if (!perm) {
         perm = { role: "editor" };
       }

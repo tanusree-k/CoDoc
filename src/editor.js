@@ -290,7 +290,17 @@ showLoadingOverlay('Connecting…');
       perm = { role: localRole };
     }
 
-    // Final fallback: grant default 'editor' access instead of locking users out
+    // If still no perm, use the invite token role if available
+    if (!perm && inviteToken) {
+      try {
+        const decodedRole = atob(inviteToken);
+        if (['editor', 'commenter', 'viewer'].includes(decodedRole)) {
+          perm = { role: decodedRole };
+        }
+      } catch (e) {}
+    }
+
+    // Final fallback: grant default 'editor' access only if no other source of truth
     if (!perm) {
       perm = { role: 'editor' };
     }
