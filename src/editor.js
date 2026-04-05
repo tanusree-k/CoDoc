@@ -655,6 +655,15 @@ quill.getModule('toolbar')?.addHandler('image', function() {
 
   const customFontSelect = document.getElementById('custom-font-select');
   const customSizeSelect = document.getElementById('custom-size-select');
+  const formatBlockSelect = document.getElementById('format-block-select');
+
+  if (formatBlockSelect) {
+    formatBlockSelect.addEventListener('change', () => {
+      const val = formatBlockSelect.value;
+      quill.format('header', val ? parseInt(val) : false);
+      quill.focus();
+    });
+  }
 
   if (customFontSelect) {
     customFontSelect.addEventListener('change', () => {
@@ -682,6 +691,9 @@ quill.getModule('toolbar')?.addHandler('image', function() {
     }
     if (customSizeSelect) {
       customSizeSelect.value = formats.size || '';
+    }
+    if (formatBlockSelect) {
+      formatBlockSelect.value = formats.header || '';
     }
   });
 

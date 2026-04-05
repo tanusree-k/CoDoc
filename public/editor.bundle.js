@@ -18302,6 +18302,14 @@ showLoadingOverlay("Connecting\u2026");
     }
     const customFontSelect = document.getElementById("custom-font-select");
     const customSizeSelect = document.getElementById("custom-size-select");
+    const formatBlockSelect = document.getElementById("format-block-select");
+    if (formatBlockSelect) {
+      formatBlockSelect.addEventListener("change", () => {
+        const val = formatBlockSelect.value;
+        quill.format("header", val ? parseInt(val) : false);
+        quill.focus();
+      });
+    }
     if (customFontSelect) {
       customFontSelect.addEventListener("change", () => {
         const val = customFontSelect.value;
@@ -18324,6 +18332,9 @@ showLoadingOverlay("Connecting\u2026");
       }
       if (customSizeSelect) {
         customSizeSelect.value = formats.size || "";
+      }
+      if (formatBlockSelect) {
+        formatBlockSelect.value = formats.header || "";
       }
     });
     setupMyAvatar();
