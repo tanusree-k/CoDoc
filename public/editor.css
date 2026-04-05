@@ -394,14 +394,42 @@
 
 /* Custom native font/size selects */
 #custom-font-select,
-#custom-size-select,
-#format-block-select {
+#custom-size-select {
   appearance: none;
   -webkit-appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 6px center;
   padding-right: 22px !important;
+}
+
+/* Text style dropdown — keep native popup, just style the box */
+#format-block-select {
+  position: relative;
+  z-index: 30;
+  color: var(--text-primary);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  font-family: var(--font);
+  font-size: 12px;
+  height: 30px;
+  padding: 0 8px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+#format-block-select:hover {
+  border-color: var(--brand-light);
+}
+#format-block-select:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 2px var(--brand-glow);
+}
+#format-block-select option {
+  background: var(--white);
+  color: var(--text-primary);
+  padding: 6px 10px;
 }
 #custom-font-select:focus,
 #custom-size-select:focus {

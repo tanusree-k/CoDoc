@@ -356,6 +356,8 @@ body {
   flex-wrap: wrap;
   flex-shrink: 0;
   box-shadow: 0 1px 0 rgba(13,148,136,.06);
+  position: relative;
+  z-index: 20;
 }
 
 .toolbar-group { display: flex; align-items: center; gap: 1px; }
