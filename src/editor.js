@@ -179,7 +179,7 @@ function showLoadingOverlay(msg) {
     ov.style.cssText = 'position:fixed;inset:0;background:rgba(249,250,251,0.92);backdrop-filter:blur(4px);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:Inter,sans-serif;';
     document.body.appendChild(ov);
   }
-  ov.innerHTML = '<div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#10b981;border-radius:50%;animation:spin 0.8s linear infinite"></div><p style="color:#6b7280;font-size:14px;">' + msg + '</p>';
+  ov.innerHTML = '<div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#0d9488;border-radius:50%;animation:spin 0.7s linear infinite"></div><p style="color:#6b7280;font-size:14px;font-family:Inter,sans-serif;">' + msg + '</p>';
   if (!document.getElementById('init-spin-style')) {
     const s = document.createElement('style');
     s.id = 'init-spin-style';
@@ -195,7 +195,7 @@ function showSessionError(message) {
   const ov = document.getElementById('init-loading-overlay');
   const el = ov || document.createElement('div');
   el.style.cssText = 'position:fixed;inset:0;background:rgba(249,250,251,0.97);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:Inter,sans-serif;';
-  el.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><h3 style="font-size:17px;font-weight:700;color:#111827;margin:0">' + message + '</h3><a href="/auth.html" style="padding:10px 24px;background:#10b981;color:#fff;border-radius:8px;font-weight:600;text-decoration:none;font-size:14px;">Sign in again</a>';
+  el.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><h3 style="font-size:17px;font-weight:700;color:#111827;margin:0">' + message + '</h3><a href="/auth.html" style="padding:10px 24px;background:#0d9488;color:#fff;border-radius:8px;font-weight:600;text-decoration:none;font-size:14px;">Sign in again</a>';
   if (!ov) document.body.appendChild(el);
 }
 function showForbidden() {
@@ -204,7 +204,7 @@ function showForbidden() {
       <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       <h2 style="font-size:20px;font-weight:700">Access Denied</h2>
       <p style="color:#6b7280">You don't have permission to view this document.</p>
-      <a href="/dashboard.html" style="color:#10b981;font-weight:600;text-decoration:none">← Back to Dashboard</a>
+      <a href="/dashboard.html" style="color:#0d9488;font-weight:600;text-decoration:none">← Back to Dashboard</a>
     </div>`;
 }
 
@@ -315,9 +315,9 @@ showLoadingOverlay('Connecting…');
       blotFormatter: {},
       cursors: {
         hideDelayMs: 10000,
-        hideSpeedMs: 500,
-        selectionChangeSource: 'user',
-        transformOnTextChange: false // Disable internal OT sync to rely fully on Yjs CRDT accuracy
+        hideSpeedMs: 400,
+        selectionChangeSource: null,  // We manage cursor moves ourselves
+        transformOnTextChange: true   // Let quill-cursors shift positions on text inserts (cosmetic only)
       }
     },
     placeholder: 'Start typing your collaborative document here…',
@@ -364,88 +364,135 @@ quill.getModule('toolbar').addHandler('image', function() {
   });
 
   // Bind Yjs to Quill natively for TEXT sync only
-  // We omit awareness here so y-quill doesn't run its broken cursor logic
   const binding = new QuillBinding(ytext, quill);
   const cursors = quill.getModule('cursors');
 
-  // ── Custom robust cursor sync for Quill 2.x ────────────────────────────
-  // Broadcast local cursor selection to Yjs awareness (with 100ms throttle to reduce excessive updates)
-  let _lastCursorBroadcast = 0;
-  let _cursorBroadcastTimer = null;
+  // ── Robust collaborative cursor engine ───────────────────────────────────
+  // Track which cursor IDs we have rendered so we can remove ghosts on disconnect
+  const _renderedCursors = new Set();
+
+  // ── 1. Local cursor broadcast ──────────────────────────────────────────
+  // Use RAF to coalesce rapid selection events into one broadcast per frame
+  let _broadcastScheduled = false;
+  let _pendingRange = undefined;
 
   const broadcastCursor = (range) => {
-    if (range === null) {
-      wsProvider.awareness.setLocalStateField('cursor', null);
-    } else {
-      const anchor = Y.createRelativePositionFromTypeIndex(ytext, range.index);
-      const head = Y.createRelativePositionFromTypeIndex(ytext, range.index + range.length);
-      wsProvider.awareness.setLocalStateField('cursor', { anchor, head });
-    }
-  };
-
-  quill.on('selection-change', (range, oldRange, source) => {
-    // Only broadcast if the user actually changed the selection
-    if (source === 'user') {
-      const now = Date.now();
-      if (now - _lastCursorBroadcast > 100) {
-        broadcastCursor(range);
-        _lastCursorBroadcast = now;
-      } else {
-        clearTimeout(_cursorBroadcastTimer);
-        _cursorBroadcastTimer = setTimeout(() => {
-          broadcastCursor(range);
-          _lastCursorBroadcast = Date.now();
-        }, 100);
-      }
-    }
-  });
-
-  // Render remote cursors whenever awareness updates or text shifts
-  const renderRemoteCursors = () => {
-    if (!cursors || !wsProvider.awareness) return;
-    const states = wsProvider.awareness.getStates();
-    states.forEach((aw, clientId) => {
-      if (clientId === wsProvider.awareness.clientID) return; // Skip our own cursor
-
-      if (aw && aw.cursor) {
-        const user = aw.user || {};
-        const safeId = clientId.toString();
-        // Create cursor if missing (this isolates cursors uniquely by their clientId)
-        cursors.createCursor(safeId, user.name || 'Anonymous', user.color || '#94a3b8');
-        
-        // Translate Yjs relative positions back to Quill absolute indices
-        // This ensures cursors are safely rendered independent of simultaneous ops
-        try {
-          const anchorAbs = Y.createAbsolutePositionFromRelativePosition(
-            Y.createRelativePositionFromJSON(aw.cursor.anchor), ydoc
-          );
-          const headAbs = Y.createAbsolutePositionFromRelativePosition(
-            Y.createRelativePositionFromJSON(aw.cursor.head), ydoc
-          );
-          
-          if (anchorAbs && headAbs && anchorAbs.type === ytext) {
-            cursors.moveCursor(safeId, { 
-              index: anchorAbs.index, 
-              length: headAbs.index - anchorAbs.index 
-            });
-          }
-        } catch (e) {
-          // ignore mapping errors during rapid sync
+    // Store the most recent range so the RAF callback always sends the latest
+    _pendingRange = range;
+    if (_broadcastScheduled) return;
+    _broadcastScheduled = true;
+    requestAnimationFrame(() => {
+      _broadcastScheduled = false;
+      const r = _pendingRange;
+      try {
+        if (r === null || r === undefined) {
+          wsProvider.awareness.setLocalStateField('cursor', null);
+        } else {
+          const docLen = ytext.length;
+          const anchorIdx = Math.min(r.index, docLen);
+          const headIdx   = Math.min(r.index + r.length, docLen);
+          const anchor = Y.createRelativePositionFromTypeIndex(ytext, anchorIdx);
+          const head   = Y.createRelativePositionFromTypeIndex(ytext, headIdx);
+          wsProvider.awareness.setLocalStateField('cursor', { anchor, head });
         }
-      } else {
-        cursors.removeCursor(clientId.toString());
+      } catch (e) {
+        // ytext may not be ready yet — silently ignore
       }
     });
   };
 
-  // Listen to remote changes
-  wsProvider.awareness.on('change', renderRemoteCursors);
-  
-  // Recalculate and re-render remote cursors immediately on text changes.
-  // We disabled transformOnTextChange, so we MUST do this synchronously,
-  // otherwise remote cursors will drift or flicker when text shifts before them.
-  quill.on('text-change', renderRemoteCursors);
-  // ── End custom cursor sync ─────────────────────────────────────────────
+  // Broadcast on every user selection-change (RAF prevents over-sending)
+  quill.on('selection-change', (range, _old, source) => {
+    if (source === 'user' || source === 'api') {
+      broadcastCursor(range);
+    }
+  });
+
+  // Broadcast after the local document mutates so peers see our cursor shift
+  quill.on('text-change', (_delta, _old, source) => {
+    if (source === 'user') {
+      broadcastCursor(quill.getSelection());
+    }
+  });
+
+  // Broadcast cursor when tab regains focus
+  window.addEventListener('focus', () => broadcastCursor(quill.getSelection()));
+  window.addEventListener('blur',  () => broadcastCursor(null));
+
+  // ── 2. Remote cursor rendering ─────────────────────────────────────────
+  // Coalesce renders using RAF — never more than once per animation frame
+  let _renderScheduled = false;
+
+  const scheduleRenderRemoteCursors = () => {
+    if (_renderScheduled) return;
+    _renderScheduled = true;
+    requestAnimationFrame(renderRemoteCursors);
+  };
+
+  const renderRemoteCursors = () => {
+    _renderScheduled = false;
+    if (!cursors || !wsProvider?.awareness) return;
+
+    const states = wsProvider.awareness.getStates();
+    const myClientId = wsProvider.awareness.clientID;
+    const activeIds = new Set();
+
+    states.forEach((aw, clientId) => {
+      if (clientId === myClientId) return;
+
+      const safeId = String(clientId);
+
+      if (aw && aw.cursor) {
+        const user = aw.user || {};
+        const name  = user.name  || 'Anonymous';
+        const color = user.color || '#94a3b8';
+
+        // Create cursor entry if it doesn't exist yet
+        if (!_renderedCursors.has(safeId)) {
+          cursors.createCursor(safeId, name, color);
+          _renderedCursors.add(safeId);
+        }
+
+        // Convert Yjs relative positions → absolute Quill indices
+        try {
+          const anchorRel = Y.createRelativePositionFromJSON(aw.cursor.anchor);
+          const headRel   = Y.createRelativePositionFromJSON(aw.cursor.head);
+          const anchorAbs = Y.createAbsolutePositionFromRelativePosition(anchorRel, ydoc);
+          const headAbs   = Y.createAbsolutePositionFromRelativePosition(headRel,   ydoc);
+
+          if (anchorAbs && headAbs && anchorAbs.type === ytext) {
+            const docLen = quill.getLength();
+            const index  = Math.max(0, Math.min(anchorAbs.index, docLen - 1));
+            const length = Math.max(0, Math.min(headAbs.index - anchorAbs.index, docLen - index));
+            cursors.moveCursor(safeId, { index, length });
+          }
+        } catch (e) {
+          // Mapping error during rapid concurrent edits — skip this frame
+        }
+
+        activeIds.add(safeId);
+      }
+      // If aw.cursor is null/undefined the peer cleared their cursor — remove below
+    });
+
+    // ── Ghost cursor cleanup ─────────────────────────────────────────
+    // Remove any rendered cursor whose clientId is no longer in the awareness map
+    _renderedCursors.forEach(id => {
+      if (!activeIds.has(id)) {
+        try { cursors.removeCursor(id); } catch (e) {}
+        _renderedCursors.delete(id);
+      }
+    });
+  };
+
+  // Trigger renders on awareness changes (peers move their cursors / join / leave)
+  wsProvider.awareness.on('change', scheduleRenderRemoteCursors);
+
+  // Trigger renders on local text changes so remote cursors shift correctly
+  // (quill-cursors transformOnTextChange handles cosmetic shift, but CRDT truth
+  //  needs a re-render from Yjs relative positions for accuracy)
+  quill.on('text-change', scheduleRenderRemoteCursors);
+  // ── End cursor engine ─────────────────────────────────────────────────
 
   // ── Seed initial content from Supabase (first time only) ──────────
   // If the Yjs doc is empty and the Supabase doc has content, seed it
@@ -502,13 +549,48 @@ quill.getModule('toolbar').addHandler('image', function() {
   connectMetaWs();
 
   // ── Auto-save to Supabase ─────────────────────────────────────────
-  quill.on('text-change', () => {
-    const statusEl = document.getElementById('autosave-status');
-    if (statusEl) {
-      statusEl.innerHTML = `<span style="display:inline-block; margin-right:4px; font-weight:bold; font-size:16px;">•</span> Saving...`;
+  // ── Word / character count ──────────────────────────────────────────
+  function updateWordCount() {
+    const text = quill.getText().trim();
+    const words = text.length === 0 ? 0 : text.split(/\s+/).filter(w => w.length > 0).length;
+    const chars = quill.getText().length - 1; // Quill adds trailing \n
+    const wEl = document.getElementById('word-count-status');
+    const cEl = document.getElementById('char-count-status');
+    if (wEl) wEl.textContent = words.toLocaleString() + (words === 1 ? ' word' : ' words');
+    if (cEl) cEl.textContent = Math.max(0, chars).toLocaleString() + ' characters';
+  }
+  updateWordCount();
+
+  // ── Autosave status indicator ─────────────────────────────────────────
+  function setAutosaveStatus(state) { // 'saving' | 'saved'
+    const dot   = document.getElementById('autosave-dot');
+    const label = document.getElementById('autosave-label');
+    if (!dot || !label) return;
+    if (state === 'saving') {
+      dot.style.background = '#f59e0b';
+      label.textContent = 'Saving…';
+      dot.style.animation = 'autosave-pulse 1s ease-in-out infinite';
+    } else {
+      dot.style.background = '#0d9488';
+      label.textContent = 'Saved';
+      dot.style.animation = '';
     }
+  }
+  // Inject autosave-pulse keyframe once
+  if (!document.getElementById('autosave-pulse-style')) {
+    const s = document.createElement('style');
+    s.id = 'autosave-pulse-style';
+    s.textContent = '@keyframes autosave-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }';
+    document.head.appendChild(s);
+  }
+
+  quill.on('text-change', () => {
+    updateWordCount();
+    setAutosaveStatus('saving');
     debounceDbSave();
   });
+  window.setAutosaveStatus = setAutosaveStatus;
+  setAutosaveStatus('saved'); // initial state on load
   quill.on('selection-change', (range) => { if (range) aiLastSelection = range; });
 
 
@@ -762,7 +844,7 @@ quill.getModule('toolbar').addHandler('image', function() {
       quill.setSelection(idx + 1);
     }
     window.closeImageModal();
-    showToast('🖼️ Image inserted!', '#10b981');
+    showToast('🖼️ Image inserted!', '#0d9488');
     debounceDbSave();
   };
 
@@ -774,7 +856,7 @@ quill.getModule('toolbar').addHandler('image', function() {
   // Drag-and-drop onto drop zone
   const dropZone = document.getElementById('img-drop-zone');
   if (dropZone) {
-    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = '#10b981'; });
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = '#0d9488'; });
     dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = ''; });
     dropZone.addEventListener('drop', e => {
       e.preventDefault();
@@ -938,13 +1020,8 @@ async function saveToHistoryApi(content) {
       body: JSON.stringify({ userId: myId, documentId: docId, content })
     });
     const data = await res.json();
-    if (data.success && data.version) {
-      const statusEl = document.getElementById('autosave-status');
-      if (statusEl) {
-        statusEl.classList.remove('hidden');
-        statusEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Autosaved';
-        setTimeout(() => statusEl.classList.add('hidden'), 3000);
-      }
+    if (data.success) {
+      if (window.setAutosaveStatus) window.setAutosaveStatus('saved');
     }
   } catch (e) {
     console.error('Auto-save history failed', e);
@@ -963,8 +1040,7 @@ function debounceDbSave() {
         comments: comments,
         versions: versionHistory
       }).eq('id', docId).then(() => {
-        const statusEl = document.getElementById('autosave-status');
-        if (statusEl) statusEl.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Autosaved`;
+        if (window.setAutosaveStatus) window.setAutosaveStatus('saved');
       });
     }
     await saveToHistoryApi(currentContent);

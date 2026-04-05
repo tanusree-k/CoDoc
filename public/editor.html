@@ -6,7 +6,7 @@
   <title>CoDoc – Editor</title>
   <meta name="description" content="Real-time collaborative document editor." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/quill-cursors@4/dist/quill-cursors.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css" />
@@ -23,19 +23,19 @@
     <header class="navbar">
       <div class="navbar-left">
         <a href="/dashboard.html" class="brand" title="Back to Dashboard">
-          <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
-            <defs><linearGradient id="bg" x1="0" y1="0" x2="36" y2="36"><stop stop-color="#10b981"/><stop offset="1" stop-color="#059669"/></linearGradient></defs>
-            <rect width="36" height="36" rx="10" fill="url(#bg)"/>
-            <path d="M9 12h18M9 18h12M9 24h15" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
-          </svg>
+          <div style="width:28px;height:28px;background:linear-gradient(135deg,#0d9488,#0f766e);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(13,148,136,.3);">
+            <svg width="16" height="16" viewBox="0 0 36 36" fill="none">
+              <path d="M9 12h18M9 18h12M9 24h15" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
           <span class="brand-name">CoDoc</span>
         </a>
         <div class="doc-title-wrap">
           <input id="doc-title" type="text" value="Loading…" class="doc-title-input" spellcheck="false" />
         </div>
-        <span id="autosave-status" class="viewer-notice editor-only hidden" style="margin-left: 8px; font-size: 12px; color: #9ca3af; display: flex; align-items: center;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> 
-          Autosaved
+        <span id="autosave-status" class="editor-only" style="display:inline-flex;align-items:center;gap:6px;margin-left:8px;font-size:12px;font-weight:500;color:#9ca3af;transition:color .3s;">
+          <span id="autosave-dot" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#9ca3af;transition:background .3s;"></span>
+          <span id="autosave-label">Saved</span>
         </span>
         <span id="role-badge" class="role-badge-nav hidden"></span>
         <span id="ws-status" class="ws-status">
@@ -168,6 +168,12 @@
         <div id="cursor-labels"></div>
         <div class="editor-paper">
           <div id="editor"></div>
+        </div>
+        <!-- Status bar -->
+        <div id="editor-status-bar" style="display:flex;align-items:center;gap:16px;padding:6px 24px;font-size:11px;font-weight:500;color:#94a3b8;letter-spacing:0.2px;">
+          <span id="word-count-status">0 words</span>
+          <span style="opacity:.4">·</span>
+          <span id="char-count-status">0 characters</span>
         </div>
         <div id="recent-change-badge" class="recent-change-badge hidden"></div>
       </div>
@@ -322,7 +328,10 @@
     <div class="ai-chat-header">
       <div class="ai-chat-title">
         <div class="ai-glow-dot"></div>
-        <span>CoDoc AI</span>
+        <div>
+          <div style="font-size:15px;font-weight:700;letter-spacing:-0.2px;">CoDoc AI</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.35);font-weight:500;letter-spacing:0.3px;margin-top:1px;">POWERED BY GROQ &amp; GEMINI</div>
+        </div>
       </div>
       <button onclick="closeAIChat()" class="close-btn" title="Close">&times;</button>
     </div>

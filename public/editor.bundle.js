@@ -17858,7 +17858,7 @@ function showLoadingOverlay(msg) {
     ov.style.cssText = "position:fixed;inset:0;background:rgba(249,250,251,0.92);backdrop-filter:blur(4px);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:Inter,sans-serif;";
     document.body.appendChild(ov);
   }
-  ov.innerHTML = '<div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#10b981;border-radius:50%;animation:spin 0.8s linear infinite"></div><p style="color:#6b7280;font-size:14px;">' + msg + "</p>";
+  ov.innerHTML = '<div style="width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#0d9488;border-radius:50%;animation:spin 0.7s linear infinite"></div><p style="color:#6b7280;font-size:14px;font-family:Inter,sans-serif;">' + msg + "</p>";
   if (!document.getElementById("init-spin-style")) {
     const s = document.createElement("style");
     s.id = "init-spin-style";
@@ -17874,13 +17874,34 @@ function showSessionError(message) {
   const ov = document.getElementById("init-loading-overlay");
   const el = ov || document.createElement("div");
   el.style.cssText = "position:fixed;inset:0;background:rgba(249,250,251,0.97);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:Inter,sans-serif;";
-  el.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><h3 style="font-size:17px;font-weight:700;color:#111827;margin:0">' + message + '</h3><a href="/auth.html" style="padding:10px 24px;background:#10b981;color:#fff;border-radius:8px;font-weight:600;text-decoration:none;font-size:14px;">Sign in again</a>';
+  el.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><h3 style="font-size:17px;font-weight:700;color:#111827;margin:0">' + message + '</h3><a href="/auth.html" style="padding:10px 24px;background:#0d9488;color:#fff;border-radius:8px;font-weight:600;text-decoration:none;font-size:14px;">Sign in again</a>';
   if (!ov) document.body.appendChild(el);
 }
 showLoadingOverlay("Connecting\u2026");
 (async () => {
   try {
-    let applyHighlighting = function() {
+    let updateWordCount = function() {
+      const text2 = quill.getText().trim();
+      const words = text2.length === 0 ? 0 : text2.split(/\s+/).filter((w2) => w2.length > 0).length;
+      const chars = quill.getText().length - 1;
+      const wEl = document.getElementById("word-count-status");
+      const cEl = document.getElementById("char-count-status");
+      if (wEl) wEl.textContent = words.toLocaleString() + (words === 1 ? " word" : " words");
+      if (cEl) cEl.textContent = Math.max(0, chars).toLocaleString() + " characters";
+    }, setAutosaveStatus = function(state) {
+      const dot = document.getElementById("autosave-dot");
+      const label = document.getElementById("autosave-label");
+      if (!dot || !label) return;
+      if (state === "saving") {
+        dot.style.background = "#f59e0b";
+        label.textContent = "Saving\u2026";
+        dot.style.animation = "autosave-pulse 1s ease-in-out infinite";
+      } else {
+        dot.style.background = "#0d9488";
+        label.textContent = "Saved";
+        dot.style.animation = "";
+      }
+    }, applyHighlighting = function() {
       if (!window.hljs) return;
       quill.root.querySelectorAll(".ql-code-block").forEach((block) => {
         const lang = block.getAttribute("data-lang") || "plaintext";
@@ -18050,10 +18071,11 @@ showLoadingOverlay("Connecting\u2026");
         blotFormatter: {},
         cursors: {
           hideDelayMs: 1e4,
-          hideSpeedMs: 500,
-          selectionChangeSource: "user",
-          transformOnTextChange: false
-          // Disable internal OT sync to rely fully on Yjs CRDT accuracy
+          hideSpeedMs: 400,
+          selectionChangeSource: null,
+          // We manage cursor moves ourselves
+          transformOnTextChange: true
+          // Let quill-cursors shift positions on text inserts (cosmetic only)
         }
       },
       placeholder: "Start typing your collaborative document here\u2026",
@@ -18088,65 +18110,94 @@ showLoadingOverlay("Connecting\u2026");
     });
     const binding = new QuillBinding(ytext, quill);
     const cursors = quill.getModule("cursors");
-    let _lastCursorBroadcast = 0;
-    let _cursorBroadcastTimer = null;
+    const _renderedCursors = /* @__PURE__ */ new Set();
+    let _broadcastScheduled = false;
+    let _pendingRange = void 0;
     const broadcastCursor = (range) => {
-      if (range === null) {
-        wsProvider.awareness.setLocalStateField("cursor", null);
-      } else {
-        const anchor = createRelativePositionFromTypeIndex(ytext, range.index);
-        const head = createRelativePositionFromTypeIndex(ytext, range.index + range.length);
-        wsProvider.awareness.setLocalStateField("cursor", { anchor, head });
-      }
-    };
-    quill.on("selection-change", (range, oldRange, source) => {
-      if (source === "user") {
-        const now = Date.now();
-        if (now - _lastCursorBroadcast > 100) {
-          broadcastCursor(range);
-          _lastCursorBroadcast = now;
-        } else {
-          clearTimeout(_cursorBroadcastTimer);
-          _cursorBroadcastTimer = setTimeout(() => {
-            broadcastCursor(range);
-            _lastCursorBroadcast = Date.now();
-          }, 100);
-        }
-      }
-    });
-    const renderRemoteCursors = () => {
-      if (!cursors || !wsProvider.awareness) return;
-      const states = wsProvider.awareness.getStates();
-      states.forEach((aw, clientId) => {
-        if (clientId === wsProvider.awareness.clientID) return;
-        if (aw && aw.cursor) {
-          const user2 = aw.user || {};
-          const safeId = clientId.toString();
-          cursors.createCursor(safeId, user2.name || "Anonymous", user2.color || "#94a3b8");
-          try {
-            const anchorAbs = createAbsolutePositionFromRelativePosition(
-              createRelativePositionFromJSON(aw.cursor.anchor),
-              ydoc
-            );
-            const headAbs = createAbsolutePositionFromRelativePosition(
-              createRelativePositionFromJSON(aw.cursor.head),
-              ydoc
-            );
-            if (anchorAbs && headAbs && anchorAbs.type === ytext) {
-              cursors.moveCursor(safeId, {
-                index: anchorAbs.index,
-                length: headAbs.index - anchorAbs.index
-              });
-            }
-          } catch (e) {
+      _pendingRange = range;
+      if (_broadcastScheduled) return;
+      _broadcastScheduled = true;
+      requestAnimationFrame(() => {
+        _broadcastScheduled = false;
+        const r = _pendingRange;
+        try {
+          if (r === null || r === void 0) {
+            wsProvider.awareness.setLocalStateField("cursor", null);
+          } else {
+            const docLen = ytext.length;
+            const anchorIdx = Math.min(r.index, docLen);
+            const headIdx = Math.min(r.index + r.length, docLen);
+            const anchor = createRelativePositionFromTypeIndex(ytext, anchorIdx);
+            const head = createRelativePositionFromTypeIndex(ytext, headIdx);
+            wsProvider.awareness.setLocalStateField("cursor", { anchor, head });
           }
-        } else {
-          cursors.removeCursor(clientId.toString());
+        } catch (e) {
         }
       });
     };
-    wsProvider.awareness.on("change", renderRemoteCursors);
-    quill.on("text-change", renderRemoteCursors);
+    quill.on("selection-change", (range, _old, source) => {
+      if (source === "user" || source === "api") {
+        broadcastCursor(range);
+      }
+    });
+    quill.on("text-change", (_delta, _old, source) => {
+      if (source === "user") {
+        broadcastCursor(quill.getSelection());
+      }
+    });
+    window.addEventListener("focus", () => broadcastCursor(quill.getSelection()));
+    window.addEventListener("blur", () => broadcastCursor(null));
+    let _renderScheduled = false;
+    const scheduleRenderRemoteCursors = () => {
+      if (_renderScheduled) return;
+      _renderScheduled = true;
+      requestAnimationFrame(renderRemoteCursors);
+    };
+    const renderRemoteCursors = () => {
+      _renderScheduled = false;
+      if (!cursors || !wsProvider?.awareness) return;
+      const states = wsProvider.awareness.getStates();
+      const myClientId = wsProvider.awareness.clientID;
+      const activeIds = /* @__PURE__ */ new Set();
+      states.forEach((aw, clientId) => {
+        if (clientId === myClientId) return;
+        const safeId = String(clientId);
+        if (aw && aw.cursor) {
+          const user2 = aw.user || {};
+          const name = user2.name || "Anonymous";
+          const color = user2.color || "#94a3b8";
+          if (!_renderedCursors.has(safeId)) {
+            cursors.createCursor(safeId, name, color);
+            _renderedCursors.add(safeId);
+          }
+          try {
+            const anchorRel = createRelativePositionFromJSON(aw.cursor.anchor);
+            const headRel = createRelativePositionFromJSON(aw.cursor.head);
+            const anchorAbs = createAbsolutePositionFromRelativePosition(anchorRel, ydoc);
+            const headAbs = createAbsolutePositionFromRelativePosition(headRel, ydoc);
+            if (anchorAbs && headAbs && anchorAbs.type === ytext) {
+              const docLen = quill.getLength();
+              const index = Math.max(0, Math.min(anchorAbs.index, docLen - 1));
+              const length2 = Math.max(0, Math.min(headAbs.index - anchorAbs.index, docLen - index));
+              cursors.moveCursor(safeId, { index, length: length2 });
+            }
+          } catch (e) {
+          }
+          activeIds.add(safeId);
+        }
+      });
+      _renderedCursors.forEach((id2) => {
+        if (!activeIds.has(id2)) {
+          try {
+            cursors.removeCursor(id2);
+          } catch (e) {
+          }
+          _renderedCursors.delete(id2);
+        }
+      });
+    };
+    wsProvider.awareness.on("change", scheduleRenderRemoteCursors);
+    quill.on("text-change", scheduleRenderRemoteCursors);
     wsProvider.on("sync", (synced) => {
       if (synced && ytext.length === 0 && doc2.content) {
         const tempDiv = document.createElement("div");
@@ -18185,13 +18236,20 @@ showLoadingOverlay("Connecting\u2026");
     comments = doc2.comments || [];
     versionHistory = doc2.versions || [];
     connectMetaWs();
+    updateWordCount();
+    if (!document.getElementById("autosave-pulse-style")) {
+      const s = document.createElement("style");
+      s.id = "autosave-pulse-style";
+      s.textContent = "@keyframes autosave-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }";
+      document.head.appendChild(s);
+    }
     quill.on("text-change", () => {
-      const statusEl = document.getElementById("autosave-status");
-      if (statusEl) {
-        statusEl.innerHTML = `<span style="display:inline-block; margin-right:4px; font-weight:bold; font-size:16px;">\u2022</span> Saving...`;
-      }
+      updateWordCount();
+      setAutosaveStatus("saving");
       debounceDbSave();
     });
+    window.setAutosaveStatus = setAutosaveStatus;
+    setAutosaveStatus("saved");
     quill.on("selection-change", (range) => {
       if (range) aiLastSelection = range;
     });
@@ -18365,7 +18423,7 @@ showLoadingOverlay("Connecting\u2026");
         quill.setSelection(idx + 1);
       }
       window.closeImageModal();
-      showToast("\u{1F5BC}\uFE0F Image inserted!", "#10b981");
+      showToast("\u{1F5BC}\uFE0F Image inserted!", "#0d9488");
       debounceDbSave();
     };
     document.getElementById("image-modal").addEventListener("click", (e) => {
@@ -18375,7 +18433,7 @@ showLoadingOverlay("Connecting\u2026");
     if (dropZone) {
       dropZone.addEventListener("dragover", (e) => {
         e.preventDefault();
-        dropZone.style.borderColor = "#10b981";
+        dropZone.style.borderColor = "#0d9488";
       });
       dropZone.addEventListener("dragleave", () => {
         dropZone.style.borderColor = "";
@@ -18498,13 +18556,8 @@ async function saveToHistoryApi(content) {
       body: JSON.stringify({ userId: myId, documentId: docId, content })
     });
     const data = await res.json();
-    if (data.success && data.version) {
-      const statusEl = document.getElementById("autosave-status");
-      if (statusEl) {
-        statusEl.classList.remove("hidden");
-        statusEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Autosaved';
-        setTimeout(() => statusEl.classList.add("hidden"), 3e3);
-      }
+    if (data.success) {
+      if (window.setAutosaveStatus) window.setAutosaveStatus("saved");
     }
   } catch (e) {
     console.error("Auto-save history failed", e);
@@ -18522,8 +18575,7 @@ function debounceDbSave() {
         comments,
         versions: versionHistory
       }).eq("id", docId).then(() => {
-        const statusEl = document.getElementById("autosave-status");
-        if (statusEl) statusEl.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Autosaved`;
+        if (window.setAutosaveStatus) window.setAutosaveStatus("saved");
       });
     }
     await saveToHistoryApi(currentContent);

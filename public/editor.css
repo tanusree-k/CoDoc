@@ -11,7 +11,7 @@
   letter-spacing: 0.3px;
   text-transform: uppercase;
 }
-.role-owner     { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46; }
+.role-owner     { background: linear-gradient(135deg, #ccfbf1, #99f6e4); color: #0f766e; }
 .role-editor    { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1e40af; }
 .role-commenter { background: linear-gradient(135deg, #fef9c3, #fde68a); color: #854d0e; }
 .role-viewer    { background: linear-gradient(135deg, #f1f5f9, #e2e8f0); color: #475569; }
@@ -60,9 +60,9 @@
   background: var(--white);
 }
 .share-role-opt:hover {
-  border-color: var(--emerald);
-  background: var(--emerald-50);
-  box-shadow: 0 0 0 3px var(--emerald-glow);
+  border-color: var(--brand, var(--emerald));
+  background: var(--brand-50, var(--emerald-50));
+  box-shadow: 0 0 0 3px var(--brand-glow, var(--emerald-glow));
 }
 .share-role-opt input[type="radio"] { accent-color: var(--emerald); }
 .role-desc { color: var(--text-muted); font-weight: 400; margin-left: auto; font-size: 12px; }
@@ -93,11 +93,11 @@
 .ai-chat-panel {
   position: fixed;
   top: 0; right: 0;
-  width: 400px;
+  width: 420px;
   height: 100vh;
-  background: linear-gradient(170deg, #0c1222 0%, #0f172a 40%, #111827 100%);
-  border-left: 1px solid rgba(16, 185, 129, 0.15);
-  box-shadow: -12px 0 48px rgba(0,0,0,0.5);
+  background: linear-gradient(170deg, #071a19 0%, #0d2b29 30%, #0f172a 70%, #111827 100%);
+  border-left: 1px solid rgba(13, 148, 136, 0.2);
+  box-shadow: -16px 0 60px rgba(0,0,0,0.55), -1px 0 0 rgba(13,148,136,.12);
   z-index: 1200;
   display: flex;
   flex-direction: column;
@@ -119,9 +119,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 18px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  background: rgba(16, 185, 129, 0.05);
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(13,148,136,.12);
+  background: linear-gradient(135deg, rgba(13,148,136,.1), rgba(6,182,212,.05));
   flex-shrink: 0;
 }
 .ai-chat-title {
@@ -130,13 +130,13 @@
 }
 .ai-glow-dot {
   width: 10px; height: 10px; border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 8px #10b981, 0 0 20px rgba(16,185,129,0.4);
+  background: #0d9488;
+  box-shadow: 0 0 8px #0d9488, 0 0 24px rgba(13,148,136,0.5);
   animation: pulse-glow 2.2s ease-in-out infinite;
 }
 @keyframes pulse-glow {
-  0%,100% { opacity:1; transform:scale(1); }
-  50%      { opacity:0.6; transform:scale(1.25); }
+  0%,100% { opacity:1; transform:scale(1); box-shadow: 0 0 8px #0d9488, 0 0 24px rgba(13,148,136,0.5); }
+  50%      { opacity:0.7; transform:scale(1.3); box-shadow: 0 0 14px #0d9488, 0 0 36px rgba(13,148,136,0.6); }
 }
 .ai-chat-header .close-btn {
   background: rgba(255,255,255,0.06);
@@ -178,9 +178,9 @@
   white-space: pre-wrap; word-break: break-word;
 }
 .chat-bubble-user .chat-bubble-content {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #0d9488, #0f766e);
   color: #fff; border-bottom-right-radius: 4px;
-  box-shadow: 0 2px 8px rgba(16,185,129,.25);
+  box-shadow: 0 2px 10px rgba(13,148,136,.32);
 }
 .chat-bubble-ai .chat-bubble-content {
   background: rgba(255,255,255,0.06);
@@ -198,14 +198,14 @@
   padding: 12px 16px;
 }
 .typing-dot {
-  width: 6px; height: 6px; border-radius: 50%; background: #10b981;
+  width: 6px; height: 6px; border-radius: 50%; background: #0d9488;
   animation: bounce-dot 1.2s ease-in-out infinite;
 }
 .typing-dot:nth-child(2) { animation-delay: 0.2s; }
 .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 @keyframes bounce-dot {
-  0%,100% { transform:translateY(0); opacity:0.5; }
-  50%     { transform:translateY(-5px); opacity:1; }
+  0%,100% { transform:translateY(0); opacity:0.4; }
+  50%     { transform:translateY(-6px); opacity:1; }
 }
 
 /* Footer */
@@ -217,18 +217,19 @@
 }
 .quick-prompts { display: flex; gap: 6px; flex-wrap: wrap; }
 .quick-prompt-btn {
-  background: rgba(16,185,129,0.08);
-  border: 1px solid rgba(16,185,129,0.2);
-  color: #6ee7b7; font-size: 11px; font-weight: 600;
+  background: rgba(13,148,136,0.1);
+  border: 1px solid rgba(13,148,136,0.25);
+  color: #5eead4; font-size: 11px; font-weight: 600;
   padding: 5px 12px; border-radius: var(--radius-full);
   cursor: pointer; white-space: nowrap;
   transition: all .15s;
   letter-spacing: 0.2px;
 }
 .quick-prompt-btn:hover {
-  background: rgba(16,185,129,0.18);
-  border-color: #10b981; color: #fff;
-  box-shadow: 0 0 12px rgba(16,185,129,.15);
+  background: rgba(13,148,136,0.22);
+  border-color: #0d9488; color: #fff;
+  box-shadow: 0 0 14px rgba(13,148,136,.2);
+  transform: translateY(-1px);
 }
 
 .context-toggle {
@@ -236,36 +237,36 @@
   font-size: 11px; color: rgba(255,255,255,0.3);
   cursor: pointer; user-select: none;
 }
-.context-toggle input[type="checkbox"] { accent-color: #10b981; width:13px; height:13px; }
+.context-toggle input[type="checkbox"] { accent-color: #0d9488; width:13px; height:13px; }
 .context-toggle:hover { color: rgba(255,255,255,0.5); }
 
 .chat-input-row { display: flex; gap: 8px; align-items: flex-end; }
 .chat-input {
-  flex: 1; background: rgba(255,255,255,0.05);
-  border: 1.5px solid rgba(255,255,255,0.08);
+  flex: 1; background: rgba(13,148,136,0.06);
+  border: 1.5px solid rgba(13,148,136,0.12);
   border-radius: 14px; color: #e5e7eb;
   font-family: var(--font); font-size: 13px;
   padding: 10px 14px; resize: none; outline: none;
   line-height: 1.5; min-height: 42px; max-height: 120px;
-  transition: border-color .2s; overflow-y: auto;
+  transition: border-color .2s, box-shadow .2s; overflow-y: auto;
 }
-.chat-input:focus { border-color: rgba(16,185,129,0.4); }
+.chat-input:focus { border-color: rgba(13,148,136,0.5); box-shadow: 0 0 0 3px rgba(13,148,136,.1); }
 .chat-input::placeholder { color: rgba(255,255,255,0.2); }
 .chat-send-btn {
   width: 42px; height: 42px; border-radius: 14px;
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #0d9488, #0f766e);
   border: none; color: #fff; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   transition: all .15s;
-  box-shadow: 0 2px 8px rgba(16,185,129,.3);
+  box-shadow: 0 2px 10px rgba(13,148,136,.38);
 }
-.chat-send-btn:hover  { transform: scale(1.05); box-shadow: 0 4px 16px rgba(16,185,129,.35); }
+.chat-send-btn:hover  { transform: scale(1.08); box-shadow: 0 4px 18px rgba(13,148,136,.48); }
 .chat-send-btn:active { transform: scale(0.95); }
 .chat-send-btn:disabled { opacity: 0.3; cursor: default; transform: none; box-shadow: none; }
 
 /* AI chat navbar button */
-.ai-chat-toggle-btn.active { background: rgba(16,185,129,0.12); color: #10b981; }
+.ai-chat-toggle-btn.active { background: rgba(13,148,136,0.12); color: #0d9488; }
 
 /* ─── Export Dropdown ────────────────────────────────────────────── */
 .export-wrap { position: relative; }
@@ -302,8 +303,8 @@
   text-align: left;
 }
 .export-option:hover {
-  background: var(--emerald-50);
-  color: var(--emerald-dark);
+  background: var(--brand-50, var(--emerald-50));
+  color: var(--brand-dark, var(--emerald-dark));
 }
 .export-option svg { flex-shrink: 0; }
 
@@ -329,13 +330,18 @@
   transition: background .3s, box-shadow .3s;
 }
 .ws-status.connected .ws-status-dot {
-  background: var(--emerald);
-  box-shadow: 0 0 6px var(--emerald);
+  background: var(--brand, var(--emerald));
+  box-shadow: 0 0 8px var(--brand, var(--emerald));
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+@keyframes dot-pulse {
+  0%,100% { box-shadow: 0 0 6px var(--brand); }
+  50% { box-shadow: 0 0 12px var(--brand), 0 0 20px rgba(13,148,136,.3); }
 }
 .ws-status.connected {
-  color: var(--emerald-dark);
-  border-color: var(--emerald-light);
-  background: var(--emerald-50);
+  color: var(--brand-dark, var(--emerald-dark));
+  border-color: var(--brand-100, var(--emerald-light));
+  background: var(--brand-50, var(--emerald-50));
 }
 .ws-status.disconnected .ws-status-dot {
   background: var(--accent-rose);
@@ -359,13 +365,13 @@
 
 /* Quill active button states */
 #toolbar .ql-active {
-  background: var(--emerald-50) !important;
-  color: var(--emerald-dark) !important;
-  box-shadow: inset 0 0 0 1px var(--emerald-light) !important;
+  background: var(--brand-50, var(--emerald-50)) !important;
+  color: var(--brand-dark, var(--emerald-dark)) !important;
+  box-shadow: inset 0 0 0 1px var(--brand-100, var(--emerald-light)) !important;
   border-radius: var(--radius-xs);
 }
-#toolbar .ql-active .ql-stroke { stroke: var(--emerald-dark) !important; }
-#toolbar .ql-active .ql-fill { fill: var(--emerald-dark) !important; }
+#toolbar .ql-active .ql-stroke { stroke: var(--brand-dark, var(--emerald-dark)) !important; }
+#toolbar .ql-active .ql-fill { fill: var(--brand-dark, var(--emerald-dark)) !important; }
 
 /* Quill color picker tweaks */
 #toolbar .ql-color-picker,
@@ -398,8 +404,8 @@
 }
 #custom-font-select:focus,
 #custom-size-select:focus {
-  border-color: var(--emerald);
-  box-shadow: 0 0 0 2px var(--emerald-glow);
+  border-color: var(--brand, var(--emerald));
+  box-shadow: 0 0 0 2px var(--brand-glow, var(--emerald-glow));
 }
 
 /* Font preview in dropdown */
@@ -431,7 +437,7 @@
 }
 .editor-paper:focus-within {
   box-shadow: var(--shadow-paper-hover);
-  border-color: rgba(16,185,129,.1);
+  border-color: rgba(13,148,136,.12);
 }
 
 /* Quill container */
@@ -463,7 +469,7 @@
 .ql-editor h2 { font-size: 1.5em; font-weight: 700; margin: 0.5em 0 0.3em; letter-spacing: -0.3px; }
 .ql-editor h3 { font-size: 1.17em; font-weight: 600; margin: 0.5em 0 0.3em; }
 .ql-editor blockquote {
-  border-left: 3px solid var(--emerald);
+  border-left: 3px solid var(--brand, var(--emerald));
   padding-left: 16px;
   color: var(--slate-600);
   margin: 1em 0;
@@ -488,40 +494,44 @@
 /* Cursor caret line — the colored vertical bar */
 .ql-cursor .ql-cursor-caret-container {
   z-index: 50;
+  will-change: left, top;  /* GPU compositing for smooth repositioning */
 }
 .ql-cursor .ql-cursor-caret {
-  width: 2.5px !important;
+  width: 2px !important;
   border-radius: 2px;
-  box-shadow: 0 0 6px rgba(0,0,0,0.12);
-  /* No animation — prevents flicker when quill-cursors re-renders on awareness updates */
+  box-shadow: 0 0 4px rgba(0,0,0,0.12);
+  /* CSS transition for smooth visual movement between render frames */
+  transition: left 60ms ease, top 60ms ease;
+  will-change: transform;
 }
 
-/* Flag (name label) — always visible, scales up on hover */
+/* Flag (name label) — always visible */
 .ql-cursor .ql-cursor-flag {
   font-size: 11px !important;
   font-weight: 700 !important;
   font-family: var(--font) !important;
   padding: 3px 10px 4px !important;
   border-radius: 6px 6px 6px 0 !important;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.25) !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.22) !important;
   letter-spacing: 0.2px;
   white-space: nowrap !important;
-  /* Always show the name — fade in smoothly */
+  /* Always visible */
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: auto !important;
   cursor: default;
-  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
-  transform: translate3d(-1px, -100%, 0) scale(0.95) !important;
+  /* Use translate only — no scaling — to avoid misalignment with Quill's caret positioning */
+  transform: translate3d(-1px, -100%, 0) !important;
   transform-origin: bottom left;
+  transition: box-shadow 0.15s ease !important;
+  will-change: transform;
 }
 
-/* Grow the label on hover for a nice interactive feel */
+/* Hover effect on flag */
 .ql-cursor:hover .ql-cursor-flag,
 .ql-cursor .ql-cursor-caret-container:hover ~ .ql-cursor-flag,
 .ql-cursor-flag:hover {
-  transform: translate3d(-1px, -100%, 0) scale(1.08) !important;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3) !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.28) !important;
 }
 
 /* Wider hover hit-area so the tooltip is easier to trigger */
@@ -600,7 +610,7 @@
 .img-tab:first-child { border-right: 1.5px solid var(--border); }
 .img-tab.active {
   background: var(--white);
-  color: var(--emerald-dark);
+  color: var(--brand-dark, var(--emerald-dark));
   font-weight: 600;
 }
 .img-tab:hover:not(.active) { background: var(--white); color: var(--text-secondary); }
@@ -628,8 +638,8 @@
   width: 100%;
 }
 .img-drop-zone:hover {
-  border-color: var(--emerald);
-  background: var(--emerald-50);
+  border-color: var(--brand, var(--emerald));
+  background: var(--brand-50, var(--emerald-50));
 }
 
 /* ─── Inline Images in Editor ─────────────────────────────────────── */
@@ -649,9 +659,9 @@
 }
 .ql-editor img.ql-selected,
 .ql-editor img:focus {
-  outline: 2.5px solid var(--emerald);
+  outline: 2.5px solid var(--brand, var(--emerald));
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px var(--emerald-glow);
+  box-shadow: 0 0 0 4px var(--brand-glow, var(--emerald-glow));
 }
 
 /* ─── Enhanced Code Blocks ────────────────────────────────────────── */
@@ -729,8 +739,8 @@
   transition: opacity .2s;
 }
 #code-lang-select:focus {
-  border-color: var(--emerald);
-  box-shadow: 0 0 0 2px var(--emerald-glow);
+  border-color: var(--brand, var(--emerald));
+  box-shadow: 0 0 0 2px var(--brand-glow, var(--emerald-glow));
 }
 
 

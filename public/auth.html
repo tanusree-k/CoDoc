@@ -6,7 +6,7 @@
   <title>CoDoc – Sign In</title>
   <meta name="description" content="Sign in or create an account to start collaborating on CoDoc." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="auth.css" />
 </head>
 <body>
@@ -14,8 +14,12 @@
     <div class="auth-card">
       <!-- Logo -->
       <div class="auth-logo">
-        <svg width="40" height="40" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="10" fill="#10b981"/><path d="M9 12h18M9 18h12M9 24h15" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
-        <span>CoDoc</span>
+        <div class="auth-logo-icon">
+          <svg width="22" height="22" viewBox="0 0 36 36" fill="none">
+            <path d="M9 12h18M9 18h12M9 24h15" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="auth-logo-text">CoDoc</span>
       </div>
 
       <!-- Tab switcher -->
@@ -88,6 +92,7 @@
     <!-- Decorative blobs -->
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
