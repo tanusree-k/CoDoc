@@ -80,9 +80,11 @@ document.addEventListener('DOMContentLoaded', function() {
       usernameInput.value = decodeURIComponent(nameParam);
     }
 
-    // Hide password field (not needed — they're using Google auth)
+    // Hide password fields (not needed — they're using Google auth)
     const pwGroup = document.getElementById('su-password-group');
     if (pwGroup) pwGroup.style.display = 'none';
+    const cpwGroup = document.getElementById('su-confirm-password-group');
+    if (cpwGroup) cpwGroup.style.display = 'none';
 
     // Hide "already have an account" link
     const switchEl = document.getElementById('su-switch');
@@ -239,11 +241,18 @@ async function handleEmailSignUp() {
   const username = document.getElementById('su-username').value.trim();
   const email = document.getElementById('su-email').value.trim();
   const password = document.getElementById('su-password').value;
+  const confirmPassword = document.getElementById('su-confirm-password').value;
   const btn = document.getElementById('su-btn');
   btn.disabled = true; btn.textContent = 'Creating account…';
 
-  if (!email || !password) {
+  if (!email || !password || !confirmPassword) {
     showError('su-error', 'Please fill in all fields.');
+    btn.disabled = false; btn.textContent = 'Create Account →';
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    showError('su-error', 'Passwords do not match.');
     btn.disabled = false; btn.textContent = 'Create Account →';
     return;
   }
