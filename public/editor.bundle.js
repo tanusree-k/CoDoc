@@ -18022,13 +18022,15 @@ showLoadingOverlay("Connecting\u2026");
       return;
     }
     const inviteToken = params2.get("invite");
+    let inviteRole = null;
     if (inviteToken) {
       try {
         const decodedRole = atob(inviteToken);
         if (["editor", "commenter", "viewer"].includes(decodedRole)) {
-          await sb.from("document_permissions").insert({ doc_id: docId, user_id: myId, role: decodedRole }).catch(() => {
-          });
+          inviteRole = decodedRole;
           localStorage.setItem(`codoc_role_${docId}_${myId}`, decodedRole);
+          await sb.from("document_permissions").upsert({ doc_id: docId, user_id: myId, role: decodedRole }, { onConflict: "doc_id,user_id" }).catch(() => {
+          });
           const url = new URL(window.location.href);
           url.searchParams.delete("invite");
           window.history.replaceState({}, document.title, url.toString());
@@ -18046,29 +18048,22 @@ showLoadingOverlay("Connecting\u2026");
     if (doc2.owner_id === myId) {
       myRole = "owner";
       window.myRole = myRole;
-      window.myRole = myRole;
-      window.myRole = myRole;
     } else {
-      let { data: perm } = await sb.from("document_permissions").select("*").eq("doc_id", docId).eq("user_id", myId).single();
-      let localRole = localStorage.getItem(`codoc_role_${docId}_${myId}`);
-      if (!perm && localRole) {
-        perm = { role: localRole };
+      let resolvedRole = null;
+      if (inviteRole) {
+        resolvedRole = inviteRole;
       }
-      if (!perm && inviteToken) {
-        try {
-          const decodedRole = atob(inviteToken);
-          if (["editor", "commenter", "viewer"].includes(decodedRole)) {
-            perm = { role: decodedRole };
-          }
-        } catch (e) {
-        }
+      if (!resolvedRole) {
+        const { data: perm } = await sb.from("document_permissions").select("role").eq("doc_id", docId).eq("user_id", myId).single();
+        if (perm) resolvedRole = perm.role;
       }
-      if (!perm) {
-        perm = { role: "editor" };
+      if (!resolvedRole) {
+        resolvedRole = localStorage.getItem(`codoc_role_${docId}_${myId}`);
       }
-      myRole = perm.role;
-      window.myRole = myRole;
-      window.myRole = myRole;
+      if (!resolvedRole) {
+        resolvedRole = "editor";
+      }
+      myRole = resolvedRole;
       window.myRole = myRole;
     }
     myColor = `hsl(${parseInt(myId.replace(/-/g, ""), 16) % 360}, 80%, 45%)`;

@@ -258,15 +258,20 @@ showLoadingOverlay('Connecting…');
 
   const inviteToken = params.get('invite');
 
-  // Process invite token first to insert document permissions before fetching document
+  // If an invite token is in the URL, it always wins — overwrite any stale localStorage role
+  let inviteRole = null;
   if (inviteToken) {
     try {
       const decodedRole = atob(inviteToken);
       if (['editor', 'commenter', 'viewer'].includes(decodedRole)) {
-        // Attempt to register in DB silently
-        await sb.from('document_permissions').insert({ doc_id: docId, user_id: myId, role: decodedRole }).catch(() => {});
+        inviteRole = decodedRole;
+        // Overwrite localStorage so any future visits (after token removal) use correct role
         localStorage.setItem(`codoc_role_${docId}_${myId}`, decodedRole);
-        
+        // Try to upsert into DB (may fail due to RLS, that's ok)
+        await sb.from('document_permissions')
+          .upsert({ doc_id: docId, user_id: myId, role: decodedRole }, { onConflict: 'doc_id,user_id' })
+          .catch(() => {});
+        // Clean invite param from URL
         const url = new URL(window.location.href);
         url.searchParams.delete('invite');
         window.history.replaceState({}, document.title, url.toString());
@@ -279,33 +284,33 @@ showLoadingOverlay('Connecting…');
   if (docErr || !doc) { window.location.href = '/dashboard.html'; return; }
 
   if (doc.owner_id === myId) {
-    myRole = 'owner'; window.myRole = myRole; window.myRole = myRole; window.myRole = myRole;
+    myRole = 'owner'; window.myRole = myRole;
   } else {
-    // Attempt to fetch from DB (might fail/return null due to strict RLS rules on Render)
-    let { data: perm } = await sb.from('document_permissions').select('*').eq('doc_id', docId).eq('user_id', myId).single();
-    let localRole = localStorage.getItem(`codoc_role_${docId}_${myId}`);
+    // Priority order: inviteRole (from URL) > DB > localStorage > fallback
+    let resolvedRole = null;
 
-    // If DB fails to return permission and no invite token is present, fallback to local storage
-    if (!perm && localRole) {
-      perm = { role: localRole };
+    // 1. Invite token takes highest priority (always overrides stale cache)
+    if (inviteRole) {
+      resolvedRole = inviteRole;
     }
 
-    // If still no perm, use the invite token role if available
-    if (!perm && inviteToken) {
-      try {
-        const decodedRole = atob(inviteToken);
-        if (['editor', 'commenter', 'viewer'].includes(decodedRole)) {
-          perm = { role: decodedRole };
-        }
-      } catch (e) {}
+    // 2. Check DB
+    if (!resolvedRole) {
+      const { data: perm } = await sb.from('document_permissions').select('role').eq('doc_id', docId).eq('user_id', myId).single();
+      if (perm) resolvedRole = perm.role;
     }
 
-    // Final fallback: grant default 'editor' access only if no other source of truth
-    if (!perm) {
-      perm = { role: 'editor' };
+    // 3. Fallback to localStorage
+    if (!resolvedRole) {
+      resolvedRole = localStorage.getItem(`codoc_role_${docId}_${myId}`);
     }
 
-    myRole = perm.role; window.myRole = myRole; window.myRole = myRole; window.myRole = myRole;
+    // 4. Final fallback: editor
+    if (!resolvedRole) {
+      resolvedRole = 'editor';
+    }
+
+    myRole = resolvedRole; window.myRole = myRole;
   }
 
   myColor = `hsl(${parseInt(myId.replace(/-/g,''), 16) % 360}, 80%, 45%)`;
