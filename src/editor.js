@@ -655,6 +655,19 @@ quill.getModule('toolbar')?.addHandler('image', function() {
 
   const customFontSelect = document.getElementById('custom-font-select');
   const customSizeSelect = document.getElementById('custom-size-select');
+
+  // Inject text style (heading) select AFTER Quill init to prevent Quill from hijacking it
+  const headingContainer = document.getElementById('custom-heading-container');
+  if (headingContainer) {
+    headingContainer.innerHTML = `
+      <select id="format-block-select" class="tool-select" title="Text Style" style="width:100px; margin-right:8px;">
+        <option value="" selected>Normal</option>
+        <option value="1">Title</option>
+        <option value="2">Subtitle</option>
+        <option value="3">Heading 3</option>
+      </select>
+    `;
+  }
   const formatBlockSelect = document.getElementById('format-block-select');
 
   if (formatBlockSelect) {
@@ -693,7 +706,7 @@ quill.getModule('toolbar')?.addHandler('image', function() {
       customSizeSelect.value = formats.size || '';
     }
     if (formatBlockSelect) {
-      formatBlockSelect.value = formats.header || '';
+      formatBlockSelect.value = formats.header ? String(formats.header) : '';
     }
   });
 
